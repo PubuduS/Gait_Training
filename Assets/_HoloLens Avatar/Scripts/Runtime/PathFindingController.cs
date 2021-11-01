@@ -16,9 +16,11 @@ public class PathFindingController : MonoBehaviour
     private NavMeshAgent m_Agent;
     private Rigidbody m_Rigidbody;
     private Vector3 m_LastPosition;
-    private Quaternion m_LastRotation;    
+    private Quaternion m_LastRotation;
+    private bool m_GoToGazeLocation = false;
 
-    void Awake()
+
+    private void Awake()
     {
         m_Agent = GetComponent<NavMeshAgent>();
         m_Rigidbody = GetComponent<Rigidbody>();        
@@ -36,16 +38,16 @@ public class PathFindingController : MonoBehaviour
     }
 
     // Enable update coroutine when object or component is active
-    void OnEnable() => StartCoroutine(UpdateRoutine());
+    private void OnEnable() => StartCoroutine(UpdateRoutine());
 
     // Stop all coroutines just in case
-    void OnDisable() => StopAllCoroutines();
+    private void OnDisable() => StopAllCoroutines();
 
     /// <summary>
     /// Update destination every second.
     /// </summary>
     /// <returns></returns>
-    IEnumerator UpdateRoutine()
+    private IEnumerator UpdateRoutine()
     {
         while (true)
         {
@@ -57,7 +59,7 @@ public class PathFindingController : MonoBehaviour
     /// <summary>
     /// The agent will move wherever the main camera is gazing at.
     /// </summary>
-    void UpdateMove()
+    private void UpdateMove()
     {
         if (!m_Agent.enabled || !m_Agent.isOnNavMesh)
         {
@@ -69,7 +71,7 @@ public class PathFindingController : MonoBehaviour
         var targetDir = m_Agent.transform.position - Camera.main.transform.position;
         var angle = Vector3.Angle(targetDir, Camera.main.transform.forward);
 
-        if (angle < m_MaxAngle)
+        if ( (angle < m_MaxAngle) && (m_GoToGazeLocation == false) )
         {
             return;
         }           
@@ -83,13 +85,21 @@ public class PathFindingController : MonoBehaviour
         m_LastPosition = Camera.main.transform.position;
         m_LastRotation = Camera.main.transform.rotation;
 
-        MoveAgent();
+        if(m_GoToGazeLocation)
+        {
+            WalkToGazeLocation();
+        }
+        else
+        {
+            MoveAgent();
+        }
+        
     }
 
     /// <summary>
     /// Move the agent to forward direction.
     /// </summary>
-    void MoveAgent() 
+    private void MoveAgent() 
     {        
         m_Rigidbody.isKinematic = true;
         var direction = Camera.main.transform.TransformDirection(Vector3.forward);
@@ -122,6 +132,28 @@ public class PathFindingController : MonoBehaviour
         var direction = (Camera.main.transform.position - m_Agent.transform.position).normalized;
         var lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+    }
+
+    //! Toggle the gaze walking flag.    
+    public void ToggleGazeWalk()
+    {
+        m_GoToGazeLocation = !m_GoToGazeLocation;
+    }
+
+    //! When m_GoToGazeLocation flag sets to true, avatar will walk to the point where user is currently looking.
+    private void WalkToGazeLocation()
+    {
+        if (Physics.Raycast(m_LastPosition, Camera.main.transform.TransformDirection(Vector3.forward), out RaycastHit hit, Mathf.Infinity))
+        {
+            // When NavAgent is working, we need to decouple the RigidBody.
+            // Otherwise race condition will occur between NavAgent and RigidBody
+            m_Rigidbody.isKinematic = true;
+            m_Agent.SetDestination(hit.point);
+        }
+        else
+        {
+            return;
+        }
     }
 
 }
