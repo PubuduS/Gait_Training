@@ -40,9 +40,7 @@
 # Note: Unity navmesh assets must have "-NavMesh" suffix.
 *-[Nn]av[Mm]esh.asset -unityyaml lfs
 # Image
-*.jpg lfs
 *.jpeg lfs
-*.png lfs
 *.apng lfs
 *.atsc lfs
 *.gif lfs
