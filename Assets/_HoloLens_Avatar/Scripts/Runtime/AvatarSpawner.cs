@@ -3,19 +3,30 @@ using UnityEngine.AI;
 using Microsoft.MixedReality.Toolkit.UI;
 
 /// <summary>
-/// This script is responsive of spawn avatar in scene.
+/// This script is responsible for spawning the avatar in the scene.
 /// </summary>
 public class AvatarSpawner : MonoBehaviour 
 {
 
+    
+    /// Reference to the scrollview   
     [SerializeField] private ScrollingObjectCollection m_Scrollview;
+
+    /// Reference to the avatar prefabs
     [SerializeField] private GameObject[] m_AvatarPrefabs;
 
+    /// Avatar index value
     private int m_AvatarIndex = -1;
+
+    /// Defines the number of avatars
     private const int m_NumberOfAvatars = 2;
+
+    /// Last avatar.
     private GameObject m_LastAvatar;
 
-
+    /// <summary>
+    /// Gets called per each frame
+    /// </summary>
     private void Update()
     {
         SetVisibleCellIndex();

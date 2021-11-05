@@ -4,22 +4,38 @@ using UnityEngine.AI;
 
 /// <summary>
 /// This Script defines the logic a NavMesh agent in a unity navmesh
+/// This script required NavMesh Agent and RigidBody component.
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Rigidbody))]
 public class PathFindingController : MonoBehaviour
 {
 
+    /// Without the distance, avatar will not walk 
     [SerializeField] private float m_Distance = 5f;
+
+    /// Define the rotation angle
     [SerializeField, Range(0f, 90f)] private float m_MaxAngle = 90f;
 
+    /// NavMesh Agent
     private NavMeshAgent m_Agent;
+
+    /// Rigidbody
     private Rigidbody m_Rigidbody;
+
+    /// Store the avatar's last position
     private Vector3 m_LastPosition;
+
+    /// Store the avatar's last rotation
     private Quaternion m_LastRotation;
+
+    /// When sets to true avatar will to the gaze point.
     private bool m_GoToGazeLocation = false;
 
-
+    /// <summary>
+    /// Gets called when the script is loaded.
+    /// Cached NavMesh agent and Rigidbody
+    /// </summary>
     private void Awake()
     {
         m_Agent = GetComponent<NavMeshAgent>();
@@ -27,6 +43,9 @@ public class PathFindingController : MonoBehaviour
         MoveAgent();
     }
 
+    /// <summary>
+    /// Gets called at each frame
+    /// </summary>
     private void Update()
     {
         MoveWhenPlayerIsNear();
@@ -37,10 +56,10 @@ public class PathFindingController : MonoBehaviour
         }
     }
 
-    // Enable update coroutine when object or component is active
+    /// Enable update coroutine when object or component is active
     private void OnEnable() => StartCoroutine(UpdateRoutine());
 
-    // Stop all coroutines just in case
+    /// Stop all coroutines just in case
     private void OnDisable() => StopAllCoroutines();
 
     /// <summary>
@@ -134,13 +153,13 @@ public class PathFindingController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
-    //! Toggle the gaze walking flag.    
+    /// Toggle the gaze walking flag.    
     public void ToggleGazeWalk()
     {
         m_GoToGazeLocation = !m_GoToGazeLocation;
     }
 
-    //! When m_GoToGazeLocation flag sets to true, avatar will walk to the point where user is currently looking.
+    /// When m_GoToGazeLocation flag sets to true, avatar will walk to the point where user is currently looking.
     private void WalkToGazeLocation()
     {
         if (Physics.Raycast(m_LastPosition, Camera.main.transform.TransformDirection(Vector3.forward), out RaycastHit hit, Mathf.Infinity))

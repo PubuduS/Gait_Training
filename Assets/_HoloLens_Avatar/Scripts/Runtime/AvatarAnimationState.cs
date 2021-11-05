@@ -9,15 +9,27 @@ using UnityEngine.AI;
 public class AvatarAnimationState : MonoBehaviour 
 {
     
+    
+    /// Reference to the animator    
     private Animator m_Animator;
+
+    /// Reference to the NavMesh Agent 
     private NavMeshAgent m_NavMesh;
 
+    /// <summary>
+    /// Gets called when script is loaded
+    /// cached the references to Animator and NavMesh agent
+    /// </summary>
     void Awake() 
     {
         m_Animator = GetComponent<Animator>();
         m_NavMesh = GetComponent<NavMeshAgent>();
     }
 
+    /// <summary>
+    /// Gets called per each frame
+    /// If navmesh velocity magnitude is greater than 0 then play moving animation otherwise idle animation
+    /// </summary>
     void Update() 
     {
         // if navmesh velocity magnitude is greater than 0 then play moving animation otherwise idle animation
