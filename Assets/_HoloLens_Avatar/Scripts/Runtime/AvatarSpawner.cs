@@ -19,7 +19,7 @@ public class AvatarSpawner : MonoBehaviour
     private int m_AvatarIndex = -1;
 
     /// Defines the number of avatars
-    private const int m_NumberOfAvatars = 2;
+    private const int m_NumberOfAvatars = 7;
 
     /// Last avatar.
     private GameObject m_LastAvatar;
@@ -37,11 +37,11 @@ public class AvatarSpawner : MonoBehaviour
     /// </summary>    
     private void SetVisibleCellIndex()
     {
-        m_AvatarIndex = m_Scrollview.FirstVisibleCellIndex;
+        m_AvatarIndex = m_Scrollview.FirstVisibleCellIndex;       
 
         // Prevent accessing out of bound cell number
         if (m_AvatarIndex >= m_NumberOfAvatars)
-        {
+        {            
             m_AvatarIndex -= 1;
         }
     }
