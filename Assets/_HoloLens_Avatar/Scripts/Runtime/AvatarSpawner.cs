@@ -15,6 +15,11 @@ public class AvatarSpawner : MonoBehaviour
     /// Reference to the avatar prefabs
     [SerializeField] private GameObject[] m_AvatarPrefabs;
 
+    /// Reference to the FootStepParent
+    /// We need to destroy all the previous footsteps left by the
+    /// previous avatar. So, we are destroying all child object under this.
+    [SerializeField] private GameObject m_FootStepParent;
+
     /// Avatar index value
     private int m_AvatarIndex = -1;
 
@@ -71,6 +76,14 @@ public class AvatarSpawner : MonoBehaviour
         if (m_LastAvatar)
         {
             Destroy(m_LastAvatar);
+
+            /// We need to destroy all the previous footsteps left by the
+            /// previous avatar. So, we are destroying all child object under this.
+            foreach (Transform child in m_FootStepParent.transform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+ 
         }           
 
         var position = Camera.main.transform.position + Camera.main.transform.forward * 3 + new Vector3(0, -0.6f, 0);
