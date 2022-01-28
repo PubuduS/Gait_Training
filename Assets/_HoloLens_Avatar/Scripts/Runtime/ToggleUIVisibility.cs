@@ -13,6 +13,9 @@ public class ToggleUIVisibility : MonoBehaviour
     /// Reference to the parent object of Calibator UI
     [SerializeField] private GameObject m_ParentSceneUnderstandingUI;
 
+    /// Reference to the parent object of Noise UI
+    [SerializeField] private GameObject m_NoiseUI;
+
     /// Reference to the Avatar
     private GameObject m_Avatar;
 
@@ -32,6 +35,15 @@ public class ToggleUIVisibility : MonoBehaviour
         bool isObjectActive = m_ParentSceneUnderstandingUI.activeSelf;
         isObjectActive = !isObjectActive;
         m_ParentSceneUnderstandingUI.SetActive(isObjectActive);
+    }
+
+    /// Toggle Noise UI
+    /// You can toggle this UI via voice command or avatar panel.
+    public void ToggleNoiseUI()
+    {
+        bool isObjectActive = m_NoiseUI.activeSelf;
+        isObjectActive = !isObjectActive;
+        m_NoiseUI.SetActive(isObjectActive);
     }
 
     /// Toggle GazeWalking
