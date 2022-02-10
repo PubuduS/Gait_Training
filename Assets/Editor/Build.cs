@@ -37,7 +37,7 @@ public class Build
 
         BuildUnity(locationPathName);
 
-        UpdateVCXProj(locationPathName);
+        //UpdateVCXProj(locationPathName);
         UpdatePackageManifest(locationPathName);
 
     }
