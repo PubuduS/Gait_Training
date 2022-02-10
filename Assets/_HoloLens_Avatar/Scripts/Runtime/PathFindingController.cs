@@ -133,7 +133,7 @@ public class PathFindingController : MonoBehaviour
     {
         float distance = Vector3.Distance(Camera.main.transform.position, m_Agent.transform.position);
 
-        if (distance < 2.0f)
+        if (distance < 10.0f)
         {
             MoveAgent();
         }
