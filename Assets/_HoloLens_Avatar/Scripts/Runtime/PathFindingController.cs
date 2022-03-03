@@ -12,7 +12,7 @@ public class PathFindingController : MonoBehaviour
 {
 
     /// Without the distance, avatar will not walk 
-    [SerializeField] private float m_Distance = 5f;
+    [SerializeField] private float m_Distance = 11f;
 
     /// Define the rotation angle
     [SerializeField, Range(0f, 90f)] private float m_MaxAngle = 90f;
@@ -32,6 +32,12 @@ public class PathFindingController : MonoBehaviour
     /// When sets to true avatar will to the gaze point.
     private bool m_GoToGazeLocation = false;
 
+    /// Store the old position of the camera to calculate player speed.
+    private Vector3 m_PlayerOldPos;
+
+    /// When set to true we match the player's speed with avatar speed.
+    private bool m_MatchSpeedFlag = false;
+
     /// <summary>
     /// Gets called when the script is loaded.
     /// Cached NavMesh agent and Rigidbody
@@ -39,7 +45,8 @@ public class PathFindingController : MonoBehaviour
     private void Awake()
     {
         m_Agent = GetComponent<NavMeshAgent>();
-        m_Rigidbody = GetComponent<Rigidbody>();        
+        m_Rigidbody = GetComponent<Rigidbody>();
+        m_PlayerOldPos = Camera.main.transform.position;
         MoveAgent();
     }
 
@@ -48,6 +55,7 @@ public class PathFindingController : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        m_Agent.speed = GetPlayerSpeed();
         MoveWhenPlayerIsNear();
 
         if(m_Agent.velocity.magnitude <= 0f)
@@ -110,6 +118,7 @@ public class PathFindingController : MonoBehaviour
         }
         else
         {
+            m_MatchSpeedFlag = false;
             MoveAgent();
         }
         
@@ -134,11 +143,12 @@ public class PathFindingController : MonoBehaviour
         float distance = Vector3.Distance(Camera.main.transform.position, m_Agent.transform.position);
 
         if (distance < 10.0f)
-        {
+        {            
             MoveAgent();
         }
         else
         {
+            m_MatchSpeedFlag = false;
             return;
         }
     }
@@ -168,11 +178,36 @@ public class PathFindingController : MonoBehaviour
             // Otherwise race condition will occur between NavAgent and RigidBody
             m_Rigidbody.isKinematic = true;
             m_Agent.SetDestination(hit.point);
+            m_MatchSpeedFlag = false;
         }
         else
-        {
+        {            
             return;
         }
+    }
+
+    /// <summary>
+    /// We calculate speed of the player.
+    /// When player walks we match the player's speed with
+    /// the Avatar's speed. Otherwise the avatar will move
+    /// with the default speed.
+    /// </summary>
+    private float GetPlayerSpeed()
+    {
+        float speed = 0.0f;
+
+        if (m_MatchSpeedFlag == false)
+        {
+            speed = 2.0f;
+            return speed;
+        }
+        
+        Vector3 newPos = Camera.main.transform.position;
+        speed = (newPos - m_PlayerOldPos).magnitude / Time.deltaTime;
+        speed = Mathf.Abs(speed);
+        m_PlayerOldPos = newPos;
+                
+        return speed;
     }
 
 }
