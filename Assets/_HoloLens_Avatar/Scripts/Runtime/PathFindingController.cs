@@ -12,7 +12,7 @@ public class PathFindingController : MonoBehaviour
 {
 
     /// Without the distance, avatar will not walk 
-    [SerializeField] private float m_Distance = 5f;
+    [SerializeField] private float m_Distance = 12f;
 
     /// Define the rotation angle
     [SerializeField, Range(0f, 90f)] private float m_MaxAngle = 90f;
