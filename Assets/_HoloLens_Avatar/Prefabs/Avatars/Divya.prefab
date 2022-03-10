@@ -443,8 +443,6 @@ GameObject:
   - component: {fileID: 5714780607335250634}
   - component: {fileID: 2171982995588810577}
   - component: {fileID: 2171982995588810576}
-  - component: {fileID: 2171982995588810583}
-  - component: {fileID: 2171982995588810582}
   - component: {fileID: 2171982995588810581}
   m_Layer: 0
   m_Name: Divya
@@ -523,42 +521,6 @@ CapsuleCollider:
   m_Height: 3.6538079
   m_Direction: 1
   m_Center: {x: -0.019102156, y: 1.6174194, z: 0}
---- !u!195 &2171982995588810583
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361501983815481866}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 1
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 600
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 1
-  m_ObstacleAvoidanceType: 1
---- !u!114 &2171982995588810582
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361501983815481866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3730008832388c4ea837b86e134edcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Distance: 4.5
-  m_MaxAngle: 90
 --- !u!114 &2171982995588810581
 MonoBehaviour:
   m_ObjectHideFlags: 0

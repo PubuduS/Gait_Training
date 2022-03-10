@@ -5,15 +5,11 @@ using UnityEngine.AI;
 /// This class is used to control the avartar animation state.
 /// </summary>
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(NavMeshAgent))]
 public class AvatarAnimationState : MonoBehaviour 
 {
         
     /// Reference to the animator    
     private Animator m_Animator;
-
-    /// Reference to the NavMesh Agent 
-    private NavMeshAgent m_NavMesh;
 
     /// Reference to the SetNoise Script 
     private SetNoise m_SetNoise;
@@ -24,8 +20,7 @@ public class AvatarAnimationState : MonoBehaviour
     /// </summary>
     void Awake() 
     {
-        m_Animator = GetComponent<Animator>();
-        m_NavMesh = GetComponent<NavMeshAgent>();
+        m_Animator = GetComponent<Animator>();       
         m_SetNoise = GameObject.Find("NoiseController").GetComponent<SetNoise>();
     }
 
@@ -37,7 +32,7 @@ public class AvatarAnimationState : MonoBehaviour
     void Update() 
     {
         // if navmesh velocity magnitude is greater than 0 then play moving animation otherwise idle animation
-        var playerMoving = m_NavMesh.velocity.magnitude > 0f;
+        var playerMoving = false;
         m_Animator.SetBool("IsWalking", playerMoving);
         m_Animator.SetInteger("NoiseLvl", (int)m_SetNoise.GetNoisePattern());        
     }

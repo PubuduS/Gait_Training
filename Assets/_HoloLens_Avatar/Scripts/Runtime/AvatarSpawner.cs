@@ -74,13 +74,6 @@ public class AvatarSpawner : MonoBehaviour
         }           
 
         var position = Camera.main.transform.position + Camera.main.transform.forward * 3 + new Vector3(0, -0.6f, 0);
-        m_LastAvatar = Instantiate(prefab, position, Quaternion.identity);
-
-        if (NavMesh.SamplePosition(m_LastAvatar.transform.position, out NavMeshHit closestHit, 500, NavMesh.AllAreas))
-        {
-            m_LastAvatar.transform.position = closestHit.position;
-            m_LastAvatar.transform.rotation = Quaternion.identity;
-        }
-           
+        m_LastAvatar = Instantiate(prefab, position, Quaternion.identity);       
     }
 }

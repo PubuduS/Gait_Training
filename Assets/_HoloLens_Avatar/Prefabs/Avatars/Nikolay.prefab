@@ -2134,8 +2134,6 @@ GameObject:
   - component: {fileID: 1381359377546251330}
   - component: {fileID: 8786507753471707223}
   - component: {fileID: 6719711164116475418}
-  - component: {fileID: 296105504120601991}
-  - component: {fileID: 5304465470954466138}
   - component: {fileID: 865776525662504555}
   m_Layer: 0
   m_Name: Nikolay
@@ -2215,42 +2213,6 @@ CapsuleCollider:
   m_Height: 3.8809357
   m_Direction: 1
   m_Center: {x: 0.113026276, y: 1.7026651, z: -0.09537697}
---- !u!195 &296105504120601991
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5656643662596082818}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 1
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 600
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 1
-  m_ObstacleAvoidanceType: 1
---- !u!114 &5304465470954466138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5656643662596082818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3730008832388c4ea837b86e134edcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Distance: 4.5
-  m_MaxAngle: 90
 --- !u!114 &865776525662504555
 MonoBehaviour:
   m_ObjectHideFlags: 0
