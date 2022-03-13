@@ -14,6 +14,8 @@ public class AvatarAnimationState : MonoBehaviour
     /// Reference to the SetNoise Script 
     private SetNoise m_SetNoise;
 
+    private MoveBetweenPoints m_MoveBetweenPoints;
+
     /// <summary>
     /// Gets called when script is loaded
     /// cached the references to Animator and NavMesh agent
@@ -22,6 +24,9 @@ public class AvatarAnimationState : MonoBehaviour
     {
         m_Animator = GetComponent<Animator>();       
         m_SetNoise = GameObject.Find("NoiseController").GetComponent<SetNoise>();
+        m_MoveBetweenPoints = GetComponent<MoveBetweenPoints>();
+
+
     }
 
     /// <summary>
@@ -32,7 +37,7 @@ public class AvatarAnimationState : MonoBehaviour
     void Update() 
     {
         // if navmesh velocity magnitude is greater than 0 then play moving animation otherwise idle animation
-        var playerMoving = false;
+        var playerMoving = m_MoveBetweenPoints.m_IsPlayerMoving;
         m_Animator.SetBool("IsWalking", playerMoving);
         m_Animator.SetInteger("NoiseLvl", (int)m_SetNoise.GetNoisePattern());        
     }

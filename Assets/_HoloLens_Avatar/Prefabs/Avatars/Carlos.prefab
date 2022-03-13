@@ -1612,6 +1612,7 @@ GameObject:
   - component: {fileID: 8345534539149030508}
   - component: {fileID: 3128242045193725265}
   - component: {fileID: 2624397152371483002}
+  - component: {fileID: 8513055692391979731}
   m_Layer: 0
   m_Name: Carlos
   m_TagString: Avatar
@@ -1697,6 +1698,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0a8a1661e1f2b429c99eacb0d61bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8513055692391979731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4818747986904183145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0c452d17c7653d4a92e4698b98a9398, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wayPointsRef: []
+  movementSpeed: 4
+  m_IsPlayerMoving: 0
 --- !u!1 &4841105833538494769
 GameObject:
   m_ObjectHideFlags: 0

@@ -531,6 +531,7 @@ GameObject:
   - component: {fileID: 7750709813029472584}
   - component: {fileID: 2920697824122410613}
   - component: {fileID: 2148962076649393868}
+  - component: {fileID: 7336992592889044349}
   m_Layer: 0
   m_Name: Mei
   m_TagString: Avatar
@@ -617,6 +618,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0a8a1661e1f2b429c99eacb0d61bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7336992592889044349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 984206227874041650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0c452d17c7653d4a92e4698b98a9398, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wayPointsRef: []
+  movementSpeed: 4
+  m_IsPlayerMoving: 0
 --- !u!1 &1080917588594074123
 GameObject:
   m_ObjectHideFlags: 0
