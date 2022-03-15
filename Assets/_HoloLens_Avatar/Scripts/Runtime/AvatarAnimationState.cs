@@ -37,7 +37,7 @@ public class AvatarAnimationState : MonoBehaviour
     void Update() 
     {
         // if navmesh velocity magnitude is greater than 0 then play moving animation otherwise idle animation
-        var playerMoving = m_MoveBetweenPoints.m_IsPlayerMoving;
+        var playerMoving = CamMovementTracker.m_CamTrackerInstance.IsMoving;
         m_Animator.SetBool("IsWalking", playerMoving);
         m_Animator.SetInteger("NoiseLvl", (int)m_SetNoise.GetNoisePattern());        
     }

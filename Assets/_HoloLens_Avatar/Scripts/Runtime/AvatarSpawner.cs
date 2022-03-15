@@ -1,5 +1,6 @@
 using UnityEngine;
-using UnityEngine.AI;
+using System.Collections;
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.UI;
 
 /// <summary>
@@ -24,12 +25,20 @@ public class AvatarSpawner : MonoBehaviour
     /// Last avatar.
     private GameObject m_LastAvatar;
 
+    private bool m_StopCoroutineFlag = false;
+
     /// <summary>
     /// Gets called per each frame
     /// </summary>
     private void Update()
     {
         SetVisibleCellIndex();
+
+        if( m_StopCoroutineFlag == true )
+        {
+            StopCoroutine(LockdownAvatar());
+            m_StopCoroutineFlag = false;
+        }
     }
 
     /// <summary>
@@ -70,10 +79,21 @@ public class AvatarSpawner : MonoBehaviour
 
         if (m_LastAvatar)
         {
+            StopCoroutine(LockdownAvatar());
             Destroy(m_LastAvatar);
         }           
 
         var position = Camera.main.transform.position + Camera.main.transform.forward * 3 + new Vector3(0, -0.6f, 0);
-        m_LastAvatar = Instantiate(prefab, position, Quaternion.identity);       
+        m_LastAvatar = Instantiate(prefab, position, Quaternion.identity);
+        StartCoroutine(LockdownAvatar());
     }
+
+    private IEnumerator LockdownAvatar()
+    {
+        yield return new WaitForSeconds(2);
+        Rigidbody avatarRigidbody = GameObject.FindGameObjectWithTag("Avatar").GetComponent<Rigidbody>();
+        avatarRigidbody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        m_StopCoroutineFlag = true;
+    }
+
 }

@@ -48,24 +48,7 @@ public class ToggleUIVisibility : MonoBehaviour
         isObjectActive = !isObjectActive;
         m_NoiseUI.SetActive(isObjectActive);
     }
-
-    /// Toggle GazeWalking
-    /// When this is activated, avatar will walk to the point where user is currently looking.
-    public void ToggleGazeWalking()
-    {
-        m_Avatar = GameObject.FindGameObjectWithTag("Avatar");
-
-        if(m_Avatar != null)
-        {
-            PathFindingController path = m_Avatar.GetComponent<PathFindingController>();
-            path.ToggleGazeWalk();
-        }
-        else
-        {
-            return;
-        }              
-    }
-
+    
     /// Toggle SpartialMesh
     /// Activate by wireframe button located above the avatar panel.
     public void ToggleMesh()

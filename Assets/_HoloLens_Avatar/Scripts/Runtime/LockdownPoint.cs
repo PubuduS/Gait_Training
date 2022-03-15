@@ -30,8 +30,7 @@ public class LockdownPoint : MonoBehaviour
     void Update()
     {  
         if( m_SetFlag == true && m_StopFlag == false )
-        {
-            Debug.Log(" Co Routine Stopped ");
+        {            
             StopCoroutine(LockdownWaypoint());
             m_StopFlag = true;
         }
@@ -40,9 +39,9 @@ public class LockdownPoint : MonoBehaviour
     private IEnumerator LockdownWaypoint()
     {
         yield return new WaitForSeconds(2);
-        m_Rigidbody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        m_Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
         m_Rigidbody.useGravity = false;
-        m_BoxColider.enabled = false;
+        m_BoxColider.isTrigger = true;
         m_Text.SetText("X = " + transform.position.x + " Y = " + transform.position.y + " Z =  " + transform.position.z);
         m_SetFlag = true;
     }    

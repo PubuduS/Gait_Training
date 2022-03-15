@@ -18,8 +18,6 @@ public class MoveBetweenPoints : MonoBehaviour
     private float movementSpeed = 4.0f;
     private float rotationSpeed = 2.0f;
 
-    public bool m_IsPlayerMoving = false;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +33,7 @@ public class MoveBetweenPoints : MonoBehaviour
     void Update()
     {
 
-        movementSpeed = GetSpeedOfPlayer();        
+        movementSpeed = CamMovementTracker.m_CamTrackerInstance.Speed;   
         float movementStep = movementSpeed * Time.deltaTime;
         float rotationSteps = rotationSpeed * Time.deltaTime;
 
@@ -47,7 +45,7 @@ public class MoveBetweenPoints : MonoBehaviour
         float distance = Vector3.Distance( transform.position, targetWayPoint.position );
         CheckDistanceToWaypoint( distance );
 
-        if( m_IsPlayerMoving )
+        if( CamMovementTracker.m_CamTrackerInstance.IsMoving == true )
         {
             transform.position = Vector3.MoveTowards( transform.position, targetWayPoint.position, movementStep );            
         }
@@ -73,27 +71,4 @@ public class MoveBetweenPoints : MonoBehaviour
         targetWayPoint = wayPointsRef[targetWayPointIndex];
     }
 
-    private float GetSpeedOfPlayer()
-    {
-        float speed = 0.0f;
-
-        Vector3 playerCurrentPos = Camera.main.transform.position;
-
-        if( ( m_LastPlayerPosition == playerCurrentPos ) && ( m_LastPlayerRotation == Camera.main.transform.rotation ) )
-        {
-            m_IsPlayerMoving = false;
-            return 0.0f;
-        }
-        else
-        {
-            m_IsPlayerMoving = true;
-        }
-
-        speed = ( playerCurrentPos - m_LastPlayerPosition ).magnitude / Time.deltaTime;
-        speed = Mathf.Abs( speed );
-        m_LastPlayerPosition = playerCurrentPos;
-        m_LastPlayerRotation = Camera.main.transform.rotation;
-
-        return speed;
-    }
 }
