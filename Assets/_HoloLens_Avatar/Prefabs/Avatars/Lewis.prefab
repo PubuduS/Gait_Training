@@ -446,6 +446,7 @@ GameObject:
   - component: {fileID: 4488374386235136178}
   - component: {fileID: 4286802114746902531}
   - component: {fileID: 7752988093481925786}
+  - component: {fileID: -4634480244586857739}
   m_Layer: 0
   m_Name: Lewis
   m_TagString: Avatar
@@ -530,6 +531,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0a8a1661e1f2b429c99eacb0d61bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-4634480244586857739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191143449411884051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfdf84b2d3af98e4d9991f4e6e650297, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UserSpeed: 0
+  m_IsPlayerMoving: 0
 --- !u!1 &1249032475303028779
 GameObject:
   m_ObjectHideFlags: 0

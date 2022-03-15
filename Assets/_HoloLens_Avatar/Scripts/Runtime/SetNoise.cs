@@ -19,6 +19,34 @@ public class SetNoise : MonoBehaviour
     /// under the avatar in avatar panel.
     [SerializeField] private TextMeshPro m_NoiseLable;
 
+    [SerializeField] private TextMeshPro m_AvatarLable;
+
+    private MirrorUserMovements m_MirrorScript;
+
+    private bool flag = false;
+
+    public void Update()
+    {
+        /// { Debug }
+        /// This is only for debug purposes. Remove Later.
+        if( GameObject.FindGameObjectWithTag("Avatar") == null )
+        {
+            flag = false;
+        }
+        else
+        {
+            flag = true;            
+        }
+
+        if(flag)
+        {
+            m_MirrorScript = GameObject.FindGameObjectWithTag("Avatar").GetComponent<MirrorUserMovements>();
+            //m_AvatarLable.text = " "+m_MirrorScript.GetPlayerFlag() + " m " + m_MirrorScript.m_SquareMagnitude;
+            m_AvatarLable.text = "Speed " + CamMovementTracker.m_CamTrackerInstance.Speed;
+        }
+        /// { Debug }
+
+    }
     /// <summary>
     /// Gets called from the button's OnClick event.
     /// 0 is for deafult pattern

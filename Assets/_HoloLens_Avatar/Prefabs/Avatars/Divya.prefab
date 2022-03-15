@@ -444,6 +444,7 @@ GameObject:
   - component: {fileID: 2171982995588810577}
   - component: {fileID: 2171982995588810576}
   - component: {fileID: 2171982995588810581}
+  - component: {fileID: 2095545310009024671}
   m_Layer: 0
   m_Name: Divya
   m_TagString: Avatar
@@ -533,6 +534,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0a8a1661e1f2b429c99eacb0d61bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2095545310009024671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361501983815481866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfdf84b2d3af98e4d9991f4e6e650297, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UserSpeed: 0
+  m_IsPlayerMoving: 0
 --- !u!1 &1375206538026740306
 GameObject:
   m_ObjectHideFlags: 0
