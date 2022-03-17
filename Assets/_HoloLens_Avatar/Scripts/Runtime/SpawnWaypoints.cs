@@ -8,12 +8,10 @@ public class SpawnWaypoints : MonoBehaviour
 
     public List<Transform> m_AllWaypoints;
 
-    private GameObject m_LastWaypoint;
-        
+    private GameObject m_LastWaypoint;        
 
     [SerializeField]
     private Transform m_WaypointParent;
-
 
     //! Start is called before the first frame update
     void Start()

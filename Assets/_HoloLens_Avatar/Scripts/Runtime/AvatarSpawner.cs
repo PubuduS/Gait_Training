@@ -7,14 +7,16 @@ using Microsoft.MixedReality.Toolkit.UI;
 /// This script is responsible for spawning the avatar in the scene.
 /// </summary>
 public class AvatarSpawner : MonoBehaviour 
-{
-
-    
+{       
     /// Reference to the scrollview   
     [SerializeField] private ScrollingObjectCollection m_Scrollview;
 
     /// Reference to the avatar prefabs
     [SerializeField] private GameObject[] m_AvatarPrefabs;
+
+    /// Reference to the parent of waypoints
+    /// We only spawn avatar if we have child objects under waypoints.
+    [SerializeField] private GameObject m_WaypointParent;
 
     /// Avatar index value
     private int m_AvatarIndex = -1;
@@ -66,6 +68,11 @@ public class AvatarSpawner : MonoBehaviour
         if (index < 0 || index >= m_AvatarPrefabs.Length) 
         {
             Debug.LogError($"Can't instantiate prefab, unable to find specified index '{index}'.");
+            return;
+        }
+
+        if( m_WaypointParent.transform.childCount == 0 )
+        {
             return;
         }
 

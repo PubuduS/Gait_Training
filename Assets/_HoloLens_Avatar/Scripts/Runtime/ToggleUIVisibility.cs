@@ -11,16 +11,13 @@ public class ToggleUIVisibility : MonoBehaviour
     [SerializeField] private GameObject m_ParentAvatarUI;
 
     /// Reference to the parent object of Calibator UI
-    [SerializeField] private GameObject m_ParentSceneUnderstandingUI;
+    [SerializeField] private GameObject m_ParentCalibrationUI;
 
     /// Reference to the parent object of Noise UI
     [SerializeField] private GameObject m_NoiseUI;
 
-    /// Reference to the Avatar
-    private GameObject m_Avatar;
-
     /// Toggle the mesh visibility
-    private bool m_IsMeshToggled = false;
+    private bool m_IsMeshToggled = true;
 
     /// Toggle Avatar UI
     /// You can toggle this UI via voice command or hand-bound menu
@@ -35,9 +32,9 @@ public class ToggleUIVisibility : MonoBehaviour
     /// You can toggle this UI via voice command or hand-bound menu
     public void ToggleCalibratorUI()
     {        
-        bool isObjectActive = m_ParentSceneUnderstandingUI.activeSelf;
+        bool isObjectActive = m_ParentCalibrationUI.activeSelf;
         isObjectActive = !isObjectActive;
-        m_ParentSceneUnderstandingUI.SetActive(isObjectActive);
+        m_ParentCalibrationUI.SetActive(isObjectActive);
     }
 
     /// Toggle Noise UI

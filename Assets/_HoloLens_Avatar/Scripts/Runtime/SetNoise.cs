@@ -19,6 +19,15 @@ public class SetNoise : MonoBehaviour
     /// under the avatar in avatar panel.
     [SerializeField] private TextMeshPro m_NoiseLable;
 
+    // Just a debug to see user speed. Remove later.
+    [SerializeField] private TextMeshPro m_UserSpeed;
+
+    private void Update()
+    {
+        m_UserSpeed.text = "Speed " + CamMovementTracker.m_CamTrackerInstance.Speed;
+    }
+
+
     /// <summary>
     /// Gets called from the button's OnClick event.
     /// 0 is for deafult pattern
@@ -28,7 +37,7 @@ public class SetNoise : MonoBehaviour
     public void SetNoisePattern(int pattern)
     {
         m_PatternType = (NoiseTypes)pattern;
-        SetPatternLable();
+        SetPatternLable();        
     }
 
     /// <summary>

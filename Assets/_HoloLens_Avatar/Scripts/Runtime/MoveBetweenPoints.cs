@@ -6,14 +6,10 @@ public class MoveBetweenPoints : MonoBehaviour
 {
     public List<Transform> wayPointsRef;
 
-    private Transform targetWayPoint;
-    private int targetWayPointIndex = 0;
+    private Transform targetWayPoint;    
     private float minDistance = 1f;
     private int lastWayPointIndex;
     private SpawnWaypoints waypointScript;
-
-    private Vector3 m_LastPlayerPosition;
-    private Quaternion m_LastPlayerRotation;
 
     private float movementSpeed = 4.0f;
     private float rotationSpeed = 2.0f;
@@ -22,11 +18,9 @@ public class MoveBetweenPoints : MonoBehaviour
     void Start()
     {
         waypointScript = GameObject.Find("WaypointSpawner").GetComponent<SpawnWaypoints>();
-        wayPointsRef = waypointScript.m_AllWaypoints;
-        targetWayPoint = wayPointsRef[targetWayPointIndex];
-        lastWayPointIndex = (wayPointsRef.Count - 1);       
-        m_LastPlayerPosition = Camera.main.transform.position;
-        m_LastPlayerRotation = Camera.main.transform.rotation;
+        wayPointsRef = waypointScript.m_AllWaypoints;        
+        targetWayPoint = wayPointsRef[TrackWaypoints.g_LastWaypointIndex];
+        lastWayPointIndex = (wayPointsRef.Count - 1);
     }
 
     // Update is called once per frame
@@ -36,6 +30,8 @@ public class MoveBetweenPoints : MonoBehaviour
         movementSpeed = CamMovementTracker.m_CamTrackerInstance.Speed;   
         float movementStep = movementSpeed * Time.deltaTime;
         float rotationSteps = rotationSpeed * Time.deltaTime;
+
+        Debug.Log("movementStep " + movementStep);
 
         Vector3 directionToTarget = targetWayPoint.position - transform.position;
         Quaternion rotationToTarget = Quaternion.LookRotation( directionToTarget );
@@ -47,7 +43,8 @@ public class MoveBetweenPoints : MonoBehaviour
 
         if( CamMovementTracker.m_CamTrackerInstance.IsMoving == true )
         {
-            transform.position = Vector3.MoveTowards( transform.position, targetWayPoint.position, movementStep );            
+            movementStep *= 0.4f;
+            transform.position = Vector3.MoveTowards( transform.position, targetWayPoint.position, movementStep );
         }
 
     }
@@ -56,19 +53,19 @@ public class MoveBetweenPoints : MonoBehaviour
     {
         if (currentDistance <= minDistance)
         {
-            targetWayPointIndex++;
+            TrackWaypoints.g_LastWaypointIndex++;
             UpdateTargerWaypoint();
         }
     }
 
     private void UpdateTargerWaypoint()
     {
-        if (targetWayPointIndex > lastWayPointIndex)
+        if ( TrackWaypoints.g_LastWaypointIndex > lastWayPointIndex )
         {
-            targetWayPointIndex = 0;
+            TrackWaypoints.g_LastWaypointIndex = 0;
         }
 
-        targetWayPoint = wayPointsRef[targetWayPointIndex];
+        targetWayPoint = wayPointsRef[TrackWaypoints.g_LastWaypointIndex];
     }
 
 }
