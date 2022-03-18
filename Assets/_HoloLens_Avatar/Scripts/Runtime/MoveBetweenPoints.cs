@@ -43,7 +43,7 @@ public class MoveBetweenPoints : MonoBehaviour
 
         if( CamMovementTracker.m_CamTrackerInstance.IsMoving == true )
         {
-            movementStep *= 0.4f;
+            movementStep = movementStep / 20.0f;
             transform.position = Vector3.MoveTowards( transform.position, targetWayPoint.position, movementStep );
         }
 
