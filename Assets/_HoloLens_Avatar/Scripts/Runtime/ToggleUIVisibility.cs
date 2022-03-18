@@ -13,6 +13,9 @@ public class ToggleUIVisibility : MonoBehaviour
     /// Reference to the parent object of Noise UI
     [SerializeField] private GameObject m_NoiseUI;
 
+    /// Toggle the mesh visibility
+    private bool m_IsMeshToggled = true;
+
     /// Toggle Avatar UI
     /// You can toggle this UI via voice command or hand-bound menu
     public void ToggleAvatarUI() 
@@ -31,4 +34,21 @@ public class ToggleUIVisibility : MonoBehaviour
         m_NoiseUI.SetActive(isObjectActive);
     }
 
+    /// Toggle SpartialMesh
+    /// Activate by wireframe button located above the avatar panel.
+    public void ToggleMesh()
+    {
+        var observer = Microsoft.MixedReality.Toolkit.CoreServices.GetSpatialAwarenessSystemDataProvider<Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.OpenXRSpatialAwarenessMeshObserver>();
+
+        m_IsMeshToggled = !m_IsMeshToggled;
+
+        if( m_IsMeshToggled == true )
+        {
+            observer.DisplayOption = Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshDisplayOptions.Visible;
+        }
+        else
+        {
+            observer.DisplayOption = Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshDisplayOptions.Occlusion;
+        }
+    }
 }
