@@ -19,9 +19,9 @@ public class SetNoise : MonoBehaviour
     /// under the avatar in avatar panel.
     [SerializeField] private TextMeshPro m_NoiseLable;
 
-    [SerializeField] private TextMeshPro m_AvatarLable;
+    [SerializeField] private TextMeshPro m_NoiseLableInNoiseDataPanel;
 
-    private MirrorUserMovements m_MirrorScript;
+    [SerializeField] private TextMeshPro m_AvatarLable;
 
     private bool flag = false;
 
@@ -40,8 +40,6 @@ public class SetNoise : MonoBehaviour
 
         if(flag)
         {
-            m_MirrorScript = GameObject.FindGameObjectWithTag("Avatar").GetComponent<MirrorUserMovements>();
-            //m_AvatarLable.text = " "+m_MirrorScript.GetPlayerFlag() + " m " + m_MirrorScript.m_SquareMagnitude;
             m_AvatarLable.text = "Speed " + CamMovementTracker.m_CamTrackerInstance.Speed;
         }
         /// { Debug }
@@ -70,19 +68,23 @@ public class SetNoise : MonoBehaviour
         {
             case NoiseTypes.PinkNoise:
                 m_NoiseLable.text = "Noise: Pink";
+                m_NoiseLableInNoiseDataPanel.text = m_NoiseLable.text;
                 break;
 
             case NoiseTypes.IstNoise:
                 m_NoiseLable.text = "Noise: IST";
+                m_NoiseLableInNoiseDataPanel.text = m_NoiseLable.text;
                 break;
 
             case NoiseTypes.WhiteNoise:
                 m_NoiseLable.text = "Noise: Random";
+                m_NoiseLableInNoiseDataPanel.text = m_NoiseLable.text;
                 break;
 
             default:
                 Debug.Log("Incorect Input. Can't Change Labele");
                 m_NoiseLable.text = "!!! Noise: Error !!!";
+                m_NoiseLableInNoiseDataPanel.text = m_NoiseLable.text;
                 break;
         }
     }
