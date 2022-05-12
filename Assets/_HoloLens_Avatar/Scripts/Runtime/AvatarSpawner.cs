@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.UI;
 /// </summary>
 public class AvatarSpawner : MonoBehaviour 
 {
-
     
     /// Reference to the scrollview   
     [SerializeField] private ScrollingObjectCollection m_Scrollview;

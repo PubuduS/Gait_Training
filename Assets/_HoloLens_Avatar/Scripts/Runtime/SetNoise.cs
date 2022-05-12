@@ -19,10 +19,17 @@ public class SetNoise : MonoBehaviour
     /// under the avatar in avatar panel.
     [SerializeField] private TextMeshPro m_NoiseLable;
 
+
+    /// This will show the user selection of the pattern
+    /// under the NoiseDataPanel.
     [SerializeField] private TextMeshPro m_NoiseLableInNoiseDataPanel;
 
+
+    /// This will show the player's current speed in Avatar label.
     [SerializeField] private TextMeshPro m_AvatarLable;
 
+
+    /// A flag to check wheather an avatar is spawned or not.
     private bool flag = false;
 
     public void Update()
@@ -45,6 +52,7 @@ public class SetNoise : MonoBehaviour
         /// { Debug }
 
     }
+
     /// <summary>
     /// Gets called from the button's OnClick event.
     /// 0 is for deafult pattern
