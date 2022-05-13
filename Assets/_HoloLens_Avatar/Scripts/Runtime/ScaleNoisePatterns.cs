@@ -42,7 +42,7 @@ public class ScaleNoisePatterns : MonoBehaviour
     private float m_BrownPreviousSum = 0.0f;
 
     /// Defines the minimum value.
-    private int m_MinValue = 0;
+    private int m_MinValue = -2;
 
     /// Defines the maximum value.
     private int m_MaxValue = 2;
@@ -108,7 +108,7 @@ public class ScaleNoisePatterns : MonoBehaviour
         m_MeanPeriod = (float)ExtractDecimalFromUI( m_MeanPeriodLabel.text );       
         m_SDPeriod = (float)ExtractDecimalFromUI( m_SDPeriodLabel.text );
         m_NoiseSTD = (float)ExtractDecimalFromUI(m_SDLabel.text);
-        m_SampleSize = (int)ExtractDecimalFromUI( m_SampleSizeLabel.text );
+        m_SampleSize = (int)ExtractDecimalFromUI( m_SampleSizeLabel.text );       
     }
 
     /// <summary>
@@ -191,7 +191,8 @@ public class ScaleNoisePatterns : MonoBehaviour
     }
 
     /// <summary>
-    /// We calculate the Brown noise.
+    /// We calculate the Brown noise based on random values and previous sum.
+    /// Any outliers are assigned to upper or lower bound to prevent large numbers that can mess up the animations.
     /// </summary>
     public void CalculateBrownNoise()
     {
@@ -200,13 +201,28 @@ public class ScaleNoisePatterns : MonoBehaviour
         for ( int i = 0; i < m_SampleSize; i++ )
         {
             value = GenerateNormalRandom( m_MeanPeriod, m_SDPeriod, m_MinValue, m_MaxValue ) + m_BrownPreviousSum;
-            m_BrownNoise.Add( value );           
-            m_BrownPreviousSum = value;
+
+            if( value < m_MinValue )
+            {
+                value = m_MinValue;
+            }
+            else if( value > m_MaxValue )
+            {
+                value = m_MaxValue;
+            }
+
+            if( value != 0.0f )
+            {                
+                m_BrownNoise.Add(value);
+                m_BrownPreviousSum = value;
+            }
+
         }
     }
 
     /// <summary>
     /// We calculate the White noise.
+    /// This is just random numbers.
     /// </summary>
     public void CalculateWhiteNoise()
     {
