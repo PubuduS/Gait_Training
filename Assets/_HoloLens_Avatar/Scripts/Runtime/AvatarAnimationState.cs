@@ -32,6 +32,9 @@ public class AvatarAnimationState : MonoBehaviour
     /// To identify the current noise pattern
     private string m_NoisePatternLbl = "Pink";
 
+    /// This flag is used to lock down the animation till it played out.
+    private bool m_IsAnimationLocked = false;
+
     /// <summary>
     /// Gets called first when script is invoked
     /// Cached the references to Animator, SetNoise and NoiseDataPanelTitle
@@ -78,13 +81,12 @@ public class AvatarAnimationState : MonoBehaviour
             ApplyCorrectNoisePattern();
         }
         else
-        {
-            Debug.Log("Reset");
-            StopCoroutine("WaitTillAnimationComplete");
+        {            
+            m_IsAnimationLocked = false;
             m_Animator.speed = 1.0f;
         }
         
-        // Future work is needed to change the avatar speed.
+        // TODO Future work is needed to change the avatar speed.
         // m_Animator.speed = CamMovementTracker.m_CamTrackerInstance.Speed;                
     }
 
@@ -101,10 +103,14 @@ public class AvatarAnimationState : MonoBehaviour
             {
                 m_NoisePatternLbl = "Pink";
                 float number = Mathf.Abs( m_ScaledNoisePatterns.ScaledPinkNoise[m_NoiseIndex] );
-                StopCoroutine( "WaitTillAnimationComplete" );
-                StartCoroutine( "WaitTillAnimationComplete", number );
+                ApplyNoiseToAnimator( number );
+                //Debug.Log("Noise" + number);
 
-                m_NoiseIndex++;
+                if ( m_IsAnimationLocked == false )
+                {                    
+                    m_NoiseIndex++;
+                }
+               
             }
             else
             {
@@ -118,10 +124,13 @@ public class AvatarAnimationState : MonoBehaviour
             {
                 m_NoisePatternLbl = "Brown";
                 float number = Mathf.Abs( m_ScaledNoisePatterns.BrownNoise[m_NoiseIndex] );
-                StopCoroutine( "WaitTillAnimationComplete" );
-                StartCoroutine( "WaitTillAnimationComplete", number );
+                ApplyNoiseToAnimator(number);
 
-                m_NoiseIndex++;
+                if( m_IsAnimationLocked == false )
+                {
+                    m_NoiseIndex++;
+                }
+                
             }
             else
             {
@@ -134,10 +143,12 @@ public class AvatarAnimationState : MonoBehaviour
             {
                 m_NoisePatternLbl = "White";
                 float number = Mathf.Abs( m_ScaledNoisePatterns.WhiteNoise[m_NoiseIndex] );
-                StopCoroutine( "WaitTillAnimationComplete" );
-                StartCoroutine( "WaitTillAnimationComplete", number );
+                ApplyNoiseToAnimator(number);
 
-                m_NoiseIndex++;
+                if (m_IsAnimationLocked == false)
+                {
+                    m_NoiseIndex++;
+                }
             }
             else
             {
@@ -147,8 +158,7 @@ public class AvatarAnimationState : MonoBehaviour
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") )
         {
             float number = 1.0f;
-            StopCoroutine("WaitTillAnimationComplete");
-            StartCoroutine("WaitTillAnimationComplete", number);
+            ApplyNoiseToAnimator(number);            
         }
         else
         {
@@ -157,21 +167,32 @@ public class AvatarAnimationState : MonoBehaviour
     }
 
     /// <summary>
-    /// Here we wait till the animation cycle is completed before we begin playing the next animation cycle.
+    /// Apply noise frequency to animator
     /// </summary>
     /// <param name="number"></param>
-    /// <returns></returns>
-    IEnumerator WaitTillAnimationComplete( float number )
+    private void ApplyNoiseToAnimator( float number = 1.0f )
     {
-        float clipLength = m_Animator.GetCurrentAnimatorStateInfo(0).length;
-        //Debug.Log("Animation Length " + clipLength);
-
         m_Animator.speed = number;
-       
-        m_NoiseDataPanelTitle.text = m_NoisePatternLbl + " Noise = " + number;        
+        m_NoiseDataPanelTitle.text = m_NoisePatternLbl + " Noise = " + number;
+    }
 
-        float waitTime = clipLength * ( 1 / number );
-        yield return new WaitForSeconds( clipLength + m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime );
+    /// <summary>
+    /// Lockdown the animation until it played out.
+    /// Animation will unlock after it complete the current loop.
+    /// This event is mapped to animation event.
+    /// </summary>
+    private void LockdownAnimation()
+    {        
+        m_IsAnimationLocked = true;
+    }
+
+    /// <summary>
+    /// Unlock the animation after it played out.
+    /// Mapped to animation event.
+    /// </summary>
+    private void UnlockAnimation()
+    {        
+        m_IsAnimationLocked = false;
     }
 
 }
