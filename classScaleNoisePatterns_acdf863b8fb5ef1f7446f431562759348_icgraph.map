@@ -1,0 +1,4 @@
+<map id="ScaleNoisePatterns.StartISOCalculations" name="ScaleNoisePatterns.StartISOCalculations">
+<area shape="rect" id="node1" title="For the ISO noise the time to complete the gait cycle should be a constant value and set to preferred..." alt="" coords="227,5,396,47"/>
+<area shape="rect" id="node2" href="$classScaleNoisePatterns.html#ab44aa5b106142615d11486fd96782bb6" title="Calculate the selected patterns. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="5,5,179,47"/>
+</map>

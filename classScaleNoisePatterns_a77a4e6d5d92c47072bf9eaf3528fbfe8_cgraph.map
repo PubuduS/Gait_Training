@@ -1,0 +1,6 @@
+<map id="ScaleNoisePatterns.CalculateWhiteNoise" name="ScaleNoisePatterns.CalculateWhiteNoise">
+<area shape="rect" id="node1" title="We calculate the White noise. This is just random numbers." alt="" coords="5,39,200,80"/>
+<area shape="rect" id="node2" href="$classScaleNoisePatterns.html#adf1a9a0c5a19225d7155c5519830e776" title="Generate a normal random value." alt="" coords="248,5,443,47"/>
+<area shape="rect" id="node3" href="$classScaleNoisePatterns.html#a5f44d389c082a67125fd106acfe58309" title="Populate data variables used to alter noise. The data are gained through UI lables which are set by t..." alt="" coords="249,71,441,112"/>
+<area shape="rect" id="node4" href="$classScaleNoisePatterns.html#a58d771c66d93c67d3a86fdfbbc1dfe1d" title="Get the number part from the UI textfields." alt="" coords="491,71,672,112"/>
+</map>

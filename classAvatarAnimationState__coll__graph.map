@@ -1,0 +1,8 @@
+<map id="AvatarAnimationState" name="AvatarAnimationState">
+<area shape="rect" id="node1" title="This class is used to control the avartar animation state." alt="" coords="73,1072,294,1325"/>
+<area shape="rect" id="node2" title=" " alt="" coords="128,191,240,268"/>
+<area shape="rect" id="node3" href="$classSetNoise.html" title="This class is used to set noise pattern levels. When user press a button, it will change the pattern." alt="" coords="78,595,289,804"/>
+<area shape="rect" id="node4" href="$classScaleNoisePatterns.html" title="Calculate a Normal(Gaussian) distribution. and if user selected, scaled that and stored it as Pink No..." alt="" coords="313,389,526,1009"/>
+<area shape="rect" id="node5" href="$classGaussianDistribution.html" title="Takes two uniformly distributed deviates within the unit circle, and transforms them into two indepen..." alt="" coords="339,132,500,327"/>
+<area shape="rect" id="node6" title=" " alt="" coords="360,5,480,83"/>
+</map>

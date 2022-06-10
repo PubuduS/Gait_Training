@@ -1,0 +1,6 @@
+<map id="ScaleNoisePatterns.GenerateNormalRandom" name="ScaleNoisePatterns.GenerateNormalRandom">
+<area shape="rect" id="node1" title="Generate a normal random value." alt="" coords="469,39,664,80"/>
+<area shape="rect" id="node2" href="$classScaleNoisePatterns.html#aff08ed1a30642909abd7e366d4ecad27" title="We calculate the Brown noise based on random values and previous sum. Any outliers are assigned to up..." alt="" coords="227,5,421,47"/>
+<area shape="rect" id="node3" href="$classScaleNoisePatterns.html#a77a4e6d5d92c47072bf9eaf3528fbfe8" title="We calculate the White noise. This is just random numbers." alt="" coords="227,71,421,112"/>
+<area shape="rect" id="node4" href="$classScaleNoisePatterns.html#ab44aa5b106142615d11486fd96782bb6" title="Calculate the selected patterns. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="5,71,179,112"/>
+</map>

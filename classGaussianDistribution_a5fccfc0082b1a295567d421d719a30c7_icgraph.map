@@ -1,0 +1,4 @@
+<map id="GaussianDistribution.RandomGauss" name="GaussianDistribution.RandomGauss">
+<area shape="rect" id="node1" title="Obtains normally (Gaussian) distrubuted random numbers, using the Box&#45;Muller transformation...." alt="" coords="248,5,441,47"/>
+<area shape="rect" id="node2" href="$classScaleNoisePatterns.html#a69bf24a64f3fb9ef4fc80b7016218f28" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="5,5,200,47"/>
+</map>

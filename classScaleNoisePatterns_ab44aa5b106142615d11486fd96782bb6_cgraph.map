@@ -1,0 +1,9 @@
+<map id="ScaleNoisePatterns.ApplyPattern" name="ScaleNoisePatterns.ApplyPattern">
+<area shape="rect" id="node1" title="Calculate the selected patterns. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="5,71,179,112"/>
+<area shape="rect" id="node2" href="$classScaleNoisePatterns.html#a77a4e6d5d92c47072bf9eaf3528fbfe8" title="We calculate the White noise. This is just random numbers." alt="" coords="227,5,421,47"/>
+<area shape="rect" id="node6" href="$classScaleNoisePatterns.html#afd056c1366b0954580dda0a3fa3e9562" title="We scale each value in normal distribution to get this." alt="" coords="237,71,411,112"/>
+<area shape="rect" id="node7" href="$classScaleNoisePatterns.html#acdf863b8fb5ef1f7446f431562759348" title="For the ISO noise the time to complete the gait cycle should be a constant value and set to preferred..." alt="" coords="239,136,409,177"/>
+<area shape="rect" id="node3" href="$classScaleNoisePatterns.html#adf1a9a0c5a19225d7155c5519830e776" title="Generate a normal random value." alt="" coords="469,5,664,47"/>
+<area shape="rect" id="node4" href="$classScaleNoisePatterns.html#a5f44d389c082a67125fd106acfe58309" title="Populate data variables used to alter noise. The data are gained through UI lables which are set by t..." alt="" coords="471,77,663,119"/>
+<area shape="rect" id="node5" href="$classScaleNoisePatterns.html#a58d771c66d93c67d3a86fdfbbc1dfe1d" title="Get the number part from the UI textfields." alt="" coords="712,107,893,148"/>
+</map>

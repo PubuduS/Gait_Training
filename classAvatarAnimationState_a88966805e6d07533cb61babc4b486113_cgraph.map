@@ -1,0 +1,6 @@
+<map id="AvatarAnimationState.Update" name="AvatarAnimationState.Update">
+<area shape="rect" id="node1" title="Gets called per each frame The CamMovementTracker singleton instance has speed and IsMoving Flags...." alt="" coords="5,42,200,69"/>
+<area shape="rect" id="node2" href="$classAvatarAnimationState.html#a30f60294e709a40b207994fce56ed4ed" title="Get the calculated noise pattern and apply that to animation speed. This noise will shrink or expand ..." alt="" coords="248,5,432,47"/>
+<area shape="rect" id="node4" href="$classSetNoise.html#ada957bbe4673d7ed070e632291254f0b" title="Gettr to get the user&#39;s selection." alt="" coords="252,71,428,98"/>
+<area shape="rect" id="node3" href="$classAvatarAnimationState.html#abdcaaf07b8d3d4fc04d39afdf9cd1489" title="Apply noise frequency to animator" alt="" coords="480,5,664,47"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="ScaleNoisePatterns.GenerateNewDistribution" name="ScaleNoisePatterns.GenerateNewDistribution">
+<area shape="rect" id="node1" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="5,39,200,80"/>
+<area shape="rect" id="node2" href="$classScaleNoisePatterns.html#a5f44d389c082a67125fd106acfe58309" title="Populate data variables used to alter noise. The data are gained through UI lables which are set by t..." alt="" coords="249,5,441,47"/>
+<area shape="rect" id="node4" href="$classGaussianDistribution.html#a5fccfc0082b1a295567d421d719a30c7" title="Obtains normally (Gaussian) distrubuted random numbers, using the Box&#45;Muller transformation...." alt="" coords="248,71,441,112"/>
+<area shape="rect" id="node3" href="$classScaleNoisePatterns.html#a58d771c66d93c67d3a86fdfbbc1dfe1d" title="Get the number part from the UI textfields." alt="" coords="489,5,671,47"/>
+</map>

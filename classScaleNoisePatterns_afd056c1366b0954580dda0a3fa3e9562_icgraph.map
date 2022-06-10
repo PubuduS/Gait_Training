@@ -1,0 +1,4 @@
+<map id="ScaleNoisePatterns.ScalePinkNoise" name="ScaleNoisePatterns.ScalePinkNoise">
+<area shape="rect" id="node1" title="We scale each value in normal distribution to get this." alt="" coords="227,5,401,47"/>
+<area shape="rect" id="node2" href="$classScaleNoisePatterns.html#ab44aa5b106142615d11486fd96782bb6" title="Calculate the selected patterns. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="5,5,179,47"/>
+</map>

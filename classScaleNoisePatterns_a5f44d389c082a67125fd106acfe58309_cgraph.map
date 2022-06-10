@@ -1,0 +1,4 @@
+<map id="ScaleNoisePatterns.PopulateVariablesWithDataFromUI" name="ScaleNoisePatterns.PopulateVariablesWithDataFromUI">
+<area shape="rect" id="node1" title="Populate data variables used to alter noise. The data are gained through UI lables which are set by t..." alt="" coords="5,5,197,47"/>
+<area shape="rect" id="node2" href="$classScaleNoisePatterns.html#a58d771c66d93c67d3a86fdfbbc1dfe1d" title="Get the number part from the UI textfields." alt="" coords="245,5,427,47"/>
+</map>

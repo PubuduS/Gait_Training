@@ -1,0 +1,6 @@
+<map id="ScaleNoisePatterns" name="ScaleNoisePatterns">
+<area shape="rect" id="node1" title="Calculate a Normal(Gaussian) distribution. and if user selected, scaled that and stored it as Pink No..." alt="" coords="5,389,219,1009"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,191,117,268"/>
+<area shape="rect" id="node3" href="$classGaussianDistribution.html" title="Takes two uniformly distributed deviates within the unit circle, and transforms them into two indepen..." alt="" coords="141,132,302,327"/>
+<area shape="rect" id="node4" title=" " alt="" coords="161,5,281,83"/>
+</map>

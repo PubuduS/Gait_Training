@@ -1,0 +1,9 @@
+<map id="ScaleNoisePatterns.PopulateVariablesWithDataFromUI" name="ScaleNoisePatterns.PopulateVariablesWithDataFromUI">
+<area shape="rect" id="node1" title="Populate data variables used to alter noise. The data are gained through UI lables which are set by t..." alt="" coords="469,136,661,177"/>
+<area shape="rect" id="node2" href="$classScaleNoisePatterns.html#aff08ed1a30642909abd7e366d4ecad27" title="We calculate the Brown noise based on random values and previous sum. Any outliers are assigned to up..." alt="" coords="227,5,421,47"/>
+<area shape="rect" id="node3" href="$classScaleNoisePatterns.html#a77a4e6d5d92c47072bf9eaf3528fbfe8" title="We calculate the White noise. This is just random numbers." alt="" coords="227,71,421,112"/>
+<area shape="rect" id="node5" href="$classScaleNoisePatterns.html#a69bf24a64f3fb9ef4fc80b7016218f28" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="227,136,421,177"/>
+<area shape="rect" id="node6" href="$classScaleNoisePatterns.html#ad290cc576f9ffa6149d549751fa1c8f2" title="When invoke the scripts performas all the initializations including, Lists, scripts,..." alt="" coords="239,202,409,229"/>
+<area shape="rect" id="node7" href="$classScaleNoisePatterns.html#acdf863b8fb5ef1f7446f431562759348" title="For the ISO noise the time to complete the gait cycle should be a constant value and set to preferred..." alt="" coords="239,253,409,295"/>
+<area shape="rect" id="node4" href="$classScaleNoisePatterns.html#ab44aa5b106142615d11486fd96782bb6" title="Calculate the selected patterns. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="5,163,179,204"/>
+</map>

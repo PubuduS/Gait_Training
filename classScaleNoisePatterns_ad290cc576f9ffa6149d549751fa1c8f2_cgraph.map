@@ -1,0 +1,5 @@
+<map id="ScaleNoisePatterns.Start" name="ScaleNoisePatterns.Start">
+<area shape="rect" id="node1" title="When invoke the scripts performas all the initializations including, Lists, scripts,..." alt="" coords="5,13,175,39"/>
+<area shape="rect" id="node2" href="$classScaleNoisePatterns.html#a5f44d389c082a67125fd106acfe58309" title="Populate data variables used to alter noise. The data are gained through UI lables which are set by t..." alt="" coords="223,5,415,47"/>
+<area shape="rect" id="node3" href="$classScaleNoisePatterns.html#a58d771c66d93c67d3a86fdfbbc1dfe1d" title="Get the number part from the UI textfields." alt="" coords="463,5,644,47"/>
+</map>

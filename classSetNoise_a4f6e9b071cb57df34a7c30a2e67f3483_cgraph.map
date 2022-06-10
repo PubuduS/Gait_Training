@@ -1,0 +1,4 @@
+<map id="SetNoise.SetNoisePattern" name="SetNoise.SetNoisePattern">
+<area shape="rect" id="node1" title="Gets called from the button&#39;s OnClick event. 0 is for deafult pattern 1 is for Pink noise pattern...." alt="" coords="5,5,180,32"/>
+<area shape="rect" id="node2" href="$classSetNoise.html#af0d927214e0a60694e3d0c15499885fc" title="Sets the label according to the user selection. User can see what they selected in Avatar panel under..." alt="" coords="228,5,401,32"/>
+</map>
