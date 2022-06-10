@@ -34,12 +34,18 @@ public class HandleKeyboard : MonoBehaviour
     /// Reference to the inputstring label in the data panel.
     [SerializeField] private TextMeshPro m_InputString;
 
+    /// Reference to the noise label in the data panel.
+    [SerializeField] private TextMeshPro m_NoiseLbl;
+
+    /// Reference to the user's preferred walking speed.
+    [SerializeField]  private TextMeshPro m_PreferredWalkingSpeed;
+
     /// <summary>
     /// We instantiate keyboard instance. 
     /// </summary>
     void Start()
     {
-        m_Keyboard = TouchScreenKeyboard.Open(m_Text, TouchScreenKeyboardType.NumberPad, false, true, false, false);
+        m_Keyboard = TouchScreenKeyboard.Open( m_Text, TouchScreenKeyboardType.NumberPad, false, true, false, false );
     }
 
     /// <summary>
@@ -47,17 +53,32 @@ public class HandleKeyboard : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if(m_KeyboardToggle == false)
+        if( m_KeyboardToggle == false )
         {
             m_Keyboard.active = false;
+            return;
         }
 
         if( ( m_Keyboard != null ) && ( m_Keyboard.status == TouchScreenKeyboard.Status.Visible ) && ( m_KeyboardToggle == true ) )
         {
             m_Text = m_Keyboard.text;
-            m_InputString.text = "Input = "+m_Text;
+            m_InputString.text = "Input = " + m_Text;
 
-            if ( m_Text != "" )
+            if( m_Text != "" && m_NoiseLbl.text.Equals("Noise: Pink") )
+            {
+                string[] line = m_Text.Split( char.Parse(" ") );
+                m_MeanPeriod.text = "Mean Period = " + line[0];
+                m_SDPeriod.text = "SD Period = " + line[1];
+                m_SD.text = "SD = " + line[2];
+                m_SampleSize.text = "Sample Size = " + line[3];
+            }
+            else if( m_Text != "" && m_NoiseLbl.text.Equals("Noise: ISO") )
+            {
+                string[] line = m_Text.Split(char.Parse(" "));
+                m_PreferredWalkingSpeed.text = "Preferred Speed = " + line[0];
+                m_SampleSize.text = "Sample Size = " + line[1];
+            }
+            else if( m_Text != "" && m_NoiseLbl.text.Equals("Noise: Random") )
             {
                 string[] line = m_Text.Split(char.Parse(" "));
                 m_MeanPeriod.text = "Mean Period = " + line[0];
@@ -77,7 +98,7 @@ public class HandleKeyboard : MonoBehaviour
     {
         m_KeyboardToggle = !m_KeyboardToggle;
 
-        if (m_KeyboardToggle)
+        if ( m_KeyboardToggle )
         {            
             m_Keyboard.active = true;
         }

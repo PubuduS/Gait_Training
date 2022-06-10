@@ -1,10 +1,10 @@
+using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 
@@ -41,6 +41,9 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// Hold the previous sum od the brown noise.
     private float m_BrownPreviousSum = 0.0f;
 
+    /// Hold the user's preferred walking speed.
+    private float m_PreferredWalkingSpeed = 1.0f;
+
     /// Defines the minimum value.
     private int m_MinValue = -2;
 
@@ -48,7 +51,7 @@ public class ScaleNoisePatterns : MonoBehaviour
     private int m_MaxValue = 2;
 
     /// Defines how many samples we want.
-    private int m_SampleSize = 1000;
+    private int m_SampleSize = 2000;
 
     /// Reference to GaussianDistribution script.
     private GaussianDistribution m_GaussianDistribution;
@@ -61,8 +64,12 @@ public class ScaleNoisePatterns : MonoBehaviour
     [SerializeField] private TextMeshPro m_SDPeriodLabel;
     [SerializeField] private TextMeshPro m_SDLabel;
     [SerializeField] private TextMeshPro m_SampleSizeLabel;
+    [SerializeField] private TextMeshPro m_PreferredSpeedLabel;
     [SerializeField] private TextMeshPro m_CurrentPattern;
     [SerializeField] private TextMeshPro m_Title;
+
+    [SerializeField] private GameObject m_ApplyButton;
+    [SerializeField] private GameObject m_DistributionButton;
 
     #endregion
 
@@ -79,16 +86,12 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// Property to get white noise distribution (Read-Only)
     public List<float> WhiteNoise { get => m_WhiteNoise; }
 
+    /// Property to get user's preferred walking speed (Read-Only)
+    public float PreferredWalkingSpeed { get => m_PreferredWalkingSpeed; }
+
     /// Property to get noise applied flag (Read-Only)
     public bool NoiseAppliedFlag { get => m_NoiseAppliedFlag; }
-
-
-    /// These fields are to get and set noise related values.    
-    public float NoiseMean { get => m_MeanPeriod; set => m_MeanPeriod = value; }
-    public float NoiseSTD { get => m_NoiseSTD; set => m_NoiseSTD = value; }
-    public float SDPeriod { get => m_SDPeriod; set => m_SDPeriod = value; }
-    public int MinValue { get => m_MinValue; set => m_MinValue = value; }
-    public int MaxValue { get => m_MaxValue; set => m_MaxValue = value; }
+    
 
     #endregion
 
@@ -100,15 +103,17 @@ public class ScaleNoisePatterns : MonoBehaviour
     {
         m_StandardNoiseDistribution = new List<float>();
         m_ScaledPinkNoise = new List<float>();
-        m_BrownNoise = new List<float>();
+        m_BrownNoise = new List<float>();       
         m_WhiteNoise = new List<float>();
 
         m_GaussianDistribution = new GaussianDistribution();
 
-        m_MeanPeriod = (float)ExtractDecimalFromUI( m_MeanPeriodLabel.text );       
-        m_SDPeriod = (float)ExtractDecimalFromUI( m_SDPeriodLabel.text );
-        m_NoiseSTD = (float)ExtractDecimalFromUI(m_SDLabel.text);
-        m_SampleSize = (int)ExtractDecimalFromUI( m_SampleSizeLabel.text );       
+        PopulateVariablesWithDataFromUI();       
+    }
+
+    private void Update()
+    { 
+        SetUITextVisibility( m_CurrentPattern.text );
     }
 
     /// <summary>
@@ -117,10 +122,7 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// </summary>
     public void GenerateNewDistribution()
     {
-        m_MeanPeriod = (float)ExtractDecimalFromUI( m_MeanPeriodLabel.text );
-        m_SDPeriod = (float)ExtractDecimalFromUI( m_SDPeriodLabel.text );
-        m_NoiseSTD = (float)ExtractDecimalFromUI( m_SDLabel.text );
-        m_SampleSize = (int)ExtractDecimalFromUI( m_SampleSizeLabel.text );
+        PopulateVariablesWithDataFromUI();
 
         float number = 0.0f;
         for( int i = 0; i < m_SampleSize; i++ )
@@ -146,10 +148,10 @@ public class ScaleNoisePatterns : MonoBehaviour
             m_Title.text = "Pink Noise Ready";
             m_NoiseAppliedFlag = true;
         }
-        else if( currentPattern.Equals("IST") )
+        else if( currentPattern.Equals("ISO") )
         {
-            CalculateBrownNoise();
-            m_Title.text = "Brown Noise Ready";
+            StartISOCalculations();
+            m_Title.text = "ISO Noise Ready";
             m_NoiseAppliedFlag = true;
         }
         else if( currentPattern.Equals("Random") )
@@ -174,6 +176,8 @@ public class ScaleNoisePatterns : MonoBehaviour
     {
         m_NoiseAppliedFlag = false;
         m_Title.text = "Pattern reset to default speed ";
+        m_ApplyButton.GetComponent<Interactable>().IsToggled = false;
+        m_DistributionButton.GetComponent<Interactable>().IsToggled = false;
     }
 
     /// <summary>
@@ -193,9 +197,11 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// <summary>
     /// We calculate the Brown noise based on random values and previous sum.
     /// Any outliers are assigned to upper or lower bound to prevent large numbers that can mess up the animations.
+    /// We may or may not want this. Just keep it for now for the sake of future.
     /// </summary>
     public void CalculateBrownNoise()
     {
+        PopulateVariablesWithDataFromUI();
         float value = 0.0f;
         
         for ( int i = 0; i < m_SampleSize; i++ )
@@ -216,8 +222,17 @@ public class ScaleNoisePatterns : MonoBehaviour
                 m_BrownNoise.Add(value);
                 m_BrownPreviousSum = value;
             }
-
         }
+    }
+
+    /// <summary>
+    /// For the ISO noise the time to complete the gait cycle should be a 
+    /// constant value and set to preferred speed of the user.
+    /// </summary>
+    public void StartISOCalculations()
+    {
+        PopulateVariablesWithDataFromUI( true );
+        m_PreferredWalkingSpeed = (float)ExtractDecimalFromUI( m_PreferredSpeedLabel.text );
     }
 
     /// <summary>
@@ -226,6 +241,7 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// </summary>
     public void CalculateWhiteNoise()
     {
+        PopulateVariablesWithDataFromUI();
         float value = 0.0f;
        
         for (int i = 0; i < m_SampleSize; i++)
@@ -275,5 +291,47 @@ public class ScaleNoisePatterns : MonoBehaviour
 
         return 0.0;
     }
- 
+
+    /// <summary>
+    /// Change the visibility of the text fields according to the noise patterns.
+    /// </summary>
+    /// <param name="currentPattern"></param>
+    private void SetUITextVisibility( string currentPattern )
+    {
+
+        if( currentPattern.Equals("Noise: ISO") )
+        {
+            m_MeanPeriodLabel.gameObject.SetActive( false );
+            m_SDPeriodLabel.gameObject.SetActive( false );
+            m_SDLabel.gameObject.SetActive( false );
+            m_SampleSizeLabel.gameObject.SetActive( false );
+            m_PreferredSpeedLabel.gameObject.SetActive( true );
+        }
+        else
+        { 
+            m_MeanPeriodLabel.gameObject.SetActive( true );
+            m_SDPeriodLabel.gameObject.SetActive( true );
+            m_SDLabel.gameObject.SetActive( true );
+            m_PreferredSpeedLabel.gameObject.SetActive( false );
+        }
+    }
+
+    /// <summary>
+    /// Populate data variables used to alter noise.
+    /// The data are gained through UI lables which are set by the keyboard input.
+    /// </summary>
+    private void PopulateVariablesWithDataFromUI( bool isISO = false )
+    {
+        if( isISO )
+        {
+            m_SampleSize = (int)ExtractDecimalFromUI(m_SampleSizeLabel.text);
+            return;
+        }
+
+        m_MeanPeriod = (float)ExtractDecimalFromUI(m_MeanPeriodLabel.text);
+        m_SDPeriod = (float)ExtractDecimalFromUI(m_SDPeriodLabel.text);
+        m_NoiseSTD = (float)ExtractDecimalFromUI(m_SDLabel.text);
+        m_SampleSize = (int)ExtractDecimalFromUI(m_SampleSizeLabel.text);
+    }
+
 }

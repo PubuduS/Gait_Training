@@ -10,7 +10,7 @@ using UnityEngine;
 public class SetNoise : MonoBehaviour
 {
     /// Enum for noise levels 
-    public enum NoiseTypes { PinkNoise = 0, IstNoise = 1, WhiteNoise = 2 };
+    public enum NoiseTypes { PinkNoise = 0, IsoNoise = 1, WhiteNoise = 2 };
 
     /// This will hold the user's selected pattern.
     private NoiseTypes m_PatternType = NoiseTypes.PinkNoise;
@@ -79,8 +79,8 @@ public class SetNoise : MonoBehaviour
                 m_NoiseLableInNoiseDataPanel.text = m_NoiseLable.text;
                 break;
 
-            case NoiseTypes.IstNoise:
-                m_NoiseLable.text = "Noise: IST";
+            case NoiseTypes.IsoNoise:
+                m_NoiseLable.text = "Noise: ISO";
                 m_NoiseLableInNoiseDataPanel.text = m_NoiseLable.text;
                 break;
 
