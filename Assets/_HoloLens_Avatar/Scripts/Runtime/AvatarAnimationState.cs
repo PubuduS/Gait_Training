@@ -98,7 +98,22 @@ public class AvatarAnimationState : MonoBehaviour
     {
         if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Joel_PGN") )
         {
-            HandleNoise( "Pink", m_ScaledNoisePatterns.ScaledPinkNoise.Count, m_ScaledNoisePatterns.ScaledPinkNoise[m_NoiseIndex] );
+            if( m_NoiseIndex < m_ScaledNoisePatterns.ScaledPinkNoise.Count )
+            {
+                m_NoisePatternLbl = "Pink";
+                float number = Mathf.Abs( m_ScaledNoisePatterns.ScaledPinkNoise[m_NoiseIndex] );
+                ApplyNoiseToAnimator( number );
+                // Debug.Log("Noise" + number);                
+
+                if( m_IsAnimationLocked == false )
+                {
+                    m_NoiseIndex++;
+                }
+            }
+            else
+            {
+                m_NoiseIndex = 0;
+            }
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Joel_Iso") )
         {
@@ -111,7 +126,21 @@ public class AvatarAnimationState : MonoBehaviour
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Joel_WGN") )
         {
-            HandleNoise( "White", m_ScaledNoisePatterns.WhiteNoise.Count, m_ScaledNoisePatterns.WhiteNoise[m_NoiseIndex] );
+            if( m_NoiseIndex < m_ScaledNoisePatterns.WhiteNoise.Count )
+            {
+                m_NoisePatternLbl = "White";
+                float number = Mathf.Abs( m_ScaledNoisePatterns.WhiteNoise[m_NoiseIndex] );
+                ApplyNoiseToAnimator( number );                        
+
+                if(m_IsAnimationLocked == false)
+                {
+                    m_NoiseIndex++;
+                }
+            }
+            else
+            {
+                m_NoiseIndex = 0;
+            }
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") )
         {
@@ -151,32 +180,6 @@ public class AvatarAnimationState : MonoBehaviour
     private void UnlockAnimation()
     {        
         m_IsAnimationLocked = false;
-    }
-
-    /// <summary>
-    /// Apply the White and Pink noise to expand and shrink the gait cycle.
-    /// </summary>
-    /// <param name="noiseName"></param>
-    /// <param name="count"></param>
-    /// <param name="number"></param>
-    private void HandleNoise( string noiseName, int count, float number )
-    {
-        if( m_NoiseIndex < count )
-        {
-            m_NoisePatternLbl = noiseName;            
-            ApplyNoiseToAnimator( Mathf.Abs(number) );
-            // Debug.Log("Noise" + number);                
-
-            if ( m_IsAnimationLocked == false )
-            {
-                m_NoiseIndex++;
-            }
-
-        }
-        else
-        {
-            m_NoiseIndex = 0;
-        }
     }
 
 }
