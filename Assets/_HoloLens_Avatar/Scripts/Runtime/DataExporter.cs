@@ -136,18 +136,19 @@ public class DataExporter : MonoBehaviour
     /// So, no need to close it.
     /// </summary>
     /// <returns></returns>
-    private async Task WriteToFile( string path, float line )
+    private async Task WriteToFile(string path, float line)
     {
-        using StreamWriter myStreamWriter = new StreamWriter( path, append: true );
-
-        if( line != -9999 )
+        using( StreamWriter myStreamWriter = new StreamWriter( path, append: true ) )
         {
-            await myStreamWriter.WriteLineAsync( "" + Mathf.Abs(line) );            
-        }
-        else
-        {
-            await myStreamWriter.WriteLineAsync( "Error Code: " + line );
-        }        
+            if( line != -9999 )
+            {
+                await myStreamWriter.WriteLineAsync( "" + Mathf.Abs(line) );
+            }
+            else
+            {
+                await myStreamWriter.WriteLineAsync( "Error Code: " + line );
+            }
+        } 
     }    
 
     /// <summary>
