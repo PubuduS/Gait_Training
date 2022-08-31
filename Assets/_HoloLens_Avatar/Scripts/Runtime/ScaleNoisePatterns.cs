@@ -1,9 +1,7 @@
 using Microsoft.MixedReality.Toolkit.UI;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -91,7 +89,10 @@ public class ScaleNoisePatterns : MonoBehaviour
 
     /// Property to get noise applied flag (Read-Only)
     public bool NoiseAppliedFlag { get => m_NoiseAppliedFlag; }
-    
+
+    /// Property to get the current noise in use (Read-Only)
+    public TextMeshPro CurrentPattern { get => m_CurrentPattern; }
+
 
     #endregion
 
@@ -108,12 +109,12 @@ public class ScaleNoisePatterns : MonoBehaviour
 
         m_GaussianDistribution = new GaussianDistribution();
 
-        PopulateVariablesWithDataFromUI();       
+        PopulateVariablesWithDataFromUI();
     }
 
     private void Update()
     { 
-        SetUITextVisibility( m_CurrentPattern.text );
+        SetUITextVisibility( CurrentPattern.text );
     }
 
     /// <summary>
@@ -140,7 +141,7 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// </summary>
     public void ApplyPattern()
     {
-        string currentPattern = m_CurrentPattern.text.Split().Last();        
+        string currentPattern = CurrentPattern.text.Split().Last();        
 
         if ( currentPattern.Equals("Pink") )
         {
@@ -333,5 +334,4 @@ public class ScaleNoisePatterns : MonoBehaviour
         m_NoiseSTD = (float)ExtractDecimalFromUI(m_SDLabel.text);
         m_SampleSize = (int)ExtractDecimalFromUI(m_SampleSizeLabel.text);
     }
-
 }

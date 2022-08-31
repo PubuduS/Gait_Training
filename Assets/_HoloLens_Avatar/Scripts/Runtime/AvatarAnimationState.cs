@@ -22,8 +22,7 @@ public class AvatarAnimationState : MonoBehaviour
 
     /// Noise index for traveling the noise list.
     /// At the end of the travel, it will be reset to 0.
-    private int m_NoiseIndex;
-        
+    private int m_NoiseIndex;        
 
     /// This is also use as an error message display 
     /// and current noise display.
@@ -35,6 +34,19 @@ public class AvatarAnimationState : MonoBehaviour
     /// This flag is used to lock down the animation till it played out.
     private bool m_IsAnimationLocked = false;
 
+    /// This list stores timestamps of the left heel strikes.
+    private List<float> m_LeftFootTimeStamps = null;
+
+    /// This list stores timestamps of the right heel strikes.
+    private List<float> m_RightFootTimeStamps = null;
+
+    /// Property to get the left foot time stamp (Read-Only)
+    public List<float> LeftFootTimeStamps { get => m_LeftFootTimeStamps; }
+
+    /// Property to get the right foot time stamp (Read-Only)
+    public List<float> RightFootTimeStamps { get => m_RightFootTimeStamps; }
+
+
     /// <summary>
     /// Gets called first when script is invoked
     /// Cached the references to Animator, SetNoise and NoiseDataPanelTitle
@@ -44,6 +56,8 @@ public class AvatarAnimationState : MonoBehaviour
         m_Animator = GetComponent<Animator>();       
         m_SetNoise = GameObject.Find("NoiseController").GetComponent<SetNoise>();
         m_NoiseDataPanelTitle = GameObject.FindGameObjectWithTag("NoiseDataPanelTitle").GetComponent<TextMeshPro>();
+        m_LeftFootTimeStamps = new List<float>();
+        m_RightFootTimeStamps = new List<float>();
     }
 
     /// <summary>
@@ -180,6 +194,27 @@ public class AvatarAnimationState : MonoBehaviour
     private void UnlockAnimation()
     {        
         m_IsAnimationLocked = false;
+    }
+
+    /// <summary>
+    /// Record the time from the right heel strikes.
+    /// This is the time in seconds since the start of the application.
+    /// Mapped to animation event.
+    /// If you spawn the new avatar, this values will be destroyed.
+    /// </summary>
+    private void RightFootTimeStamp()
+    {
+        m_RightFootTimeStamps.Add( Time.time );
+    }
+
+    /// <summary>
+    /// Record the time from the left heel strikes.
+    /// This is the time in seconds since the start of the application.
+    /// Mapped to animation event.
+    /// If you spawn the new avatar, this values will be destroyed.
+    private void LeftFootTimeStamp()
+    {
+        m_LeftFootTimeStamps.Add( Time.time );
     }
 
 }
