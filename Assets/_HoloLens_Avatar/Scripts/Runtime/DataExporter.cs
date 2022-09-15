@@ -24,29 +24,52 @@ public class DataExporter : MonoBehaviour
     /// Need this to access heel strike time stamps
     private AvatarAnimationState m_AvatarAnimationState = null;
 
+    /// Check Coroutine is running or not.
+    /// This is to prevent calling for multiple coroutines.
+    private bool m_CoroutineIsRunning = false;
+
     /// <summary>
-    /// This function exports signal data and left/right heel strike time stamps.
+    /// This function start a Coroutine to export data
     /// Mapped to export data button.
     /// </summary>
     public void ExportDataFiles()
     {
-        m_AvatarAnimationState = GameObject.FindGameObjectWithTag("Avatar").GetComponent<AvatarAnimationState>();
+        if( m_CoroutineIsRunning == false )
+        {
+            StartCoroutine( ExportFiles() );
+        }
+        else
+        {
+            StopCoroutine( ExportFiles() );
+        }        
+    }
 
-        if( m_AvatarAnimationState == null )
+    /// <summary>
+    /// This function exports signal data and left/right heel strike time stamps.
+    /// </summary>
+    IEnumerator ExportFiles()
+    {
+        m_AvatarAnimationState = GameObject.FindGameObjectWithTag("Avatar").GetComponent<AvatarAnimationState>();
+        m_CoroutineIsRunning = true;
+
+        if (m_AvatarAnimationState == null)
         {
             m_LastFileLabel.text = "ERROR: Avatar needs to walk to get timestamps";
-            return;
+            m_CoroutineIsRunning = false;
+            yield return null;
         }
 
         DateTime dob = DateTime.Now;
         string timeStamp = dob.ToString("MM_dd_yyyyTHH_mm_ss");
         string directoryLocation = Application.persistentDataPath + "/";
-     
+
         ExportNoiseFiles(directoryLocation, timeStamp);
 
-        ExportRightFootTimeStamps( directoryLocation, timeStamp );
-        ExportLeftFootTimeStamps( directoryLocation, timeStamp );
+        ExportRightFootTimeStamps(directoryLocation, timeStamp);
+        ExportLeftFootTimeStamps(directoryLocation, timeStamp);
 
+        m_CoroutineIsRunning = false;
+        yield return null;
     }
 
     /// <summary>

@@ -1,7 +1,8 @@
 using Microsoft.MixedReality.Toolkit.UI;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -69,6 +70,8 @@ public class ScaleNoisePatterns : MonoBehaviour
     [SerializeField] private GameObject m_ApplyButton;
     [SerializeField] private GameObject m_DistributionButton;
 
+    private List<string> Lis;
+
     #endregion
 
     #region Public Varibles 
@@ -105,7 +108,7 @@ public class ScaleNoisePatterns : MonoBehaviour
         m_StandardNoiseDistribution = new List<float>();
         m_ScaledPinkNoise = new List<float>();
         m_BrownNoise = new List<float>();       
-        m_WhiteNoise = new List<float>();
+        m_WhiteNoise = new List<float>();        
 
         m_GaussianDistribution = new GaussianDistribution();
 
@@ -125,12 +128,7 @@ public class ScaleNoisePatterns : MonoBehaviour
     {
         PopulateVariablesWithDataFromUI();
 
-        float number = 0.0f;
-        for( int i = 0; i < m_SampleSize; i++ )
-        {
-            number = (float)m_GaussianDistribution.RandomGauss( (double)m_MeanPeriod, (double)m_NoiseSTD );
-            m_StandardNoiseDistribution.Add( number );            
-        }
+        ReadPinkNoiseFromFile();
 
         m_Title.text = "Distribution is Ready";
     }
@@ -157,7 +155,7 @@ public class ScaleNoisePatterns : MonoBehaviour
         }
         else if( currentPattern.Equals("Random") )
         {
-            CalculateWhiteNoise();
+            ReadWhiteNoiseFromFile();
             m_Title.text = "Random Noise Ready";
             m_NoiseAppliedFlag = true;
         }
@@ -179,6 +177,16 @@ public class ScaleNoisePatterns : MonoBehaviour
         m_Title.text = "Pattern reset to default speed ";
         m_ApplyButton.GetComponent<Interactable>().IsToggled = false;
         m_DistributionButton.GetComponent<Interactable>().IsToggled = false;
+
+        if( m_ScaledPinkNoise.Count > 0 )
+        {
+            m_ScaledPinkNoise.Clear();
+        }
+
+        if( m_WhiteNoise.Count > 0 )
+        {
+            m_WhiteNoise.Clear();
+        }
     }
 
     /// <summary>
@@ -192,7 +200,7 @@ public class ScaleNoisePatterns : MonoBehaviour
         {
             value = m_MeanPeriod + (m_SDPeriod / m_NoiseSTD) * SDValue;            
             m_ScaledPinkNoise.Add( value );
-        }
+        }        
     }
 
     /// <summary>
@@ -333,5 +341,71 @@ public class ScaleNoisePatterns : MonoBehaviour
         m_SDPeriod = (float)ExtractDecimalFromUI(m_SDPeriodLabel.text);
         m_NoiseSTD = (float)ExtractDecimalFromUI(m_SDLabel.text);
         m_SampleSize = (int)ExtractDecimalFromUI(m_SampleSizeLabel.text);
+    }
+
+    /// <summary>
+    /// Read Pink Noise from a file.
+    /// </summary>
+    private void ReadPinkNoiseFromFile()
+    {
+        string path = Path.Combine( Application.streamingAssetsPath, "PinkNoiseBase.txt" );
+        string line = "";        
+        
+        try
+        {
+            using( StreamReader reader = new StreamReader( path ) )
+            {
+                while( ( line = reader.ReadLine() ) != null )
+                {
+                    if( m_StandardNoiseDistribution.Count < m_SampleSize )
+                    {
+                        m_StandardNoiseDistribution.Add( float.Parse( line ) );                        
+                    }
+                    else
+                    {
+                        m_StandardNoiseDistribution.Clear();
+                        m_StandardNoiseDistribution.Add( float.Parse( line ) );
+                    }
+                }                
+            }            
+        }
+        catch( Exception ex )
+        {
+            Debug.Log("The file could not read");
+            Debug.Log(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Read White Noise from a file.
+    /// </summary>
+    private void ReadWhiteNoiseFromFile()
+    {
+        string path = Path.Combine(Application.streamingAssetsPath, "WhiteNoise.txt");
+        string line = "";
+
+        try
+        {
+            using( StreamReader reader = new StreamReader( path ) )
+            {
+                while( ( line = reader.ReadLine() ) != null )
+                {
+                    if( m_WhiteNoise.Count < m_SampleSize )
+                    {
+                        m_WhiteNoise.Add( float.Parse( line ) );
+                    }
+                    else
+                    {
+                        m_WhiteNoise.Clear();
+                        m_WhiteNoise.Add( float.Parse( line ) );
+                    }                    
+                }
+            }
+        }
+        catch( Exception ex )
+        {
+            Debug.Log("The file could not read");
+            Debug.Log(ex.Message);
+        }
     }
 }

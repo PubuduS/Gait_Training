@@ -117,7 +117,7 @@ public class AvatarAnimationState : MonoBehaviour
                 m_NoisePatternLbl = "Pink";
                 float number = Mathf.Abs( m_ScaledNoisePatterns.ScaledPinkNoise[m_NoiseIndex] );
                 ApplyNoiseToAnimator( number );
-                // Debug.Log("Noise" + number);                
+                //Debug.Log("Noise" + number);                
 
                 if( m_IsAnimationLocked == false )
                 {
