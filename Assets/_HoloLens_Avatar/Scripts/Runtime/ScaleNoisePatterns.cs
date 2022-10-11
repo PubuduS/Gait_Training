@@ -1,9 +1,11 @@
 using Microsoft.MixedReality.Toolkit.UI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using TMPro;
 using UnityEngine;
 
@@ -28,6 +30,10 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// A list to hold white noise.
     private List<float> m_WhiteNoise;
 
+    /// A list to hold GKSqrt values.
+    /// This is just an intermidiate value use to calculate base Pink noise.
+    private List<double> m_GKSqrt;
+
     /// Hold the mean persiod.
     private float m_MeanPeriod = 0.0f;
 
@@ -42,6 +48,21 @@ public class ScaleNoisePatterns : MonoBehaviour
 
     /// Hold the user's preferred walking speed.
     private float m_PreferredWalkingSpeed = 1.0f;
+       
+    /// For pink noise 0.99 
+    /// For white noise 0.5
+    /// In future, we might need to add different values.
+    private float m_AlphaValue = 0.99f;
+
+    /// 2 * sample size. 
+    /// We calculate 2X with X sample size.
+    private int m_SampleSize2X = 5000;
+
+    /// Used this to calculate pink noise
+    private float m_SqrtOfTwo = 0.0f;
+
+    /// Used this as a multiplier to calculate pink noise
+    private float m_Multiplier = 0.0f;
 
     /// Defines the minimum value.
     private int m_MinValue = -2;
@@ -50,13 +71,42 @@ public class ScaleNoisePatterns : MonoBehaviour
     private int m_MaxValue = 2;
 
     /// Defines how many samples we want.
-    private int m_SampleSize = 2000;
+    private int m_SampleSize = 5000;
+
+    /// Use this to compare changes.
+    private int m_PreviousSampleSize = 0;
 
     /// Reference to GaussianDistribution script.
     private GaussianDistribution m_GaussianDistribution;
 
     /// This flag will indicate we applied or cancel the noise to animations.
     private bool m_NoiseAppliedFlag = false;
+
+    /// We need GKSqrt value to calculate pink noise
+    /// This flag is used to wait until GKSqrt values are calculated.
+    private bool m_IsGKSqrtCalculationFinished = false;
+
+    /// <summary>
+    /// This is used to ditect sample size changes
+    /// whenever it changed, we need to calculate GKSquart value
+    /// If not change, then we can use the previous GKSquart values
+    /// This saves some calculations.
+    /// </summary>
+    private int SampleSize
+    {
+        get => m_SampleSize;
+        set
+        {
+            m_PreviousSampleSize = m_SampleSize;
+            m_SampleSize = value;
+
+            if( m_PreviousSampleSize != m_SampleSize )
+            {
+                OnChangeSampleSize();
+            }
+        }
+    }
+
 
     /// We get the value from these text labels.
     [SerializeField] private TextMeshPro m_MeanPeriodLabel;
@@ -69,8 +119,6 @@ public class ScaleNoisePatterns : MonoBehaviour
 
     [SerializeField] private GameObject m_ApplyButton;
     [SerializeField] private GameObject m_DistributionButton;
-
-    private List<string> Lis;
 
     #endregion
 
@@ -103,16 +151,19 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// When invoke the scripts performas all the initializations including,
     /// Lists, scripts, and noise scaling values such as standard distribution and mean.
     /// </summary>
-    void Start()
+    private void Awake()
     {
+        m_GaussianDistribution = new GaussianDistribution();
+
         m_StandardNoiseDistribution = new List<float>();
         m_ScaledPinkNoise = new List<float>();
         m_BrownNoise = new List<float>();       
-        m_WhiteNoise = new List<float>();        
+        m_WhiteNoise = new List<float>();
+        m_GKSqrt = new List<double>();
 
-        m_GaussianDistribution = new GaussianDistribution();
+        m_SqrtOfTwo = Mathf.Sqrt(2.0f);
 
-        PopulateVariablesWithDataFromUI();
+        // PopulateVariablesWithDataFromUI();
     }
 
     private void Update()
@@ -127,10 +178,7 @@ public class ScaleNoisePatterns : MonoBehaviour
     public void GenerateNewDistribution()
     {
         PopulateVariablesWithDataFromUI();
-
-        ReadPinkNoiseFromFile();
-
-        m_Title.text = "Distribution is Ready";
+        StartCoroutine( CalculateBasePinkNoise() );        
     }
 
     /// <summary>
@@ -144,8 +192,9 @@ public class ScaleNoisePatterns : MonoBehaviour
         if ( currentPattern.Equals("Pink") )
         {
             ScalePinkNoise();
-            m_Title.text = "Pink Noise Ready";
-            m_NoiseAppliedFlag = true;
+
+            bool noiseAppliedState = ( m_ScaledPinkNoise.Count >= ( m_SampleSize2X - 2 ) ) ? true : false;
+            SetReadyMessage( noiseAppliedState, "Pink" );
         }
         else if( currentPattern.Equals("ISO") )
         {
@@ -156,8 +205,8 @@ public class ScaleNoisePatterns : MonoBehaviour
         else if( currentPattern.Equals("Random") )
         {
             ReadWhiteNoiseFromFile();
-            m_Title.text = "Random Noise Ready";
-            m_NoiseAppliedFlag = true;
+            bool noiseAppliedState = ( m_WhiteNoise.Count >= m_SampleSize2X ) ? true : false;
+            SetReadyMessage( noiseAppliedState, "Random" );
         }
         else 
         {
@@ -165,6 +214,25 @@ public class ScaleNoisePatterns : MonoBehaviour
             m_Title.text = " Error Unknown Noise Pattern ";
         }
         
+    }
+
+    /// <summary>
+    /// Indicate noise is successgully applied or not.
+    /// </summary>
+    /// <param name="flag"> Indicate noise applied or not. </param>
+    /// <param name="lbl"> Indicate the type of noise. </param>
+    private void SetReadyMessage( bool flag, string lbl )
+    {
+        if( flag == true )
+        {
+            m_Title.text = lbl + " Noise Ready";
+            m_NoiseAppliedFlag = true;
+        }
+        else
+        {
+            m_Title.text = lbl + " Noise is NOT Ready";
+            m_NoiseAppliedFlag = false;
+        }
     }
 
     /// <summary>
@@ -198,8 +266,8 @@ public class ScaleNoisePatterns : MonoBehaviour
 
         foreach( float SDValue in m_StandardNoiseDistribution )
         {
-            value = m_MeanPeriod + (m_SDPeriod / m_NoiseSTD) * SDValue;            
-            m_ScaledPinkNoise.Add( value );
+            value = m_MeanPeriod + ( m_SDPeriod / m_NoiseSTD ) * SDValue;            
+            m_ScaledPinkNoise.Add( value );            
         }        
     }
 
@@ -321,6 +389,7 @@ public class ScaleNoisePatterns : MonoBehaviour
             m_MeanPeriodLabel.gameObject.SetActive( true );
             m_SDPeriodLabel.gameObject.SetActive( true );
             m_SDLabel.gameObject.SetActive( true );
+            m_SampleSizeLabel.gameObject.SetActive( true );
             m_PreferredSpeedLabel.gameObject.SetActive( false );
         }
     }
@@ -340,40 +409,9 @@ public class ScaleNoisePatterns : MonoBehaviour
         m_MeanPeriod = (float)ExtractDecimalFromUI(m_MeanPeriodLabel.text);
         m_SDPeriod = (float)ExtractDecimalFromUI(m_SDPeriodLabel.text);
         m_NoiseSTD = (float)ExtractDecimalFromUI(m_SDLabel.text);
-        m_SampleSize = (int)ExtractDecimalFromUI(m_SampleSizeLabel.text);
-    }
-
-    /// <summary>
-    /// Read Pink Noise from a file.
-    /// </summary>
-    private void ReadPinkNoiseFromFile()
-    {
-        string path = Path.Combine( Application.streamingAssetsPath, "PinkNoiseBase.txt" );
-        string line = "";        
-        
-        try
-        {
-            using( StreamReader reader = new StreamReader( path ) )
-            {
-                while( ( line = reader.ReadLine() ) != null )
-                {
-                    if( m_StandardNoiseDistribution.Count < m_SampleSize )
-                    {
-                        m_StandardNoiseDistribution.Add( float.Parse( line ) );                        
-                    }
-                    else
-                    {
-                        m_StandardNoiseDistribution.Clear();
-                        m_StandardNoiseDistribution.Add( float.Parse( line ) );
-                    }
-                }                
-            }            
-        }
-        catch( Exception ex )
-        {
-            Debug.Log("The file could not read");
-            Debug.Log(ex.Message);
-        }
+        SampleSize = (int)ExtractDecimalFromUI(m_SampleSizeLabel.text);
+        m_SampleSize2X = SampleSize;
+        SampleSize /= 2;
     }
 
     /// <summary>
@@ -406,6 +444,231 @@ public class ScaleNoisePatterns : MonoBehaviour
         {
             Debug.Log("The file could not read");
             Debug.Log(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// This value is used to calculate base pink noise
+    /// </summary>
+    private IEnumerator CalculateGKSQRT()
+    {
+        m_IsGKSqrtCalculationFinished = false;
+
+        int basePinkNoiseArrLen = ( m_SampleSize2X - 2 );
+        List<double> gammak = new List<double>();
+
+        if( m_GKSqrt.Any() == true )
+        {
+            m_GKSqrt.Clear();
+        }
+
+        for(int i = 0; i < m_SampleSize; i++)
+        {
+            double first = Math.Pow( ( Mathf.Abs(i - 1) ), ( 2 * m_AlphaValue ) );
+
+            double second = 2 * ( Math.Pow( i, ( 2 * m_AlphaValue ) ) );
+
+            double third = Math.Pow( ( i + 1 ), ( 2 * m_AlphaValue ) );
+
+            double result = ( first - second + third ) / 2.0;
+            gammak.Add( result * basePinkNoiseArrLen );
+        }
+
+        for( int i = (m_SampleSize - 2); i > 0; i-- )
+        {
+            gammak.Add( gammak[i] );
+        }
+
+        Complex[] GammakComplex = new Complex[gammak.Count];
+
+        for( int i = 0; i < gammak.Count; i++ )
+        {
+            Complex gamComp = new Complex( ( gammak[i] / gammak.Count ), 0.0 );
+            GammakComplex[i] = gamComp;
+        }
+
+        gammak.Clear();
+
+        IDFTReal( ref GammakComplex );
+
+        m_IsGKSqrtCalculationFinished = true;
+
+        yield return null;
+    }
+
+    /// <summary>
+    /// Calculate the base pink noise value.
+    /// </summary>
+    private IEnumerator CalculateBasePinkNoise()
+    {
+
+        if( m_StandardNoiseDistribution.Count > 0 )
+        {
+            m_StandardNoiseDistribution.Clear();
+        }
+
+        List<float> basePinkNoise = new List<float>();
+        List<float> leftHalf = new List<float>();
+        List<float> rightHalf = new List<float>();
+
+        Complex[] basePinkNoiseComplexArr = new Complex[m_SampleSize2X - 2];
+
+        m_Multiplier = m_MeanPeriod + m_NoiseSTD;
+
+        // Generate GaussianDistribution Random values and multiple each value with the multiplier ( mean + SD )
+        for( int i = 0; i < m_SampleSize2X; i++ )
+        {
+            basePinkNoise.Add( m_Multiplier * (float)m_GaussianDistribution.RandomGauss( (double)m_MeanPeriod, (double)m_NoiseSTD ) );
+
+            if(i < m_SampleSize )
+            {
+                leftHalf.Add(basePinkNoise[i]);
+            }
+            else
+            {
+                rightHalf.Add(basePinkNoise[i]);
+            }
+        }
+
+        basePinkNoise.Clear();
+
+        rightHalf[0] = 0;
+        leftHalf[0] = leftHalf[0] * m_SqrtOfTwo;
+
+        rightHalf[m_SampleSize - 1] = 0;
+        leftHalf[m_SampleSize - 1] = leftHalf[m_SampleSize - 1] * m_SqrtOfTwo;
+
+        for( int i = (m_SampleSize - 2); i > 0; i-- )
+        {
+            leftHalf.Add(leftHalf[i]);
+            rightHalf.Add(-rightHalf[i]);
+        }
+
+        for( int i = 0; i < rightHalf.Count; i++ )
+        {
+            Complex myComplex = new Complex( leftHalf[i], rightHalf[i] );
+            basePinkNoiseComplexArr[i] = myComplex;
+        }
+
+        leftHalf.Clear();
+        rightHalf.Clear();
+
+        bool noZeroFlag = true;
+
+        yield return new WaitUntil( () => m_IsGKSqrtCalculationFinished == true );
+
+        for( int i = 0; i < m_GKSqrt.Count; i++ )
+        {
+            if( Mathf.Approximately( (float)m_GKSqrt[i], 0.0f ) )
+            {
+                noZeroFlag = false;
+                break;
+            }
+        }
+
+        if( noZeroFlag == true )
+        {
+            int basePinkNoiseComplexArrLen = basePinkNoiseComplexArr.Length;
+
+            for( int i = 0; i < basePinkNoiseComplexArrLen; i++ )
+            {
+                m_GKSqrt[i] = Math.Sqrt( m_GKSqrt[i] );
+                basePinkNoiseComplexArr[i] = Complex.Multiply( basePinkNoiseComplexArr[i], m_GKSqrt[i] );
+            }
+
+            IDFT( ref basePinkNoiseComplexArr );
+
+            for (int i = 0; i < basePinkNoiseComplexArrLen; i++)
+            {
+                double power = Math.Pow( ( m_SampleSize - 1 ), ( -0.5 ) );
+                Complex intermediateResult = Complex.Multiply( power, basePinkNoiseComplexArr[i] );
+                Complex result = Complex.Multiply( intermediateResult, 0.5 );
+                m_StandardNoiseDistribution.Add( (float)result.Real);
+                WriteToFile( "" + result.Real );
+            }
+
+            m_Title.text = "Distribution is Ready";
+        }        
+    }
+
+    /// <summary>
+    /// Calculates inverse Discrete Fourier Transform of given spectrum X
+    /// </summary>
+    /// <param name="X">Spectrum complex values</param>
+    /// <returns>Signal samples in time domain</returns>
+    public void IDFT( ref Complex[] X )
+    {
+        // Number of spectrum elements
+        int N = X.Length; 
+        Complex[] x = new Complex[N];
+
+        for( int n = 0; n < N; n++ )
+        {
+            Complex sum = 0;
+
+            for( int k = 0; k < N; k++ )
+            {
+                sum += X[k] * Complex.Exp(Complex.ImaginaryOne * 2 * Math.PI * (k * n) / Convert.ToDouble(N));
+            }
+
+            // As a result we expect only real values (if our calculations are correct imaginary values should be equal or close to zero)
+            x[n] = sum; 
+        }
+
+        Array.Clear(X, 0, N);
+
+        for (int i = 0; i < N; i++)
+        {
+            X[i] = x[i];
+        }
+    }
+
+    /// <summary>
+    /// Calculates inverse Discrete Fourier Transform of given spectrum X
+    /// </summary>
+    /// <param name="X">Spectrum complex values</param>
+    /// <returns>Return only the real part of the number /returns>
+    public void IDFTReal( ref Complex[] X )
+    {
+        int N = X.Length; // Number of spectrum elements        
+
+        for( int n = 0; n < N; n++ )
+        {
+            Complex sum = 0;
+
+            for( int k = 0; k < N; k++ )
+            {
+                sum += X[k] * Complex.Exp(Complex.ImaginaryOne * 2 * Math.PI * (k * n) / Convert.ToDouble(N));
+            }
+
+            // As a result we expect only real values (if our calculations are correct imaginary values should be equal or close to zero)
+            m_GKSqrt.Add( sum.Real );
+        }
+    }
+
+    /// <summary>
+    /// When sample size change, we need to adjust this.
+    /// In future, we might need to adjust this when alpha value change
+    /// </summary>
+    public void OnChangeSampleSize()
+    {
+        StartCoroutine( CalculateGKSQRT() );
+    }
+
+    private void WriteToFile(string line)
+    {
+        string path = "C:\\Users\\Pubudu\\Desktop\\UnityIFFT.txt";
+
+        using (StreamWriter myStreamWriter = new StreamWriter(path, append: true))
+        {
+            if (line != " ")
+            {
+                myStreamWriter.WriteLine("" + line);
+            }
+            else
+            {
+                myStreamWriter.WriteLine("Error Code: " + line);
+            }
         }
     }
 }
