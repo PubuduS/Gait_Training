@@ -73,40 +73,11 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// Defines how many samples we want.
     private int m_SampleSize = 5000;
 
-    /// Use this to compare changes.
-    private int m_PreviousSampleSize = 0;
-
     /// Reference to GaussianDistribution script.
     private GaussianDistribution m_GaussianDistribution;
 
     /// This flag will indicate we applied or cancel the noise to animations.
     private bool m_NoiseAppliedFlag = false;
-
-    /// We need GKSqrt value to calculate pink noise
-    /// This flag is used to wait until GKSqrt values are calculated.
-    private bool m_IsGKSqrtCalculationFinished = false;
-
-    /// <summary>
-    /// This is used to ditect sample size changes
-    /// whenever it changed, we need to calculate GKSquart value
-    /// If not change, then we can use the previous GKSquart values
-    /// This saves some calculations.
-    /// </summary>
-    private int SampleSize
-    {
-        get => m_SampleSize;
-        set
-        {
-            m_PreviousSampleSize = m_SampleSize;
-            m_SampleSize = value;
-
-            if( m_PreviousSampleSize != m_SampleSize )
-            {
-                OnChangeSampleSize();
-            }
-        }
-    }
-
 
     /// We get the value from these text labels.
     [SerializeField] private TextMeshPro m_MeanPeriodLabel;
@@ -162,8 +133,8 @@ public class ScaleNoisePatterns : MonoBehaviour
         m_GKSqrt = new List<double>();
 
         m_SqrtOfTwo = Mathf.Sqrt(2.0f);
-
-        // PopulateVariablesWithDataFromUI();
+        PopulateVariablesWithDataFromUI();
+        
     }
 
     private void Update()
@@ -178,7 +149,7 @@ public class ScaleNoisePatterns : MonoBehaviour
     public void GenerateNewDistribution()
     {
         PopulateVariablesWithDataFromUI();
-        StartCoroutine( CalculateBasePinkNoise() );        
+        CalculateBasePinkNoise();      
     }
 
     /// <summary>
@@ -192,8 +163,8 @@ public class ScaleNoisePatterns : MonoBehaviour
         if ( currentPattern.Equals("Pink") )
         {
             ScalePinkNoise();
-
-            bool noiseAppliedState = ( m_ScaledPinkNoise.Count >= ( m_SampleSize2X - 2 ) ) ? true : false;
+            m_SDPeriodLabel.text = "" + m_ScaledPinkNoise.Count;
+            bool noiseAppliedState = ( m_ScaledPinkNoise.Count >= ( m_SampleSize2X - 2 ) ) ? true : false;            
             SetReadyMessage( noiseAppliedState, "Pink" );
         }
         else if( currentPattern.Equals("ISO") )
@@ -409,9 +380,9 @@ public class ScaleNoisePatterns : MonoBehaviour
         m_MeanPeriod = (float)ExtractDecimalFromUI(m_MeanPeriodLabel.text);
         m_SDPeriod = (float)ExtractDecimalFromUI(m_SDPeriodLabel.text);
         m_NoiseSTD = (float)ExtractDecimalFromUI(m_SDLabel.text);
-        SampleSize = (int)ExtractDecimalFromUI(m_SampleSizeLabel.text);
-        m_SampleSize2X = SampleSize;
-        SampleSize /= 2;
+        m_SampleSize = (int)ExtractDecimalFromUI(m_SampleSizeLabel.text);
+        m_SampleSize2X = m_SampleSize;
+        m_SampleSize /= 2;
     }
 
     /// <summary>
@@ -450,9 +421,8 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// <summary>
     /// This value is used to calculate base pink noise
     /// </summary>
-    private IEnumerator CalculateGKSQRT()
+    private void CalculateGKSQRT()
     {
-        m_IsGKSqrtCalculationFinished = false;
 
         int basePinkNoiseArrLen = ( m_SampleSize2X - 2 );
         List<double> gammak = new List<double>();
@@ -490,16 +460,13 @@ public class ScaleNoisePatterns : MonoBehaviour
         gammak.Clear();
 
         IDFTReal( ref GammakComplex );
-
-        m_IsGKSqrtCalculationFinished = true;
-
-        yield return null;
+        
     }
 
     /// <summary>
     /// Calculate the base pink noise value.
     /// </summary>
-    private IEnumerator CalculateBasePinkNoise()
+    private void CalculateBasePinkNoise()
     {
 
         if( m_StandardNoiseDistribution.Count > 0 )
@@ -555,9 +522,9 @@ public class ScaleNoisePatterns : MonoBehaviour
 
         bool noZeroFlag = true;
 
-        yield return new WaitUntil( () => m_IsGKSqrtCalculationFinished == true );
+        CalculateGKSQRT();
 
-        for( int i = 0; i < m_GKSqrt.Count; i++ )
+        for ( int i = 0; i < m_GKSqrt.Count; i++ )
         {
             if( Mathf.Approximately( (float)m_GKSqrt[i], 0.0f ) )
             {
@@ -583,12 +550,15 @@ public class ScaleNoisePatterns : MonoBehaviour
                 double power = Math.Pow( ( m_SampleSize - 1 ), ( -0.5 ) );
                 Complex intermediateResult = Complex.Multiply( power, basePinkNoiseComplexArr[i] );
                 Complex result = Complex.Multiply( intermediateResult, 0.5 );
-                m_StandardNoiseDistribution.Add( (float)result.Real);
-                WriteToFile( "" + result.Real );
+                m_StandardNoiseDistribution.Add( (float)result.Real);                
             }
 
             m_Title.text = "Distribution is Ready";
-        }        
+        }
+        else 
+        {
+            m_Title.text = "Distribution is NOT Ready";
+        }
     }
 
     /// <summary>
@@ -646,14 +616,6 @@ public class ScaleNoisePatterns : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// When sample size change, we need to adjust this.
-    /// In future, we might need to adjust this when alpha value change
-    /// </summary>
-    public void OnChangeSampleSize()
-    {
-        StartCoroutine( CalculateGKSQRT() );
-    }
 
     private void WriteToFile(string line)
     {
