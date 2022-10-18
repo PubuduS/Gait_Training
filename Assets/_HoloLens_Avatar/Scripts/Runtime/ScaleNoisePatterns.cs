@@ -1,9 +1,7 @@
 using Microsoft.MixedReality.Toolkit.UI;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Numerics;
 using TMPro;
@@ -64,12 +62,6 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// Used this as a multiplier to calculate pink noise
     private float m_Multiplier = 0.0f;
 
-    /// Defines the minimum value.
-    private int m_MinValue = -2;
-
-    /// Defines the maximum value.
-    private int m_MaxValue = 2;
-
     /// Defines how many samples we want.
     private int m_SampleSize = 5000;
 
@@ -90,7 +82,7 @@ public class ScaleNoisePatterns : MonoBehaviour
 
     [SerializeField] private GameObject m_ApplyButton;
     [SerializeField] private GameObject m_DistributionButton;
-
+    
     #endregion
 
     #region Public Varibles 
@@ -131,12 +123,9 @@ public class ScaleNoisePatterns : MonoBehaviour
         m_BrownNoise = new List<float>();       
         m_WhiteNoise = new List<float>();
         m_GKSqrt = new List<double>();
+        m_SqrtOfTwo = Mathf.Sqrt(2.0f);        
 
-        m_SqrtOfTwo = Mathf.Sqrt(2.0f);
         PopulateVariablesWithDataFromUI();
-        CalculateWhiteNoise();
-
-
     }
 
     private void Update()
@@ -151,7 +140,7 @@ public class ScaleNoisePatterns : MonoBehaviour
     public void GenerateNewDistribution()
     {
         PopulateVariablesWithDataFromUI();
-        CalculateBasePinkNoise();      
+        CalculateBasePinkNoise();
     }
 
     /// <summary>
@@ -245,37 +234,6 @@ public class ScaleNoisePatterns : MonoBehaviour
     }
 
     /// <summary>
-    /// We calculate the Brown noise based on random values and previous sum.
-    /// Any outliers are assigned to upper or lower bound to prevent large numbers that can mess up the animations.
-    /// We may or may not want this. Just keep it for now for the sake of future.
-    /// </summary>
-    public void CalculateBrownNoise()
-    {
-        PopulateVariablesWithDataFromUI();
-        float value = 0.0f;
-        
-        for ( int i = 0; i < m_SampleSize; i++ )
-        {
-            value = GenerateNormalRandom( m_MeanPeriod, m_SDPeriod, m_MinValue, m_MaxValue ) + m_BrownPreviousSum;
-
-            if( value < m_MinValue )
-            {
-                value = m_MinValue;
-            }
-            else if( value > m_MaxValue )
-            {
-                value = m_MaxValue;
-            }
-
-            if( value != 0.0f )
-            {                
-                m_BrownNoise.Add(value);
-                m_BrownPreviousSum = value;
-            }
-        }
-    }
-
-    /// <summary>
     /// For the ISO noise the time to complete the gait cycle should be a 
     /// constant value and set to preferred speed of the user.
     /// </summary>
@@ -296,32 +254,9 @@ public class ScaleNoisePatterns : MonoBehaviour
        
         for (int i = 0; i < m_SampleSize; i++)
         {
-            value = (float)m_GaussianDistribution.RandomGauss( (double)m_MeanPeriod, (double)m_NoiseSTD );
-            WriteToFile( "" + value );
+            value = (float)m_GaussianDistribution.RandomGauss( (double)m_MeanPeriod, (double)m_NoiseSTD );            
             m_WhiteNoise.Add( value );
         }
-    }
-
-    /// <summary>
-    /// Generate a normal random value.
-    /// </summary>
-    /// <param name="mean"></param>
-    /// <param name="sigma"></param>
-    /// <param name="min"></param>
-    /// <param name="max"></param>
-    /// <returns></returns>
-    private float GenerateNormalRandom( float mean, float sigma, int min, int max )
-    {
-        float rand1 = UnityEngine.Random.Range(0.0f, 1.0f);
-        float rand2 = UnityEngine.Random.Range(0.0f, 1.0f);
-
-        float n = Mathf.Sqrt( -2.0f * Mathf.Log(rand1)) * Mathf.Cos( ( 2.0f * Mathf.PI ) * rand2 );
-                
-        float generatedNumber = mean + sigma * n;
-
-        generatedNumber = Mathf.Clamp(generatedNumber, min, max);
-
-        return generatedNumber;
     }
 
     /// <summary>
@@ -389,40 +324,8 @@ public class ScaleNoisePatterns : MonoBehaviour
     }
 
     /// <summary>
-    /// Read White Noise from a file.
-    /// </summary>
-    private void ReadWhiteNoiseFromFile()
-    {
-        string path = Path.Combine(Application.streamingAssetsPath, "WhiteNoise.txt");
-        string line = "";
-
-        try
-        {
-            using( StreamReader reader = new StreamReader( path ) )
-            {
-                while( ( line = reader.ReadLine() ) != null )
-                {
-                    if( m_WhiteNoise.Count < m_SampleSize )
-                    {
-                        m_WhiteNoise.Add( float.Parse( line ) );
-                    }
-                    else
-                    {
-                        m_WhiteNoise.Clear();
-                        m_WhiteNoise.Add( float.Parse( line ) );
-                    }                    
-                }
-            }
-        }
-        catch( Exception ex )
-        {
-            Debug.Log("The file could not read");
-            Debug.Log(ex.Message);
-        }
-    }
-
-    /// <summary>
     /// This value is used to calculate base pink noise
+    /// TODO -> We can parellize this in future.
     /// </summary>
     private void CalculateGKSQRT()
     {
@@ -471,8 +374,7 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// </summary>
     private void CalculateBasePinkNoise()
     {
-
-        if( m_StandardNoiseDistribution.Count > 0 )
+        if ( m_StandardNoiseDistribution.Count > 0 )
         {
             m_StandardNoiseDistribution.Clear();
         }
@@ -561,7 +463,7 @@ public class ScaleNoisePatterns : MonoBehaviour
         else 
         {
             m_Title.text = "Distribution is NOT Ready";
-        }
+        }    
     }
 
     /// <summary>
@@ -619,21 +521,4 @@ public class ScaleNoisePatterns : MonoBehaviour
         }
     }
 
-
-    private void WriteToFile( string line )
-    {
-        string path = "C:\\Users\\Pubudu\\Desktop\\UnityIFFT.txt";
-
-        using (StreamWriter myStreamWriter = new StreamWriter(path, append: true))
-        {
-            if (line != " ")
-            {
-                myStreamWriter.WriteLine("" + line);
-            }
-            else
-            {
-                myStreamWriter.WriteLine("Error Code: " + line);
-            }
-        }
-    }
 }
