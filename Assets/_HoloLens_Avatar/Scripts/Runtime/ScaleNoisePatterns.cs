@@ -134,7 +134,9 @@ public class ScaleNoisePatterns : MonoBehaviour
 
         m_SqrtOfTwo = Mathf.Sqrt(2.0f);
         PopulateVariablesWithDataFromUI();
-        
+        CalculateWhiteNoise();
+
+
     }
 
     private void Update()
@@ -175,7 +177,7 @@ public class ScaleNoisePatterns : MonoBehaviour
         }
         else if( currentPattern.Equals("Random") )
         {
-            ReadWhiteNoiseFromFile();
+            CalculateWhiteNoise();
             bool noiseAppliedState = ( m_WhiteNoise.Count >= m_SampleSize2X ) ? true : false;
             SetReadyMessage( noiseAppliedState, "Random" );
         }
@@ -294,7 +296,8 @@ public class ScaleNoisePatterns : MonoBehaviour
        
         for (int i = 0; i < m_SampleSize; i++)
         {
-            value = GenerateNormalRandom( m_MeanPeriod, m_SDPeriod, m_MinValue, m_MaxValue );           
+            value = (float)m_GaussianDistribution.RandomGauss( (double)m_MeanPeriod, (double)m_NoiseSTD );
+            WriteToFile( "" + value );
             m_WhiteNoise.Add( value );
         }
     }
@@ -617,7 +620,7 @@ public class ScaleNoisePatterns : MonoBehaviour
     }
 
 
-    private void WriteToFile(string line)
+    private void WriteToFile( string line )
     {
         string path = "C:\\Users\\Pubudu\\Desktop\\UnityIFFT.txt";
 
