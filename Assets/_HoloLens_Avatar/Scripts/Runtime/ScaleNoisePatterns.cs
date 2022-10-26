@@ -22,9 +22,6 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// We scale this Normal(Gaussian) distribution and store it as the scaled pink noise.
     private List<float> m_ScaledPinkNoise;
 
-    /// A list to hold brown noise.
-    private List<float> m_BrownNoise;
-
     /// A list to hold white noise.
     private List<float> m_WhiteNoise;
 
@@ -40,9 +37,6 @@ public class ScaleNoisePatterns : MonoBehaviour
 
     /// Hold the standard distribution period.
     private float m_SDPeriod = 2.0f;
-
-    /// Hold the previous sum od the brown noise.
-    private float m_BrownPreviousSum = 0.0f;
 
     /// Hold the user's preferred walking speed.
     private float m_PreferredWalkingSpeed = 1.0f;
@@ -92,9 +86,6 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// Property to get scaled pink noise distribution (Read-Only)
     public List<float> ScaledPinkNoise { get => m_ScaledPinkNoise; }
 
-    /// Property to get brown noise distribution (Read-Only)
-    public List<float> BrownNoise { get => m_BrownNoise; }
-
     /// Property to get white noise distribution (Read-Only)
     public List<float> WhiteNoise { get => m_WhiteNoise; }
 
@@ -119,8 +110,7 @@ public class ScaleNoisePatterns : MonoBehaviour
         m_GaussianDistribution = new GaussianDistribution();
 
         m_StandardNoiseDistribution = new List<float>();
-        m_ScaledPinkNoise = new List<float>();
-        m_BrownNoise = new List<float>();       
+        m_ScaledPinkNoise = new List<float>();              
         m_WhiteNoise = new List<float>();
         m_GKSqrt = new List<double>();
         m_SqrtOfTwo = Mathf.Sqrt(2.0f);        
@@ -153,8 +143,7 @@ public class ScaleNoisePatterns : MonoBehaviour
 
         if ( currentPattern.Equals("Pink") )
         {
-            ScalePinkNoise();
-            m_SDPeriodLabel.text = "" + m_ScaledPinkNoise.Count;
+            ScalePinkNoise();            
             bool noiseAppliedState = ( m_ScaledPinkNoise.Count >= ( m_SampleSize2X - 2 ) ) ? true : false;            
             SetReadyMessage( noiseAppliedState, "Pink" );
         }
