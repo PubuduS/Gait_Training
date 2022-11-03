@@ -25,9 +25,6 @@ public class HandleKeyboard : MonoBehaviour
     /// Reference to SD Period label in noise data panel.
     [SerializeField] private TextMeshPro m_SDPeriod;
 
-    /// Reference to standard distribution label in noise data panel.
-    [SerializeField] private TextMeshPro m_SD;
-
     /// Reference to sample size label in noise data panel.
     [SerializeField] private TextMeshPro m_SampleSize;
 
@@ -69,8 +66,7 @@ public class HandleKeyboard : MonoBehaviour
                 string[] line = m_Text.Split( char.Parse(" ") );
                 m_MeanPeriod.text = "Mean Period = " + line[0];
                 m_SDPeriod.text = "SD Period = " + line[1];
-                m_SD.text = "SD = " + line[2];
-                m_SampleSize.text = "Sample Size = " + line[3];
+                m_SampleSize.text = "Sample Size = " + line[2];
             }
             else if( m_Text != "" && m_NoiseLbl.text.Equals("Noise: ISO") )
             {
@@ -82,9 +78,8 @@ public class HandleKeyboard : MonoBehaviour
             {
                 string[] line = m_Text.Split(char.Parse(" "));
                 m_MeanPeriod.text = "Mean Period = " + line[0];
-                m_SDPeriod.text = "SD Period = " + line[1];
-                m_SD.text = "SD = " + line[2];
-                m_SampleSize.text = "Sample Size = " + line[3];
+                m_SDPeriod.text = "SD Period = " + line[1];                
+                m_SampleSize.text = "Sample Size = " + line[2];
             }
 
         }          

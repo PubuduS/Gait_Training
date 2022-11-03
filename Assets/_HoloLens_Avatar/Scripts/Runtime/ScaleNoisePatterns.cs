@@ -29,11 +29,14 @@ public class ScaleNoisePatterns : MonoBehaviour
     /// This is just an intermidiate value use to calculate base Pink noise.
     private List<double> m_GKSqrt;
 
-    /// Hold the mean persiod.
-    private float m_MeanPeriod = 0.0f;
+    /// Hold the Mean value.
+    private const float m_Mean = 0.0f;
 
     /// Hold the standard distribution.
-    private float m_NoiseSTD = 1.0f;
+    private const float m_NoiseSTD = 1.0f;
+
+    /// Hold the Mean Period Value.
+    private float m_MeanPeriod = 1.0f;
 
     /// Hold the standard distribution period.
     private float m_SDPeriod = 2.0f;
@@ -67,8 +70,7 @@ public class ScaleNoisePatterns : MonoBehaviour
 
     /// We get the value from these text labels.
     [SerializeField] private TextMeshPro m_MeanPeriodLabel;
-    [SerializeField] private TextMeshPro m_SDPeriodLabel;
-    [SerializeField] private TextMeshPro m_SDLabel;
+    [SerializeField] private TextMeshPro m_SDPeriodLabel;    
     [SerializeField] private TextMeshPro m_SampleSizeLabel;
     [SerializeField] private TextMeshPro m_PreferredSpeedLabel;
     [SerializeField] private TextMeshPro m_CurrentPattern;
@@ -215,9 +217,9 @@ public class ScaleNoisePatterns : MonoBehaviour
     {
         float value = 0.0f;
 
-        foreach( float SDValue in m_StandardNoiseDistribution )
+        foreach( float unscaledSignal in m_StandardNoiseDistribution )
         {
-            value = m_MeanPeriod + ( m_SDPeriod / m_NoiseSTD ) * SDValue;            
+            value = m_MeanPeriod + ( m_SDPeriod / m_NoiseSTD ) * unscaledSignal;            
             m_ScaledPinkNoise.Add( value );            
         }        
     }
@@ -243,7 +245,7 @@ public class ScaleNoisePatterns : MonoBehaviour
        
         for (int i = 0; i < m_SampleSize; i++)
         {
-            value = (float)m_GaussianDistribution.RandomGauss( (double)m_MeanPeriod, (double)m_NoiseSTD );            
+            value = (float)m_GaussianDistribution.RandomGauss( (double)m_Mean, (double)m_NoiseSTD );            
             m_WhiteNoise.Add( value );
         }
     }
@@ -277,16 +279,14 @@ public class ScaleNoisePatterns : MonoBehaviour
         if( currentPattern.Equals("Noise: ISO") )
         {
             m_MeanPeriodLabel.gameObject.SetActive( false );
-            m_SDPeriodLabel.gameObject.SetActive( false );
-            m_SDLabel.gameObject.SetActive( false );
+            m_SDPeriodLabel.gameObject.SetActive( false );            
             m_SampleSizeLabel.gameObject.SetActive( false );
             m_PreferredSpeedLabel.gameObject.SetActive( true );
         }
         else
         { 
             m_MeanPeriodLabel.gameObject.SetActive( true );
-            m_SDPeriodLabel.gameObject.SetActive( true );
-            m_SDLabel.gameObject.SetActive( true );
+            m_SDPeriodLabel.gameObject.SetActive( true );            
             m_SampleSizeLabel.gameObject.SetActive( true );
             m_PreferredSpeedLabel.gameObject.SetActive( false );
         }
@@ -305,8 +305,7 @@ public class ScaleNoisePatterns : MonoBehaviour
         }
 
         m_MeanPeriod = (float)ExtractDecimalFromUI(m_MeanPeriodLabel.text);
-        m_SDPeriod = (float)ExtractDecimalFromUI(m_SDPeriodLabel.text);
-        m_NoiseSTD = (float)ExtractDecimalFromUI(m_SDLabel.text);
+        m_SDPeriod = (float)ExtractDecimalFromUI(m_SDPeriodLabel.text);        
         m_SampleSize = (int)ExtractDecimalFromUI(m_SampleSizeLabel.text);
         m_SampleSize2X = m_SampleSize;
         m_SampleSize /= 2;
@@ -374,12 +373,12 @@ public class ScaleNoisePatterns : MonoBehaviour
 
         Complex[] basePinkNoiseComplexArr = new Complex[m_SampleSize2X - 2];
 
-        m_Multiplier = m_MeanPeriod + m_NoiseSTD;
+        m_Multiplier = m_Mean + m_NoiseSTD;
 
         // Generate GaussianDistribution Random values and multiple each value with the multiplier ( mean + SD )
         for( int i = 0; i < m_SampleSize2X; i++ )
         {
-            basePinkNoise.Add( m_Multiplier * (float)m_GaussianDistribution.RandomGauss( (double)m_MeanPeriod, (double)m_NoiseSTD ) );
+            basePinkNoise.Add( m_Multiplier * (float)m_GaussianDistribution.RandomGauss( (double)m_Mean, (double)m_NoiseSTD ) );
 
             if(i < m_SampleSize )
             {
