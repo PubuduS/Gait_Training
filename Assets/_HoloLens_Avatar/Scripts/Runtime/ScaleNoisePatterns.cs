@@ -216,8 +216,9 @@ public class ScaleNoisePatterns : MonoBehaviour
     public void ScalePinkNoise()
     {
         float value = 0.0f;
+        ConvertToZScore( ref m_StandardNoiseDistribution );
 
-        foreach( float unscaledSignal in m_StandardNoiseDistribution )
+        foreach ( float unscaledSignal in m_StandardNoiseDistribution )
         {
             value = m_MeanPeriod + ( m_SDPeriod / m_NoiseSTD ) * unscaledSignal;            
             m_ScaledPinkNoise.Add( value );            
@@ -506,6 +507,48 @@ public class ScaleNoisePatterns : MonoBehaviour
 
             // As a result we expect only real values (if our calculations are correct imaginary values should be equal or close to zero)
             m_GKSqrt.Add( sum.Real );
+        }
+    }
+
+    /// <summary>
+    /// This function calculate the sample Standard Deviation value and return it.
+    /// </summary>
+    /// <param name="basePinkNoiseList"></param>
+    /// <returns>Sample Standard Deviation</returns>
+    private double GetStandardDeviation( ref List<float> basePinkNoiseList )
+    {
+        double ret = 0;
+        int count = basePinkNoiseList.Count();
+
+        if( count > 1 )
+        {
+            //Compute the Average
+            double avg = basePinkNoiseList.Average();
+
+            //Perform the Sum of (value-avg)^2
+            double sum = basePinkNoiseList.Sum(d => (d - avg) * (d - avg));
+
+            //Put it all together
+            ret = Math.Sqrt( sum / ( count - 1 ) );
+        }
+
+        return ret;
+    }
+
+    /// <summary>
+    /// This converts Z values to Z Score values.
+    /// May get off a small amount due to round error.
+    /// </summary>
+    /// <param name="basePinkNoiseList"></param>
+    private void ConvertToZScore( ref List<float> basePinkNoiseList )
+    {
+        double mean = basePinkNoiseList.Average();
+        double sd = GetStandardDeviation( ref basePinkNoiseList );
+
+        for( int i = 0; i < basePinkNoiseList.Count; i++ )
+        {
+            float val = (float)( ( basePinkNoiseList[i] - mean ) / sd );
+            m_StandardNoiseDistribution[i] = val;
         }
     }
 
