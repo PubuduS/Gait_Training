@@ -1,8 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.AI;
 
 /// <summary>
 /// This class is used to control the avartar animation state.
@@ -34,11 +34,17 @@ public class AvatarAnimationState : MonoBehaviour
     /// This flag is used to lock down the animation till it played out.
     private bool m_IsAnimationLocked = false;
 
+    /// Default value of animation speed.
+    private const float m_DefaultAnimationSpeed = 1.0f;
+
     /// This list stores timestamps of the left heel strikes.
     private List<float> m_LeftFootTimeStamps = null;
 
     /// This list stores timestamps of the right heel strikes.
     private List<float> m_RightFootTimeStamps = null;
+
+    /// This stores the length of the original gait cycle animations.    
+    private Dictionary<string, float> m_OriginalAnimationLength;
 
     /// Property to get the left foot time stamp (Read-Only)
     public List<float> LeftFootTimeStamps { get => m_LeftFootTimeStamps; }
@@ -66,7 +72,9 @@ public class AvatarAnimationState : MonoBehaviour
     private void Start()
     {
         m_ScaledNoisePatterns = GameObject.Find("NoiseController").GetComponent<ScaleNoisePatterns>();
-        
+        m_OriginalAnimationLength = new Dictionary<string, float>();
+        StoreAnimationClipsLength();
+
         m_NoiseIndex = 0;
 
         if ( m_ScaledNoisePatterns == null )
@@ -97,7 +105,7 @@ public class AvatarAnimationState : MonoBehaviour
         else
         {            
             m_IsAnimationLocked = false;
-            m_Animator.speed = 1.0f;
+            m_Animator.speed = m_DefaultAnimationSpeed;
         }
         
         // TODO Future work is needed to change the avatar speed.
@@ -115,14 +123,11 @@ public class AvatarAnimationState : MonoBehaviour
             if( m_NoiseIndex < m_ScaledNoisePatterns.ScaledPinkNoise.Count )
             {
                 m_NoisePatternLbl = "Pink";
-                float number = Mathf.Abs( m_ScaledNoisePatterns.ScaledPinkNoise[m_NoiseIndex] );
-                ApplyNoiseToAnimator( number );
-                //Debug.Log("Noise" + number);                
 
                 if( m_IsAnimationLocked == false )
                 {
-                    m_NoiseIndex++;
-                }
+                    StartCoroutine( RunGaitCycle( m_NoisePatternLbl ) );
+                }                
             }
             else
             {
@@ -134,21 +139,17 @@ public class AvatarAnimationState : MonoBehaviour
              if( m_IsAnimationLocked == false )
              {
                 m_NoisePatternLbl = "ISO";
-                float number = Mathf.Abs( m_ScaledNoisePatterns.PreferredWalkingSpeed );
-                ApplyNoiseToAnimator( number );                
+                StartCoroutine( RunGaitCycle( m_NoisePatternLbl ) );
             }
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Joel_WGN") )
         {
             if( m_NoiseIndex < m_ScaledNoisePatterns.WhiteNoise.Count )
             {
-                m_NoisePatternLbl = "White";
-                float number = Mathf.Abs( m_ScaledNoisePatterns.WhiteNoise[m_NoiseIndex] );
-                ApplyNoiseToAnimator( number );                        
-
-                if(m_IsAnimationLocked == false)
+                if( m_IsAnimationLocked == false )
                 {
-                    m_NoiseIndex++;
+                    m_NoisePatternLbl = "White";
+                    StartCoroutine( RunGaitCycle( m_NoisePatternLbl ) );
                 }
             }
             else
@@ -157,9 +158,9 @@ public class AvatarAnimationState : MonoBehaviour
             }
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") )
-        {
-            float number = 1.0f;
-            ApplyNoiseToAnimator( number );            
+        {            
+            m_Animator.speed = m_DefaultAnimationSpeed;
+            m_NoiseDataPanelTitle.text = m_NoisePatternLbl + " Noise = " + m_DefaultAnimationSpeed;
         }
         else
         {
@@ -168,13 +169,86 @@ public class AvatarAnimationState : MonoBehaviour
     }
 
     /// <summary>
-    /// Apply noise frequency to animator
+    /// Expand and Shrink gait cycle animation
+    /// The completion time of animation is the value of pink or white noise.
     /// </summary>
-    /// <param name="number"></param>
-    private void ApplyNoiseToAnimator( float number = 1.0f )
+    /// <param name="noise"></param>
+    /// <returns></returns>
+    private IEnumerator RunGaitCycle( string noise )
     {
-        m_Animator.speed = number;
-        m_NoiseDataPanelTitle.text = m_NoisePatternLbl + " Noise = " + number;
+        float noiseValue = m_DefaultAnimationSpeed;
+        float desiredSpeed = m_DefaultAnimationSpeed;
+
+        if( String.Equals( noise, "Pink" ) )
+        {
+            noiseValue = Mathf.Abs( m_ScaledNoisePatterns.ScaledPinkNoise[m_NoiseIndex] );
+        }
+        else if( String.Equals( noise, "White" ) )
+        {
+            noiseValue = Mathf.Abs( m_ScaledNoisePatterns.WhiteNoise[m_NoiseIndex] );
+        }
+        else if( String.Equals( noise, "ISO" ) )
+        {
+            noiseValue = Mathf.Abs( m_ScaledNoisePatterns.PreferredWalkingSpeed );
+        }
+        else
+        {
+            m_NoisePatternLbl = "ERROR!!!";
+            noiseValue = m_DefaultAnimationSpeed;
+        }
+
+        float animationLength = 0.0f;
+        bool isValidAnimLength = m_OriginalAnimationLength.TryGetValue( noise, out animationLength );
+                
+        if( isValidAnimLength )
+        {
+            desiredSpeed = ( animationLength / noiseValue );
+        }
+
+        m_IsAnimationLocked = true;
+        m_Animator.speed = desiredSpeed;
+        m_NoiseDataPanelTitle.text = m_NoisePatternLbl + " Noise = " + noiseValue;
+
+        var len = m_Animator.GetCurrentAnimatorStateInfo(0).length;
+        Debug.Log("Number: " + noiseValue + " Time: " + Time.realtimeSinceStartup + " Len: " + len);
+
+        yield return new WaitForSeconds( noiseValue );
+        m_IsAnimationLocked = false;
+
+        if( !String.Equals( noise, "ISO" ) )
+        {
+            m_NoiseIndex++;
+        }
+        
+    }
+
+    /// <summary>
+    /// Store the original animation clips values in a dictionary.
+    /// </summary>
+    private void StoreAnimationClipsLength()
+    {
+        AnimationClip[] clips = m_Animator.runtimeAnimatorController.animationClips;
+
+        foreach( AnimationClip clip in clips )
+        {
+            switch( clip.name )
+            {
+                case "Joel_PGN":
+                    m_OriginalAnimationLength.Add( "Pink", clip.length );
+                    break;
+
+                case "Joel_Iso":
+                    m_OriginalAnimationLength.Add( "ISO", clip.length );
+                    break;
+
+                case "Joel_WGN":
+                    m_OriginalAnimationLength.Add( "White", clip.length );
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 
     /// <summary>
@@ -183,8 +257,9 @@ public class AvatarAnimationState : MonoBehaviour
     /// This event is mapped to animation event.
     /// </summary>
     private void LockdownAnimation()
-    {        
-        m_IsAnimationLocked = true;
+    {
+        //m_IsAnimationLocked = true;
+        m_RightFootTimeStamps.Add( Time.unscaledTime );
     }
 
     /// <summary>
@@ -193,28 +268,6 @@ public class AvatarAnimationState : MonoBehaviour
     /// </summary>
     private void UnlockAnimation()
     {        
-        m_IsAnimationLocked = false;
+        //m_IsAnimationLocked = false;
     }
-
-    /// <summary>
-    /// Record the time from the right heel strikes.
-    /// This is the time in seconds since the start of the application.
-    /// Mapped to animation event.
-    /// If you spawn the new avatar, this values will be destroyed.
-    /// </summary>
-    private void RightFootTimeStamp()
-    {
-        m_RightFootTimeStamps.Add( Time.time );
-    }
-
-    /// <summary>
-    /// Record the time from the left heel strikes.
-    /// This is the time in seconds since the start of the application.
-    /// Mapped to animation event.
-    /// If you spawn the new avatar, this values will be destroyed.
-    private void LeftFootTimeStamp()
-    {
-        m_LeftFootTimeStamps.Add( Time.time );
-    }
-
 }
