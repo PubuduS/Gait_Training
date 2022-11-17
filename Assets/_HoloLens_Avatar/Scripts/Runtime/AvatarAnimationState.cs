@@ -37,6 +37,15 @@ public class AvatarAnimationState : MonoBehaviour
     /// Default value of animation speed.
     private const float m_DefaultAnimationSpeed = 1.0f;
 
+    /// When Avatar goes to Idle, m_NoiseIndex will
+    /// increment by 1. This will omit the next noise
+    /// value from applying. We use this flag to prevent
+    /// values being ommitted without applying.
+    private bool m_IdleElementFlag = false;
+
+    /// Use to apply previous noise after changing idle to moving.
+    private int m_Counter = 1;
+
     /// This list stores timestamps of the left heel strikes.
     private List<float> m_LeftFootTimeStamps = null;
 
@@ -74,13 +83,7 @@ public class AvatarAnimationState : MonoBehaviour
         m_ScaledNoisePatterns = GameObject.Find("NoiseController").GetComponent<ScaleNoisePatterns>();
         m_OriginalAnimationLength = new Dictionary<string, float>();
         StoreAnimationClipsLength();
-
         m_NoiseIndex = 0;
-
-        if ( m_ScaledNoisePatterns == null )
-        {
-            Debug.Log("m_ScaledNoisePatterns is null");
-        }
     }
 
     /// <summary>
@@ -120,46 +123,19 @@ public class AvatarAnimationState : MonoBehaviour
     {
         if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Joel_PGN") )
         {
-            if( m_NoiseIndex < m_ScaledNoisePatterns.ScaledPinkNoise.Count )
-            {
-                m_NoisePatternLbl = "Pink";
-
-                if( m_IsAnimationLocked == false )
-                {
-                    StartCoroutine( RunGaitCycle( m_NoisePatternLbl ) );
-                }                
-            }
-            else
-            {
-                m_NoiseIndex = 0;
-            }
+            ResetNoiseAfterEnd( m_ScaledNoisePatterns.ScaledPinkNoise.Count, "Pink" );
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Joel_Iso") )
         {
-             if( m_IsAnimationLocked == false )
-             {
-                m_NoisePatternLbl = "ISO";
-                StartCoroutine( RunGaitCycle( m_NoisePatternLbl ) );
-            }
+            m_NoisePatternLbl = "ISO";
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Joel_WGN") )
         {
-            if( m_NoiseIndex < m_ScaledNoisePatterns.WhiteNoise.Count )
-            {
-                if( m_IsAnimationLocked == false )
-                {
-                    m_NoisePatternLbl = "White";
-                    StartCoroutine( RunGaitCycle( m_NoisePatternLbl ) );
-                }
-            }
-            else
-            {
-                m_NoiseIndex = 0;
-            }
+            ResetNoiseAfterEnd( m_ScaledNoisePatterns.WhiteNoise.Count, "White" );
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") )
-        {            
-            m_Animator.speed = m_DefaultAnimationSpeed;
+        {
+            m_NoisePatternLbl = "Idle";            
             m_NoiseDataPanelTitle.text = m_NoisePatternLbl + " Noise = " + m_DefaultAnimationSpeed;
         }
         else
@@ -169,57 +145,66 @@ public class AvatarAnimationState : MonoBehaviour
     }
 
     /// <summary>
+    /// When we reached to the end of the colred noise list,
+    /// we looped back to the beginning.
+    /// </summary>
+    private void ResetNoiseAfterEnd( int noiseLength, string lbl )
+    {
+        m_NoisePatternLbl = lbl;
+
+        if( m_NoiseIndex >= noiseLength )
+        {
+            m_NoiseIndex = 0;
+        }
+    }
+
+    /// <summary>
     /// Expand and Shrink gait cycle animation
     /// The completion time of animation is the value of pink or white noise.
     /// </summary>
-    /// <param name="noise"></param>
     /// <returns></returns>
-    private IEnumerator RunGaitCycle( string noise )
+    private void RunGaitCycle()
     {
         float noiseValue = m_DefaultAnimationSpeed;
         float desiredSpeed = m_DefaultAnimationSpeed;
 
-        if( String.Equals( noise, "Pink" ) )
+        if( String.Equals( m_NoisePatternLbl, "Pink" ) )
         {
             noiseValue = Mathf.Abs( m_ScaledNoisePatterns.ScaledPinkNoise[m_NoiseIndex] );
         }
-        else if( String.Equals( noise, "White" ) )
+        else if( String.Equals(m_NoisePatternLbl, "White") )
         {
             noiseValue = Mathf.Abs( m_ScaledNoisePatterns.WhiteNoise[m_NoiseIndex] );
         }
-        else if( String.Equals( noise, "ISO" ) )
+        else if( String.Equals( m_NoisePatternLbl, "ISO" ) )
         {
             noiseValue = Mathf.Abs( m_ScaledNoisePatterns.PreferredWalkingSpeed );
+        }
+        else if( String.Equals( m_NoisePatternLbl, "Idle" ) )
+        {
+            m_IdleElementFlag = true;
+            return;
         }
         else
         {
             m_NoisePatternLbl = "ERROR!!!";
             noiseValue = m_DefaultAnimationSpeed;
         }
-
+        
         float animationLength = 0.0f;
-        bool isValidAnimLength = m_OriginalAnimationLength.TryGetValue( noise, out animationLength );
-                
-        if( isValidAnimLength )
+        bool isValidAnimLength = m_OriginalAnimationLength.TryGetValue(m_NoisePatternLbl, out animationLength);
+
+        if (isValidAnimLength)
         {
-            desiredSpeed = ( animationLength / noiseValue );
+            desiredSpeed = (animationLength / noiseValue);            
         }
 
         m_IsAnimationLocked = true;
         m_Animator.speed = desiredSpeed;
         m_NoiseDataPanelTitle.text = m_NoisePatternLbl + " Noise = " + noiseValue;
 
-        var len = m_Animator.GetCurrentAnimatorStateInfo(0).length;
-        Debug.Log("Number: " + noiseValue + " Time: " + Time.realtimeSinceStartup + " Len: " + len);
-
-        yield return new WaitForSeconds( noiseValue );
-        m_IsAnimationLocked = false;
-
-        if( !String.Equals( noise, "ISO" ) )
-        {
-            m_NoiseIndex++;
-        }
-        
+        float len = m_Animator.GetCurrentAnimatorStateInfo(0).length;        
+        Debug.Log( "Number: " + noiseValue + " Time: " + Time.realtimeSinceStartup + " Len: " + len );        
     }
 
     /// <summary>
@@ -257,9 +242,12 @@ public class AvatarAnimationState : MonoBehaviour
     /// This event is mapped to animation event.
     /// </summary>
     private void LockdownAnimation()
-    {
-        //m_IsAnimationLocked = true;
-        m_RightFootTimeStamps.Add( Time.unscaledTime );
+    {        
+        if( m_IsAnimationLocked == false )
+        {
+            RunGaitCycle();
+            m_RightFootTimeStamps.Add( Time.unscaledTime );
+        }
     }
 
     /// <summary>
@@ -267,7 +255,30 @@ public class AvatarAnimationState : MonoBehaviour
     /// Mapped to animation event.
     /// </summary>
     private void UnlockAnimation()
-    {        
-        //m_IsAnimationLocked = false;
+    {
+        m_IsAnimationLocked = false;
+
+        if ( !String.Equals(m_NoisePatternLbl, "ISO") && ( m_IsAnimationLocked == false ) && m_IdleElementFlag == false )
+        {            
+            m_NoiseIndex++;            
+        }
+        else
+        {
+            m_Counter++;
+
+            // Prevent first element from being skipped.
+            if( m_NoiseIndex == 0 && m_Counter == 2 )
+            {
+                m_Counter = 1;
+                m_IdleElementFlag = false;
+            }
+
+            // Prevent element from being skipped after transtion from idle to moving.
+            if( m_Counter == 3 )
+            {
+                m_Counter = 1;
+                m_IdleElementFlag = false;
+            }
+        }
     }
 }
