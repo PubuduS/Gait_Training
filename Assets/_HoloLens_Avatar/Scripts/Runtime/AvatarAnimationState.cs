@@ -17,8 +17,8 @@ public class AvatarAnimationState : MonoBehaviour
     /// Reference to the SetNoise Script
     private SetNoise m_SetNoise;
 
-    /// Reference to ScaleNoisePatterns class.
-    private ScaleNoisePatterns m_ScaledNoisePatterns;
+    /// Reference to NoiseController class.
+    private NoiseController m_NoiseController;
 
     /// Noise index for traveling the noise list.
     /// At the end of the travel, it will be reset to 0.
@@ -71,6 +71,7 @@ public class AvatarAnimationState : MonoBehaviour
         m_Animator = GetComponent<Animator>();       
         m_SetNoise = GameObject.Find("NoiseController").GetComponent<SetNoise>();
         m_NoiseDataPanelTitle = GameObject.FindGameObjectWithTag("NoiseDataPanelTitle").GetComponent<TextMeshPro>();
+        m_NoiseController = GameObject.Find("NoiseController").GetComponent<NoiseController>();
         m_LeftFootTimeStamps = new List<float>();
         m_RightFootTimeStamps = new List<float>();
     }
@@ -79,8 +80,7 @@ public class AvatarAnimationState : MonoBehaviour
     /// Cached a reference to ScaledNoisePatterns class.
     /// </summary>
     private void Start()
-    {
-        m_ScaledNoisePatterns = GameObject.Find("NoiseController").GetComponent<ScaleNoisePatterns>();
+    {        
         m_OriginalAnimationLength = new Dictionary<string, float>();
         StoreAnimationClipsLength();
         m_NoiseIndex = 0;
@@ -101,16 +101,16 @@ public class AvatarAnimationState : MonoBehaviour
         m_Animator.SetBool("IsWalking", playerMoving);
         m_Animator.SetInteger("NoiseLvl", (int)m_SetNoise.GetNoisePattern());
 
-        if( m_ScaledNoisePatterns.NoiseAppliedFlag == true )
+        if( m_NoiseController.BaseNoise.NoiseAppliedFlag == true )
         {
-            ApplyCorrectNoisePattern();
+            ApplyCorrectNoisePattern();            
         }
         else
-        {            
+        {
             m_IsAnimationLocked = false;
-            m_Animator.speed = m_DefaultAnimationSpeed;
+            m_Animator.speed = m_DefaultAnimationSpeed;            
         }
-        
+
         // TODO Future work is needed to change the avatar speed.
         // m_Animator.speed = CamMovementTracker.m_CamTrackerInstance.Speed;                
     }
@@ -123,7 +123,7 @@ public class AvatarAnimationState : MonoBehaviour
     {
         if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Joel_PGN") )
         {
-            ResetNoiseAfterEnd( m_ScaledNoisePatterns.ScaledPinkNoise.Count, "Pink" );
+            ResetNoiseAfterEnd( m_NoiseController.BaseNoise.NoiseValueList.Count, "Pink" );
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Joel_Iso") )
         {
@@ -131,7 +131,7 @@ public class AvatarAnimationState : MonoBehaviour
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Joel_WGN") )
         {
-            ResetNoiseAfterEnd( m_ScaledNoisePatterns.WhiteNoise.Count, "White" );
+            ResetNoiseAfterEnd( m_NoiseController.BaseNoise.NoiseValueList.Count, "White" );
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") )
         {
@@ -168,17 +168,13 @@ public class AvatarAnimationState : MonoBehaviour
         float noiseValue = m_DefaultAnimationSpeed;
         float desiredSpeed = m_DefaultAnimationSpeed;
 
-        if( String.Equals( m_NoisePatternLbl, "Pink" ) )
+        if( String.Equals( m_NoisePatternLbl, "Pink" ) || ( String.Equals( m_NoisePatternLbl, "White" ) ) )
         {
-            noiseValue = Mathf.Abs( m_ScaledNoisePatterns.ScaledPinkNoise[m_NoiseIndex] );
-        }
-        else if( String.Equals(m_NoisePatternLbl, "White") )
-        {
-            noiseValue = Mathf.Abs( m_ScaledNoisePatterns.WhiteNoise[m_NoiseIndex] );
+            noiseValue = Mathf.Abs( m_NoiseController.BaseNoise.NoiseValueList[m_NoiseIndex] );
         }
         else if( String.Equals( m_NoisePatternLbl, "ISO" ) )
         {
-            noiseValue = Mathf.Abs( m_ScaledNoisePatterns.PreferredWalkingSpeed );
+            noiseValue = Mathf.Abs( m_NoiseController.BaseNoise.PreferredWalkingSpeed );
         }
         else if( String.Equals( m_NoisePatternLbl, "Idle" ) )
         {

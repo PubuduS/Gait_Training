@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,43 +10,54 @@ using UnityEngine;
 /// </summary>
 public class SetNoise : MonoBehaviour
 {
-    /// Enum for noise levels 
-    public enum NoiseTypes { PinkNoise = 0, IsoNoise = 1, WhiteNoise = 2 };
 
     /// This will hold the user's selected pattern.
-    private NoiseTypes m_PatternType = NoiseTypes.PinkNoise;
+    private ColoredNoise m_PatternType = ColoredNoise.Pink;
 
     /// This will show the user selection of the pattern
     /// under the avatar in avatar panel.
     [SerializeField] private TextMeshPro m_NoiseLable;
 
-
     /// This will show the user selection of the pattern
     /// under the NoiseDataPanel.
     [SerializeField] private TextMeshPro m_NoiseLableInNoiseDataPanel;
 
-
     /// This will show the player's current speed in Avatar label.
     [SerializeField] private TextMeshPro m_AvatarLable;
 
-
     /// A flag to check wheather an avatar is spawned or not.
-    private bool flag = false;
+    private bool m_Flag = false;
 
-    public void Update()
+    private GameObject m_NoiseObject = null;
+    private RemoveAllComponents m_Remover = null;
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    private void Start()
+    {
+        m_NoiseObject = GameObject.FindGameObjectWithTag("NoisePattern");
+        m_Remover = m_NoiseObject.GetComponent<RemoveAllComponents>();
+        NoiseController.Instance.BaseNoise = m_NoiseObject.AddComponent<PinkNoise>();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void Update()
     {
         /// { Debug }
         /// This is only for debug purposes. Remove Later.
         if( GameObject.FindGameObjectWithTag("Avatar") == null )
         {
-            flag = false;
+            m_Flag = false;
         }
         else
         {
-            flag = true;            
+            m_Flag = true;            
         }
 
-        if(flag)
+        if( m_Flag )
         {
             m_AvatarLable.text = "Speed " + CamMovementTracker.m_CamTrackerInstance.Speed;
         }
@@ -58,10 +70,11 @@ public class SetNoise : MonoBehaviour
     /// 0 is for deafult pattern
     /// 1 is for Pink noise pattern.
     /// 2 is for White noise(Random) pattern.
+    /// 3 is for ISO (Constant) pattern.
     /// </summary>
-    public void SetNoisePattern(int pattern)
+    public void SetNoisePattern( int pattern )
     {
-        m_PatternType = (NoiseTypes)pattern;
+        m_PatternType = (ColoredNoise)pattern;        
         SetPatternLable();
     }
 
@@ -72,21 +85,21 @@ public class SetNoise : MonoBehaviour
     /// </summary>
     private void SetPatternLable()
     {
-        switch (m_PatternType)
+        switch( m_PatternType )
         {
-            case NoiseTypes.PinkNoise:
-                m_NoiseLable.text = "Noise: Pink";
-                m_NoiseLableInNoiseDataPanel.text = m_NoiseLable.text;
+            case ColoredNoise.Pink:
+                SetColoredObject("Noise: Pink");
+                NoiseController.Instance.BaseNoise = m_NoiseObject.AddComponent<PinkNoise>();                
                 break;
 
-            case NoiseTypes.IsoNoise:
-                m_NoiseLable.text = "Noise: ISO";
-                m_NoiseLableInNoiseDataPanel.text = m_NoiseLable.text;
+            case ColoredNoise.ISO:
+                SetColoredObject("Noise: ISO");
+                NoiseController.Instance.BaseNoise = m_NoiseObject.AddComponent<ISONoise>();                
                 break;
 
-            case NoiseTypes.WhiteNoise:
-                m_NoiseLable.text = "Noise: Random";
-                m_NoiseLableInNoiseDataPanel.text = m_NoiseLable.text;
+            case ColoredNoise.White:               
+                SetColoredObject("Noise: Random");
+                NoiseController.Instance.BaseNoise = m_NoiseObject.AddComponent<WhiteNoise>();                
                 break;
 
             default:
@@ -98,9 +111,22 @@ public class SetNoise : MonoBehaviour
     }
 
     /// <summary>
+    /// Set the lable and removed previously attached noise game objects.
+    /// For example, when we transit from pink to white, we don't need pink
+    /// gameobject. We can destroy that object.
+    /// </summary>
+    /// <param name="noise"></param>
+    private void SetColoredObject( string noise )
+    {
+        m_NoiseLable.text = noise;
+        m_Remover.RemoveAllNoiseComponents();
+        m_NoiseLableInNoiseDataPanel.text = m_NoiseLable.text;
+    }
+
+    /// <summary>
     /// Gettr to get the user's selection.
     /// </summary>
-    public NoiseTypes GetNoisePattern()
+    public ColoredNoise GetNoisePattern()
     {
         return m_PatternType;
     }
