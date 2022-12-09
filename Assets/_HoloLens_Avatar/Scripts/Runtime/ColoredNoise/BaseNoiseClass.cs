@@ -1,11 +1,12 @@
 using Microsoft.MixedReality.Toolkit.UI;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public abstract class BaseNoiseClass : SingletonMonobehaviour<BaseNoiseClass>
+public abstract class BaseNoiseClass : MonoBehaviour
 {
 
     #region Private Varibles
@@ -29,6 +30,9 @@ public abstract class BaseNoiseClass : SingletonMonobehaviour<BaseNoiseClass>
     /// Hold the standard distribution period.
     protected float m_SDPeriod = 2.0f;
 
+    /// Used this as a multiplier to calculate pink noise
+    protected float m_Multiplier = 0.0f;
+
     /// Defines how many samples we want.
     protected int m_SampleSize = 5000;
 
@@ -46,6 +50,9 @@ public abstract class BaseNoiseClass : SingletonMonobehaviour<BaseNoiseClass>
 
     /// This list stores the calculated colored noise values.
     protected List<float> m_NoiseValueList = null;
+
+    /// A List to hold Normal(Gaussian) distribution.
+    protected List<float> m_StandardNoiseDistribution = null;
 
     /// We get the value from these text labels.
     protected TextMeshPro m_MeanPeriodLabel;
@@ -74,6 +81,9 @@ public abstract class BaseNoiseClass : SingletonMonobehaviour<BaseNoiseClass>
     /// Property to get user's preferred walking speed (Read-Only)
     public float PreferredWalkingSpeed { get => m_PreferredWalkingSpeed; }
 
+    /// Property to get standard normal(Gaussian) distribution (Read-Only)
+    public List<float> NoiseDistribution { get => m_StandardNoiseDistribution; }
+
     #endregion
 
     /// <summary>
@@ -84,7 +94,8 @@ public abstract class BaseNoiseClass : SingletonMonobehaviour<BaseNoiseClass>
     {
         m_NoiseDataPanel = GameObject.FindGameObjectWithTag("NoiseDataPanel");
         m_GaussianDistribution = new GaussianDistribution();
-        m_NoiseValueList = new List<float>();       
+        m_NoiseValueList = new List<float>();
+        m_StandardNoiseDistribution = new List<float>();
         InitializeNoiseDataPanelObjects();
         SetUITextVisibility();
     }
@@ -113,10 +124,56 @@ public abstract class BaseNoiseClass : SingletonMonobehaviour<BaseNoiseClass>
     }
 
     /// <summary>
+    /// This function calculate the sample Standard Deviation value and return it.
+    /// </summary>
+    /// <param name="basePinkNoiseList"></param>
+    /// <returns>Sample Standard Deviation</returns>
+    protected double GetStandardDeviation(ref List<float> basePinkNoiseList)
+    {
+        double ret = 0;
+        int count = basePinkNoiseList.Count();
+
+        if (count > 1)
+        {
+            //Compute the Average
+            double avg = basePinkNoiseList.Average();
+
+            //Perform the Sum of (value-avg)^2
+            double sum = basePinkNoiseList.Sum(d => (d - avg) * (d - avg));
+
+            //Put it all together
+            ret = Math.Sqrt(sum / (count - 1));
+        }
+
+        return ret;
+    }
+
+    /// <summary>
+    /// This converts Z values to Z Score values.
+    /// May get off a small amount due to round error.
+    /// </summary>
+    /// <param name="basePinkNoiseList"></param>
+    protected void ConvertToZScore(ref List<float> basePinkNoiseList)
+    {
+        double mean = basePinkNoiseList.Average();
+        double sd = GetStandardDeviation(ref basePinkNoiseList);
+
+        for (int i = 0; i < basePinkNoiseList.Count; i++)
+        {
+            float val = (float)((basePinkNoiseList[i] - mean) / sd);
+            m_StandardNoiseDistribution[i] = val;
+        }
+    }
+
+    /// <summary>
     /// Calculate the colored noise
     /// </summary>
     protected abstract void CalculateNoise();
 
+    /// <summary>
+    /// Calculate the base colored noise
+    /// </summary>
+    protected abstract void CalculateBaseNoise();
 
     /// <summary>
     /// Calculate the noise according to the user input.
@@ -143,6 +200,13 @@ public abstract class BaseNoiseClass : SingletonMonobehaviour<BaseNoiseClass>
         m_Title.text = "Pattern reset to default speed ";
         m_ApplyButton.GetComponent<Interactable>().IsToggled = false;
         m_DistributionButton.GetComponent<Interactable>().IsToggled = false;
+
+        GameObject avatar = GameObject.FindGameObjectWithTag("Avatar");
+
+        if( avatar != null )
+        {
+            avatar.GetComponent<AvatarAnimationState>().ResetAnimationLengthList();
+        }
 
         if( m_NoiseValueList.Count > 0 )
         {

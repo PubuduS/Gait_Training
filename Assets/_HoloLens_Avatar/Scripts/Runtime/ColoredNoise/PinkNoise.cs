@@ -23,21 +23,10 @@ public class PinkNoise : BaseNoiseClass
     /// Used this to calculate pink noise
     private float m_SqrtOfTwo = 0.0f;
 
-    /// Used this as a multiplier to calculate pink noise
-    private float m_Multiplier = 0.0f;
-
     /// A list to hold GKSqrt values.
     /// This is just an intermidiate value use to calculate base Pink noise.
     private List<double> m_GKSqrt;
 
-    /// A List to hold Normal(Gaussian) distribution.
-    private List<float> m_StandardNoiseDistribution;
-
-    #endregion
-
-    #region Public Variables
-    /// Property to get standard normal(Gaussian) distribution (Read-Only)
-    public List<float> NoiseDistribution { get => m_StandardNoiseDistribution; }
     #endregion
 
     /// <summary>
@@ -45,8 +34,7 @@ public class PinkNoise : BaseNoiseClass
     /// </summary>
     protected override void Awake()
     {
-        base.Awake();
-        m_StandardNoiseDistribution = new List<float>();
+        base.Awake();        
         m_GKSqrt = new List<double>();
         m_SqrtOfTwo = Mathf.Sqrt( 2.0f );        
         PopulateVariablesWithDataFromUI();
@@ -71,7 +59,7 @@ public class PinkNoise : BaseNoiseClass
     public override void GenerateNewDistribution()
     {
         base.GenerateNewDistribution();
-        CalculateBasePinkNoise();
+        CalculateBaseNoise();
     }
 
     /// <summary>
@@ -149,7 +137,7 @@ public class PinkNoise : BaseNoiseClass
     /// <summary>
     /// Calculate the base pink noise value.
     /// </summary>
-    private void CalculateBasePinkNoise()
+    protected override void CalculateBaseNoise()
     {
         if( m_StandardNoiseDistribution.Count > 0 )
         {
@@ -248,7 +236,7 @@ public class PinkNoise : BaseNoiseClass
     /// </summary>
     /// <param name="X">Spectrum complex values</param>
     /// <returns>Signal samples in time domain</returns>
-    public void IDFT( ref Complex[] X )
+    private void IDFT( ref Complex[] X )
     {
         // Number of spectrum elements
         int N = X.Length;
@@ -280,7 +268,7 @@ public class PinkNoise : BaseNoiseClass
     /// </summary>
     /// <param name="X">Spectrum complex values</param>
     /// <returns>Return only the real part of the number /returns>
-    public void IDFTReal( ref Complex[] X )
+    private void IDFTReal( ref Complex[] X )
     {
         int N = X.Length; // Number of spectrum elements        
 
@@ -295,48 +283,6 @@ public class PinkNoise : BaseNoiseClass
 
             // As a result we expect only real values (if our calculations are correct imaginary values should be equal or close to zero)
             m_GKSqrt.Add( sum.Real );
-        }
-    }
-
-    /// <summary>
-    /// This function calculate the sample Standard Deviation value and return it.
-    /// </summary>
-    /// <param name="basePinkNoiseList"></param>
-    /// <returns>Sample Standard Deviation</returns>
-    private double GetStandardDeviation( ref List<float> basePinkNoiseList )
-    {
-        double ret = 0;
-        int count = basePinkNoiseList.Count();
-
-        if( count > 1 )
-        {
-            //Compute the Average
-            double avg = basePinkNoiseList.Average();
-
-            //Perform the Sum of (value-avg)^2
-            double sum = basePinkNoiseList.Sum(d => (d - avg) * (d - avg));
-
-            //Put it all together
-            ret = Math.Sqrt( sum / (count - 1) );
-        }
-
-        return ret;
-    }
-
-    /// <summary>
-    /// This converts Z values to Z Score values.
-    /// May get off a small amount due to round error.
-    /// </summary>
-    /// <param name="basePinkNoiseList"></param>
-    private void ConvertToZScore( ref List<float> basePinkNoiseList )
-    {
-        double mean = basePinkNoiseList.Average();
-        double sd = GetStandardDeviation(ref basePinkNoiseList);
-
-        for( int i = 0; i < basePinkNoiseList.Count; i++ )
-        {
-            float val = (float)( ( basePinkNoiseList[i] - mean ) / sd );
-            m_StandardNoiseDistribution[i] = val;
         }
     }
 }

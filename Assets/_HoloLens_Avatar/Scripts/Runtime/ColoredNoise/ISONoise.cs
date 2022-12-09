@@ -30,6 +30,15 @@ public class ISONoise : BaseNoiseClass
     }
 
     /// <summary>
+    /// We don't need this method for this class.
+    /// This is just a dummy implementation.
+    /// </summary>
+    protected override void CalculateBaseNoise()
+    {
+        // No need to implement this method here.
+    }
+
+    /// <summary>
     /// Calculate the noise according to the user input.
     /// Mapped to NoiseDataPanel ApplyPattern button.
     /// </summary>

@@ -17,6 +17,6 @@ public enum ColoredNoise
 {
     None = 0,
     Pink = 1,
-    White = 2,
+    Random = 2,
     ISO = 3
 }

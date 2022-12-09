@@ -97,7 +97,7 @@ public class SetNoise : MonoBehaviour
                 NoiseController.Instance.BaseNoise = m_NoiseObject.AddComponent<ISONoise>();                
                 break;
 
-            case ColoredNoise.White:               
+            case ColoredNoise.Random:               
                 SetColoredObject("Noise: Random");
                 NoiseController.Instance.BaseNoise = m_NoiseObject.AddComponent<WhiteNoise>();                
                 break;

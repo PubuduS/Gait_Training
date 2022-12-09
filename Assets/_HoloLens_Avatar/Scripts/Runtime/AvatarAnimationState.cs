@@ -46,21 +46,14 @@ public class AvatarAnimationState : MonoBehaviour
     /// Use to apply previous noise after changing idle to moving.
     private int m_Counter = 1;
 
-    /// This list stores timestamps of the left heel strikes.
-    private List<float> m_LeftFootTimeStamps = null;
-
-    /// This list stores timestamps of the right heel strikes.
-    private List<float> m_RightFootTimeStamps = null;
+    /// This list stores timestamps of the animation length of the gait cycle.
+    private List<float> m_AnimationLength = null;
 
     /// This stores the length of the original gait cycle animations.    
     private Dictionary<string, float> m_OriginalAnimationLength;
 
-    /// Property to get the left foot time stamp (Read-Only)
-    public List<float> LeftFootTimeStamps { get => m_LeftFootTimeStamps; }
-
-    /// Property to get the right foot time stamp (Read-Only)
-    public List<float> RightFootTimeStamps { get => m_RightFootTimeStamps; }
-
+    /// Property to get the Animation length (Read-Only)
+    public List<float> AnimationLength { get => m_AnimationLength; }
 
     /// <summary>
     /// Gets called first when script is invoked
@@ -72,8 +65,7 @@ public class AvatarAnimationState : MonoBehaviour
         m_SetNoise = GameObject.Find("NoiseController").GetComponent<SetNoise>();
         m_NoiseDataPanelTitle = GameObject.FindGameObjectWithTag("NoiseDataPanelTitle").GetComponent<TextMeshPro>();
         m_NoiseController = GameObject.Find("NoiseController").GetComponent<NoiseController>();
-        m_LeftFootTimeStamps = new List<float>();
-        m_RightFootTimeStamps = new List<float>();
+        m_AnimationLength = new List<float>();
     }
 
     /// <summary>
@@ -93,7 +85,7 @@ public class AvatarAnimationState : MonoBehaviour
     /// If user didn't add SD or mean, it use 1 as the default time to complete the animation( one gait cycle).
     /// Otherwise, it shrinks or expands the time to complete the gait animation cycle.
     /// </summary>
-    void Update() 
+    private void Update() 
     {
         
         // Check the player is moving or not.
@@ -131,7 +123,7 @@ public class AvatarAnimationState : MonoBehaviour
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Joel_WGN") )
         {
-            ResetNoiseAfterEnd( m_NoiseController.BaseNoise.NoiseValueList.Count, "White" );
+            ResetNoiseAfterEnd( m_NoiseController.BaseNoise.NoiseValueList.Count, "Random" );
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") )
         {
@@ -168,7 +160,7 @@ public class AvatarAnimationState : MonoBehaviour
         float noiseValue = m_DefaultAnimationSpeed;
         float desiredSpeed = m_DefaultAnimationSpeed;
 
-        if( String.Equals( m_NoisePatternLbl, "Pink" ) || ( String.Equals( m_NoisePatternLbl, "White" ) ) )
+        if( String.Equals( m_NoisePatternLbl, "Pink" ) || ( String.Equals( m_NoisePatternLbl, "Random" ) ) )
         {
             noiseValue = Mathf.Abs( m_NoiseController.BaseNoise.NoiseValueList[m_NoiseIndex] );
         }
@@ -190,17 +182,25 @@ public class AvatarAnimationState : MonoBehaviour
         float animationLength = 0.0f;
         bool isValidAnimLength = m_OriginalAnimationLength.TryGetValue(m_NoisePatternLbl, out animationLength);
 
-        if (isValidAnimLength)
+        if( isValidAnimLength && noiseValue != 0 )
         {
-            desiredSpeed = (animationLength / noiseValue);            
+            desiredSpeed = ( animationLength / noiseValue );            
         }
 
         m_IsAnimationLocked = true;
         m_Animator.speed = desiredSpeed;
         m_NoiseDataPanelTitle.text = m_NoisePatternLbl + " Noise = " + noiseValue;
 
-        float len = m_Animator.GetCurrentAnimatorStateInfo(0).length;        
-        Debug.Log( "Number: " + noiseValue + " Time: " + Time.realtimeSinceStartup + " Len: " + len );        
+        float len = m_Animator.GetCurrentAnimatorStateInfo(0).length;
+
+        // Since ISO is a constant we don't need to add it to anim length list.
+        if ( String.Equals( m_NoisePatternLbl, "Pink" ) || ( String.Equals( m_NoisePatternLbl, "Random" ) ) )
+        {
+            m_AnimationLength.Add( len );
+        }        
+        
+        // Only for debug.
+        // Debug.Log( "Number: " + noiseValue + " Time: " + Time.realtimeSinceStartup + " Len: " + len );        
     }
 
     /// <summary>
@@ -223,7 +223,7 @@ public class AvatarAnimationState : MonoBehaviour
                     break;
 
                 case "Joel_WGN":
-                    m_OriginalAnimationLength.Add( "White", clip.length );
+                    m_OriginalAnimationLength.Add( "Random", clip.length );
                     break;
 
                 default:
@@ -241,8 +241,7 @@ public class AvatarAnimationState : MonoBehaviour
     {        
         if( m_IsAnimationLocked == false )
         {
-            RunGaitCycle();
-            m_RightFootTimeStamps.Add( Time.unscaledTime );
+            RunGaitCycle();            
         }
     }
 
@@ -276,5 +275,15 @@ public class AvatarAnimationState : MonoBehaviour
                 m_IdleElementFlag = false;
             }
         }
+    }
+
+    /// <summary>
+    /// Called after user click cancel pattern button in Noise UI.
+    /// </summary>
+    public void ResetAnimationLengthList()
+    {
+        m_AnimationLength.Clear();
+        m_NoiseIndex = 0;
+        m_Counter = 1;
     }
 }
