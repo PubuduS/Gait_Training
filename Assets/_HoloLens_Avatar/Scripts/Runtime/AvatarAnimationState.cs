@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -36,6 +37,9 @@ public class AvatarAnimationState : MonoBehaviour
 
     /// Default value of animation speed.
     private const float m_DefaultAnimationSpeed = 1.0f;
+
+    /// UI confirmation pop-up panel.
+    [SerializeField] private GameObject m_DialogPrefabMedium = null;
 
     /// When Avatar goes to Idle, m_NoiseIndex will
     /// increment by 1. This will omit the next noise
@@ -146,8 +150,18 @@ public class AvatarAnimationState : MonoBehaviour
 
         if( m_NoiseIndex >= noiseLength )
         {
+            OpenConfirmationDialogMedium();
             m_NoiseIndex = 0;
         }
+    }
+
+    /// <summary>
+    /// Opens confirmation dialog example
+    /// </summary>
+    private void OpenConfirmationDialogMedium()
+    {
+        Dialog.Open( m_DialogPrefabMedium, DialogButtonType.OK, "Confirmation Dialog, Medium, Near", "Times Up!" +
+                     " You covered required distance.", true);
     }
 
     /// <summary>
@@ -192,13 +206,8 @@ public class AvatarAnimationState : MonoBehaviour
         m_NoiseDataPanelTitle.text = m_NoisePatternLbl + " Noise = " + noiseValue;
 
         float len = m_Animator.GetCurrentAnimatorStateInfo(0).length;
+        m_AnimationLength.Add( len );
 
-        // Since ISO is a constant we don't need to add it to anim length list.
-        if ( String.Equals( m_NoisePatternLbl, "Pink" ) || ( String.Equals( m_NoisePatternLbl, "Random" ) ) )
-        {
-            m_AnimationLength.Add( len );
-        }        
-        
         // Only for debug.
         // Debug.Log( "Number: " + noiseValue + " Time: " + Time.realtimeSinceStartup + " Len: " + len );        
     }

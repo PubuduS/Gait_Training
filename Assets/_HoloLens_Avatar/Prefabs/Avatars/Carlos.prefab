@@ -1700,6 +1700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0a8a1661e1f2b429c99eacb0d61bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_DialogPrefabMedium: {fileID: 5736420520322572960, guid: f3f966a9435e4d4478535458782497f4, type: 3}
 --- !u!114 &-2128589715232066784
 MonoBehaviour:
   m_ObjectHideFlags: 0
