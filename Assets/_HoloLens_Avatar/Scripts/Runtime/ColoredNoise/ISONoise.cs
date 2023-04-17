@@ -25,7 +25,7 @@ public class ISONoise : BaseNoiseClass
     {
         m_MeanPeriodLabel.gameObject.SetActive(false);
         m_SDPeriodLabel.gameObject.SetActive(false);
-        m_SampleSizeLabel.gameObject.SetActive(false);
+        m_SampleSizeLabel.gameObject.SetActive(true);
         m_PreferredSpeedLabel.gameObject.SetActive(true);
     }
 
@@ -61,10 +61,16 @@ public class ISONoise : BaseNoiseClass
     }
 
     /// <summary>
-    /// Calculate the white/random noise.
+    /// Calculate the ISO noise.
     /// </summary>
     protected override void CalculateNoise()
-    {       
+    {
+        m_SampleSize = (int)ExtractDecimalFromUI( m_SampleSizeLabel.text );
         m_PreferredWalkingSpeed = (float)ExtractDecimalFromUI( m_PreferredSpeedLabel.text );
+
+        for( int i = 0; i < m_SampleSize; ++i )
+        {
+            m_NoiseValueList.Add( m_PreferredWalkingSpeed );
+        }
     }
 }

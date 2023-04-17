@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections.Generic;
 using TMPro;
@@ -122,8 +121,8 @@ public class AvatarAnimationState : MonoBehaviour
             ResetNoiseAfterEnd( m_NoiseController.BaseNoise.NoiseValueList.Count, "Pink" );
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Joel_Iso") )
-        {
-            m_NoisePatternLbl = "ISO";
+        {            
+            ResetNoiseAfterEnd( m_NoiseController.BaseNoise.NoiseValueList.Count, "ISO" );
         }
         else if( m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Joel_WGN") )
         {
@@ -160,7 +159,7 @@ public class AvatarAnimationState : MonoBehaviour
     /// </summary>
     private void OpenConfirmationDialogMedium()
     {
-        Dialog.Open( m_DialogPrefabMedium, DialogButtonType.OK, "Confirmation Dialog, Medium, Near", "Times Up!" +
+        Dialog.Open( m_DialogPrefabMedium, DialogButtonType.OK, "Good Job!", "Times Up!" +
                      " You covered required distance.", true);
     }
 
@@ -174,13 +173,10 @@ public class AvatarAnimationState : MonoBehaviour
         float noiseValue = m_DefaultAnimationSpeed;
         float desiredSpeed = m_DefaultAnimationSpeed;
 
-        if( String.Equals( m_NoisePatternLbl, "Pink" ) || ( String.Equals( m_NoisePatternLbl, "Random" ) ) )
+        if( String.Equals( m_NoisePatternLbl, "Pink" ) || ( String.Equals( m_NoisePatternLbl, "Random" ) ) ||
+            String.Equals( m_NoisePatternLbl, "ISO" ) )
         {
             noiseValue = Mathf.Abs( m_NoiseController.BaseNoise.NoiseValueList[m_NoiseIndex] );
-        }
-        else if( String.Equals( m_NoisePatternLbl, "ISO" ) )
-        {
-            noiseValue = Mathf.Abs( m_NoiseController.BaseNoise.PreferredWalkingSpeed );
         }
         else if( String.Equals( m_NoisePatternLbl, "Idle" ) )
         {
@@ -194,7 +190,7 @@ public class AvatarAnimationState : MonoBehaviour
         }
         
         float animationLength = 0.0f;
-        bool isValidAnimLength = m_OriginalAnimationLength.TryGetValue(m_NoisePatternLbl, out animationLength);
+        bool isValidAnimLength = m_OriginalAnimationLength.TryGetValue( m_NoisePatternLbl, out animationLength );
 
         if( isValidAnimLength && noiseValue != 0 )
         {
@@ -262,7 +258,7 @@ public class AvatarAnimationState : MonoBehaviour
     {
         m_IsAnimationLocked = false;
 
-        if ( !String.Equals(m_NoisePatternLbl, "ISO") && ( m_IsAnimationLocked == false ) && m_IdleElementFlag == false )
+        if ( ( m_IsAnimationLocked == false ) && ( m_IdleElementFlag == false ) )
         {            
             m_NoiseIndex++;            
         }
