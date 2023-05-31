@@ -1,0 +1,4 @@
+<map id="CamMovementTracker.CalculateSpeed" name="CamMovementTracker.CalculateSpeed">
+<area shape="rect" id="node1" title="Calculate Speed in killo meters per hour." alt="" coords="5,5,216,45"/>
+<area shape="rect" id="node2" href="$classCamMovementTracker.html#a0331a79cedc0081fc8bf0bc10ca54b2f" title="Calculate Distance" alt="" coords="264,5,475,45"/>
+</map>

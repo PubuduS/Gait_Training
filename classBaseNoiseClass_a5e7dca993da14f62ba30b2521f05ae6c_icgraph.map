@@ -1,0 +1,4 @@
+<map id="BaseNoiseClass.GenerateNewDistribution" name="BaseNoiseClass.GenerateNewDistribution">
+<area shape="rect" id="node1" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="280,5,483,45"/>
+<area shape="rect" id="node2" href="$classNoiseController.html#afc3e6b1d1d4a8617c86074745b8f1e2a" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="5,13,232,38"/>
+</map>

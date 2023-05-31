@@ -1,0 +1,6 @@
+<map id="BaseNoiseClass.SetReadyMessage" name="BaseNoiseClass.SetReadyMessage">
+<area shape="rect" id="node1" title="Indicate noise is successgully applied or not." alt="" coords="220,55,451,80"/>
+<area shape="rect" id="node2" href="$classISONoise.html#a90efff69aa4744c153c71f75ce7b716a" title="Calculate the noise according to the user input. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="11,5,167,31"/>
+<area shape="rect" id="node3" href="$classPinkNoise.html#a06726d8f483aa59d730a88f833ef1d06" title="Calculate the noise according to the user input. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="9,55,168,80"/>
+<area shape="rect" id="node4" href="$classWhiteNoise.html#ac3b56c280f3654f87116f3e4bf866420" title="Calculate the noise according to the user input. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="5,104,172,129"/>
+</map>

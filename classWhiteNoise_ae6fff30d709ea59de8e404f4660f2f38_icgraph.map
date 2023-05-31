@@ -1,0 +1,4 @@
+<map id="WhiteNoise.CalculateBaseNoise" name="WhiteNoise.CalculateBaseNoise">
+<area shape="rect" id="node1" title="Calculate the white/random noise." alt="" coords="291,5,467,45"/>
+<area shape="rect" id="node2" href="$classWhiteNoise.html#a5f0872d51e4ffed299349d234eb2fb82" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="5,13,243,38"/>
+</map>

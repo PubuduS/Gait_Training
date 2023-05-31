@@ -1,0 +1,7 @@
+<map id="WhiteNoise.GenerateNewDistribution" name="WhiteNoise.GenerateNewDistribution">
+<area shape="rect" id="node1" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="5,45,243,70"/>
+<area shape="rect" id="node2" href="$classWhiteNoise.html#ae6fff30d709ea59de8e404f4660f2f38" title="Calculate the white/random noise." alt="" coords="291,37,467,77"/>
+<area shape="rect" id="node3" href="$classBaseNoiseClass.html#a042b465664c1058c08e4fe6b54e28eae" title="Populate data variables used to alter noise. The data are gained through UI lables which are set by t..." alt="" coords="515,5,741,45"/>
+<area shape="rect" id="node5" href="$classGaussianDistribution.html#a5fccfc0082b1a295567d421d719a30c7" title="Obtains normally (Gaussian) distrubuted random numbers, using the Box&#45;Muller transformation...." alt="" coords="531,69,725,109"/>
+<area shape="rect" id="node4" href="$classBaseNoiseClass.html#aa0bf38ac13a1e5edbf031cb607f9ecdb" title="Get the number part from the UI textfields." alt="" coords="789,5,999,45"/>
+</map>

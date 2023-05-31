@@ -1,0 +1,4 @@
+<map id="AvatarAnimationState.ResetNoiseAfterEnd" name="AvatarAnimationState.ResetNoiseAfterEnd">
+<area shape="rect" id="node1" title="When we reached to the end of the colred noise list, we looped back to the beginning." alt="" coords="5,5,192,45"/>
+<area shape="rect" id="node2" href="$classAvatarAnimationState.html#a021e675a31600075273562f5f74d1215" title="Opens confirmation dialog example" alt="" coords="240,5,423,45"/>
+</map>

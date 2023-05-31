@@ -1,0 +1,7 @@
+<map id="ISONoise" name="ISONoise">
+<area shape="rect" id="node1" title="Apply a constant speed for the whole walk cycle." alt="" coords="9,1108,231,1251"/>
+<area shape="rect" id="node2" href="$classBaseNoiseClass.html" title=" " alt="" coords="5,344,235,1059"/>
+<area shape="rect" id="node3" title=" " alt="" coords="10,168,126,208"/>
+<area shape="rect" id="node4" href="$classGaussianDistribution.html" title="Takes two uniformly distributed deviates within the unit circle, and transforms them into two indepen..." alt="" coords="150,95,314,281"/>
+<area shape="rect" id="node5" title=" " alt="" coords="170,5,294,45"/>
+</map>

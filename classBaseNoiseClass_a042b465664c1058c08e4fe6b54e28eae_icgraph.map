@@ -1,0 +1,8 @@
+<map id="BaseNoiseClass.PopulateVariablesWithDataFromUI" name="BaseNoiseClass.PopulateVariablesWithDataFromUI">
+<area shape="rect" id="node1" title="Populate data variables used to alter noise. The data are gained through UI lables which are set by t..." alt="" coords="541,55,768,95"/>
+<area shape="rect" id="node2" href="$classWhiteNoise.html#a3a6aa087e11e414f6bd9ad4a814acb09" title="Extend the base class initializations." alt="" coords="326,5,458,31"/>
+<area shape="rect" id="node3" href="$classWhiteNoise.html#ae6fff30d709ea59de8e404f4660f2f38" title="Calculate the white/random noise." alt="" coords="304,55,480,95"/>
+<area shape="rect" id="node5" href="$classBaseNoiseClass.html#a5e7dca993da14f62ba30b2521f05ae6c" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="291,119,493,159"/>
+<area shape="rect" id="node4" href="$classWhiteNoise.html#a5f0872d51e4ffed299349d234eb2fb82" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="5,63,243,88"/>
+<area shape="rect" id="node6" href="$classNoiseController.html#afc3e6b1d1d4a8617c86074745b8f1e2a" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="11,127,237,152"/>
+</map>

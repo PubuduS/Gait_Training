@@ -1,0 +1,5 @@
+<map id="PinkNoise.CalculateNoise" name="PinkNoise.CalculateNoise">
+<area shape="rect" id="node1" title="Scale the base pink noise." alt="" coords="5,13,179,38"/>
+<area shape="rect" id="node2" href="$classBaseNoiseClass.html#a208558170b952eff4495c79aae4fc942" title="This converts Z values to Z Score values. May get off a small amount due to round error." alt="" coords="227,5,409,45"/>
+<area shape="rect" id="node3" href="$classBaseNoiseClass.html#a78bc84f51708d1ee2d960ee102a17f99" title="This function calculate the sample Standard Deviation value and return it." alt="" coords="457,5,652,45"/>
+</map>

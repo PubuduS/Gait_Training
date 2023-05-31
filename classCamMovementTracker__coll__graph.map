@@ -1,0 +1,4 @@
+<map id="CamMovementTracker" name="CamMovementTracker">
+<area shape="rect" id="node1" title="A singleton Instance to track Camera Movements This will also calculate distance, rotation and speed ..." alt="" coords="5,93,236,397"/>
+<area shape="rect" id="node2" title=" " alt="" coords="63,5,179,45"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="ISONoise.ApplyPattern" name="ISONoise.ApplyPattern">
+<area shape="rect" id="node1" title="Calculate the noise according to the user input. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="5,38,161,63"/>
+<area shape="rect" id="node2" href="$classISONoise.html#a0c68053501c49e29cb15113838c0c91e" title="Calculate the ISO noise." alt="" coords="239,13,410,38"/>
+<area shape="rect" id="node4" href="$classBaseNoiseClass.html#ac97108eb60372196d2b22594cdf7326e" title="Indicate noise is successgully applied or not." alt="" coords="209,62,440,87"/>
+<area shape="rect" id="node3" href="$classBaseNoiseClass.html#aa0bf38ac13a1e5edbf031cb607f9ecdb" title="Get the number part from the UI textfields." alt="" coords="488,5,697,45"/>
+</map>

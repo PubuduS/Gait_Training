@@ -1,0 +1,4 @@
+<map id="ISONoise.CalculateNoise" name="ISONoise.CalculateNoise">
+<area shape="rect" id="node1" title="Calculate the ISO noise." alt="" coords="209,5,380,31"/>
+<area shape="rect" id="node2" href="$classISONoise.html#a90efff69aa4744c153c71f75ce7b716a" title="Calculate the noise according to the user input. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="5,5,161,31"/>
+</map>

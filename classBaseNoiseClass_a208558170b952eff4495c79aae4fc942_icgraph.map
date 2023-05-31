@@ -1,0 +1,7 @@
+<map id="BaseNoiseClass.ConvertToZScore" name="BaseNoiseClass.ConvertToZScore">
+<area shape="rect" id="node1" title="This converts Z values to Z Score values. May get off a small amount due to round error." alt="" coords="448,23,631,63"/>
+<area shape="rect" id="node2" href="$classPinkNoise.html#a74a02ca39cd5fb8754b2cd9fb2c0f051" title="Scale the base pink noise." alt="" coords="223,5,397,31"/>
+<area shape="rect" id="node4" href="$classWhiteNoise.html#aaafd59b8b0d00bed209a5fc7b8fd840e" title="Scale the base Random/White noise." alt="" coords="220,55,400,80"/>
+<area shape="rect" id="node3" href="$classPinkNoise.html#a06726d8f483aa59d730a88f833ef1d06" title="Calculate the noise according to the user input. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="9,5,168,31"/>
+<area shape="rect" id="node5" href="$classWhiteNoise.html#ac3b56c280f3654f87116f3e4bf866420" title="Calculate the noise according to the user input. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="5,55,172,80"/>
+</map>

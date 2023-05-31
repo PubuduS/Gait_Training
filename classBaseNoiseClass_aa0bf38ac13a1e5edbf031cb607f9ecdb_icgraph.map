@@ -1,0 +1,11 @@
+<map id="BaseNoiseClass.ExtractDecimalFromUI" name="BaseNoiseClass.ExtractDecimalFromUI">
+<area shape="rect" id="node1" title="Get the number part from the UI textfields." alt="" coords="816,53,1025,93"/>
+<area shape="rect" id="node2" href="$classISONoise.html#a0c68053501c49e29cb15113838c0c91e" title="Calculate the ISO noise." alt="" coords="569,19,740,44"/>
+<area shape="rect" id="node4" href="$classBaseNoiseClass.html#a042b465664c1058c08e4fe6b54e28eae" title="Populate data variables used to alter noise. The data are gained through UI lables which are set by t..." alt="" coords="541,81,768,121"/>
+<area shape="rect" id="node3" href="$classISONoise.html#a90efff69aa4744c153c71f75ce7b716a" title="Calculate the noise according to the user input. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="314,5,470,31"/>
+<area shape="rect" id="node5" href="$classWhiteNoise.html#a3a6aa087e11e414f6bd9ad4a814acb09" title="Extend the base class initializations." alt="" coords="326,55,458,80"/>
+<area shape="rect" id="node6" href="$classWhiteNoise.html#ae6fff30d709ea59de8e404f4660f2f38" title="Calculate the white/random noise." alt="" coords="304,105,480,145"/>
+<area shape="rect" id="node8" href="$classBaseNoiseClass.html#a5e7dca993da14f62ba30b2521f05ae6c" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="291,169,493,209"/>
+<area shape="rect" id="node7" href="$classWhiteNoise.html#a5f0872d51e4ffed299349d234eb2fb82" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="5,112,243,137"/>
+<area shape="rect" id="node9" href="$classNoiseController.html#afc3e6b1d1d4a8617c86074745b8f1e2a" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="11,176,237,201"/>
+</map>

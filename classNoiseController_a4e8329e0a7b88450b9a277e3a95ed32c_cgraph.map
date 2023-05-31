@@ -1,0 +1,4 @@
+<map id="NoiseController.CancelNoise" name="NoiseController.CancelNoise">
+<area shape="rect" id="node1" title="Cancel the current noise pattern and reset it with default speed. Mapped to NoiseDataPanel CancelPatt..." alt="" coords="5,5,193,31"/>
+<area shape="rect" id="node2" href="$classBaseNoiseClass.html#adac1032fe7e03c320608f0a8862a47aa" title="Cancel the current noise pattern and reset it with default speed. Mapped to NoiseDataPanel CancelPatt..." alt="" coords="241,5,445,31"/>
+</map>

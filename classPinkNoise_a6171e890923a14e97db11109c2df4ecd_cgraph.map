@@ -1,0 +1,4 @@
+<map id="PinkNoise.Awake" name="PinkNoise.Awake">
+<area shape="rect" id="node1" title=" " alt="" coords="5,13,131,38"/>
+<area shape="rect" id="node2" href="$classPinkNoise.html#afc4289a18b0f17ed257bd5f7db9f70e9" title="Populate data variables used to alter noise. The data are gained through UI lables which are set by t..." alt="" coords="179,5,369,45"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="SetNoise.SetNoisePattern" name="SetNoise.SetNoisePattern">
+<area shape="rect" id="node1" title="Gets called from the button&#39;s OnClick event. 0 is for deafult pattern 1 is for Pink noise pattern...." alt="" coords="5,13,180,38"/>
+<area shape="rect" id="node2" href="$classSetNoise.html#af0d927214e0a60694e3d0c15499885fc" title="Sets the label according to the user selection. User can see what they selected in Avatar panel under..." alt="" coords="228,13,401,38"/>
+<area shape="rect" id="node3" href="$classSetNoise.html#a3c9ec9c93235b78eac0a338bd6e6d8ca" title="Set the lable and removed previously attached noise game objects. For example, when we transit from p..." alt="" coords="449,13,631,38"/>
+<area shape="rect" id="node4" href="$classRemoveAllComponents.html#a0a2a042f364b50557c2a6ffdd1983836" title=" " alt="" coords="679,5,888,45"/>
+</map>

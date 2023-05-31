@@ -1,0 +1,5 @@
+<map id="AvatarAnimationState.ApplyCorrectNoisePattern" name="AvatarAnimationState.ApplyCorrectNoisePattern">
+<area shape="rect" id="node1" title="Get the calculated noise pattern and apply that to animation speed. This noise will shrink or expand ..." alt="" coords="5,5,189,45"/>
+<area shape="rect" id="node2" href="$classAvatarAnimationState.html#a93e0a2bef1eb5d299bb27964c502c661" title="When we reached to the end of the colred noise list, we looped back to the beginning." alt="" coords="237,5,424,45"/>
+<area shape="rect" id="node3" href="$classAvatarAnimationState.html#a021e675a31600075273562f5f74d1215" title="Opens confirmation dialog example" alt="" coords="472,5,655,45"/>
+</map>

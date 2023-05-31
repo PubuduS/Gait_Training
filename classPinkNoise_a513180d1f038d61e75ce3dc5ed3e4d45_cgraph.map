@@ -1,0 +1,4 @@
+<map id="PinkNoise.CalculateGKSQRT" name="PinkNoise.CalculateGKSQRT">
+<area shape="rect" id="node1" title="This value is used to calculate base pink noise TODO &#45;&gt; We can parellize this in future." alt="" coords="5,5,200,31"/>
+<area shape="rect" id="node2" href="$classPinkNoise.html#a180f7e19cc6c8d9fb301c528c51e4bfe" title="Calculates inverse Discrete Fourier Transform of given spectrum X" alt="" coords="248,5,388,31"/>
+</map>

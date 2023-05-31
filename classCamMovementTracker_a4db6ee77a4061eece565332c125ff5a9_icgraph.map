@@ -1,0 +1,4 @@
+<map id="CamMovementTracker.IsCameraMoving" name="CamMovementTracker.IsCameraMoving">
+<area shape="rect" id="node1" title="Calculate whether the player is moving or not." alt="" coords="252,5,465,45"/>
+<area shape="rect" id="node2" href="$classCamMovementTracker.html#ae8a8db79d85683c86b5598a2388e4ec8" title="Update is called once per frame." alt="" coords="5,13,204,38"/>
+</map>

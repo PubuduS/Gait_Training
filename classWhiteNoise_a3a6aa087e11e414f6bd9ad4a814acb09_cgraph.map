@@ -1,0 +1,5 @@
+<map id="WhiteNoise.Awake" name="WhiteNoise.Awake">
+<area shape="rect" id="node1" title="Extend the base class initializations." alt="" coords="5,13,137,38"/>
+<area shape="rect" id="node2" href="$classBaseNoiseClass.html#a042b465664c1058c08e4fe6b54e28eae" title="Populate data variables used to alter noise. The data are gained through UI lables which are set by t..." alt="" coords="185,5,412,45"/>
+<area shape="rect" id="node3" href="$classBaseNoiseClass.html#aa0bf38ac13a1e5edbf031cb607f9ecdb" title="Get the number part from the UI textfields." alt="" coords="460,5,669,45"/>
+</map>

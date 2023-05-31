@@ -1,0 +1,5 @@
+<map id="CamMovementTracker.CalculateDistanceCovered" name="CamMovementTracker.CalculateDistanceCovered">
+<area shape="rect" id="node1" title="Calculate Distance" alt="" coords="511,35,721,75"/>
+<area shape="rect" id="node2" href="$classCamMovementTracker.html#a715984d08d16588c90dd584a4c2f446e" title="Calculate Speed in killo meters per hour." alt="" coords="252,5,463,45"/>
+<area shape="rect" id="node3" href="$classCamMovementTracker.html#ae8a8db79d85683c86b5598a2388e4ec8" title="Update is called once per frame." alt="" coords="5,42,204,67"/>
+</map>

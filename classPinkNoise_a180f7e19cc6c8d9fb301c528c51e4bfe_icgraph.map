@@ -1,0 +1,6 @@
+<map id="PinkNoise.IDFTReal" name="PinkNoise.IDFTReal">
+<area shape="rect" id="node1" title="Calculates inverse Discrete Fourier Transform of given spectrum X" alt="" coords="777,5,917,31"/>
+<area shape="rect" id="node2" href="$classPinkNoise.html#a513180d1f038d61e75ce3dc5ed3e4d45" title="This value is used to calculate base pink noise TODO &#45;&gt; We can parellize this in future." alt="" coords="535,5,729,31"/>
+<area shape="rect" id="node3" href="$classPinkNoise.html#aa307fe161aff5055596c3a566f786ef8" title="Calculate the base pink noise value." alt="" coords="284,5,487,31"/>
+<area shape="rect" id="node4" href="$classPinkNoise.html#a195f9873c6ed0dd875d8b883e2c05a1e" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="5,5,236,31"/>
+</map>

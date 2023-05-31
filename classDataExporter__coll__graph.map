@@ -1,0 +1,12 @@
+<map id="DataExporter" name="DataExporter">
+<area shape="rect" id="node1" title="This class is a helper class used to export data to files." alt="" coords="5,2031,216,2320"/>
+<area shape="rect" id="node2" title=" " alt="" coords="133,168,249,208"/>
+<area shape="rect" id="node3" href="$classAvatarAnimationState.html" title="This class is used to control the avartar animation state." alt="" coords="151,1444,372,1968"/>
+<area shape="rect" id="node4" href="$classSetNoise.html" title="This class is used to set noise pattern levels. When user press a button, it will change the pattern." alt="" coords="177,1121,396,1381"/>
+<area shape="rect" id="node5" href="$classRemoveAllComponents.html" title=" " alt="" coords="229,674,473,729"/>
+<area shape="rect" id="node8" href="$classBaseNoiseClass.html" title=" " alt="" coords="497,344,727,1059"/>
+<area shape="rect" id="node6" href="$classNoiseController.html" title="This class initiate appopriate noise objects." alt="" coords="512,1195,712,1308"/>
+<area shape="rect" id="node7" href="$classSingletonMonobehaviour.html" title=" " alt="" coords="751,652,919,751"/>
+<area shape="rect" id="node9" href="$classGaussianDistribution.html" title="Takes two uniformly distributed deviates within the unit circle, and transforms them into two indepen..." alt="" coords="530,95,694,281"/>
+<area shape="rect" id="node10" title=" " alt="" coords="550,5,674,45"/>
+</map>

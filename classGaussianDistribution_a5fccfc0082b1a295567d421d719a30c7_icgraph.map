@@ -1,0 +1,7 @@
+<map id="GaussianDistribution.RandomGauss" name="GaussianDistribution.RandomGauss">
+<area shape="rect" id="node1" title="Obtains normally (Gaussian) distrubuted random numbers, using the Box&#45;Muller transformation...." alt="" coords="541,27,735,67"/>
+<area shape="rect" id="node2" href="$classPinkNoise.html#aa307fe161aff5055596c3a566f786ef8" title="Calculate the base pink noise value." alt="" coords="291,5,493,31"/>
+<area shape="rect" id="node4" href="$classWhiteNoise.html#ae6fff30d709ea59de8e404f4660f2f38" title="Calculate the white/random noise." alt="" coords="304,55,480,95"/>
+<area shape="rect" id="node3" href="$classPinkNoise.html#a195f9873c6ed0dd875d8b883e2c05a1e" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="9,5,239,31"/>
+<area shape="rect" id="node5" href="$classWhiteNoise.html#a5f0872d51e4ffed299349d234eb2fb82" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="5,63,243,88"/>
+</map>

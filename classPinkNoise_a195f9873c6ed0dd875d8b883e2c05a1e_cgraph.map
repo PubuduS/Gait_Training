@@ -1,0 +1,8 @@
+<map id="PinkNoise.GenerateNewDistribution" name="PinkNoise.GenerateNewDistribution">
+<area shape="rect" id="node1" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="5,55,236,80"/>
+<area shape="rect" id="node2" href="$classPinkNoise.html#aa307fe161aff5055596c3a566f786ef8" title="Calculate the base pink noise value." alt="" coords="284,55,487,80"/>
+<area shape="rect" id="node3" href="$classPinkNoise.html#a513180d1f038d61e75ce3dc5ed3e4d45" title="This value is used to calculate base pink noise TODO &#45;&gt; We can parellize this in future." alt="" coords="535,5,729,31"/>
+<area shape="rect" id="node5" href="$classPinkNoise.html#af65eb44d04f8bfe56b342105cda3c901" title="Calculates inverse Discrete Fourier Transform of given spectrum X" alt="" coords="575,55,689,80"/>
+<area shape="rect" id="node6" href="$classGaussianDistribution.html#a5fccfc0082b1a295567d421d719a30c7" title="Obtains normally (Gaussian) distrubuted random numbers, using the Box&#45;Muller transformation...." alt="" coords="535,105,729,145"/>
+<area shape="rect" id="node4" href="$classPinkNoise.html#a180f7e19cc6c8d9fb301c528c51e4bfe" title="Calculates inverse Discrete Fourier Transform of given spectrum X" alt="" coords="777,5,917,31"/>
+</map>

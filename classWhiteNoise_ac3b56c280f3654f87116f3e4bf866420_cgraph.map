@@ -1,0 +1,7 @@
+<map id="WhiteNoise.ApplyPattern" name="WhiteNoise.ApplyPattern">
+<area shape="rect" id="node1" title="Calculate the noise according to the user input. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="5,38,172,63"/>
+<area shape="rect" id="node2" href="$classWhiteNoise.html#aaafd59b8b0d00bed209a5fc7b8fd840e" title="Scale the base Random/White noise." alt="" coords="245,13,425,38"/>
+<area shape="rect" id="node5" href="$classBaseNoiseClass.html#ac97108eb60372196d2b22594cdf7326e" title="Indicate noise is successgully applied or not." alt="" coords="220,62,451,87"/>
+<area shape="rect" id="node3" href="$classBaseNoiseClass.html#a208558170b952eff4495c79aae4fc942" title="This converts Z values to Z Score values. May get off a small amount due to round error." alt="" coords="499,5,681,45"/>
+<area shape="rect" id="node4" href="$classBaseNoiseClass.html#a78bc84f51708d1ee2d960ee102a17f99" title="This function calculate the sample Standard Deviation value and return it." alt="" coords="729,5,924,45"/>
+</map>

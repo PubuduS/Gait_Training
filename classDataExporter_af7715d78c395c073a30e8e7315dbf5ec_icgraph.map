@@ -1,0 +1,4 @@
+<map id="DataExporter.ExportFiles" name="DataExporter.ExportFiles">
+<area shape="rect" id="node1" title="This function exports signal data and left/right heel strike time stamps." alt="" coords="244,5,407,31"/>
+<area shape="rect" id="node2" href="$classDataExporter.html#ab758b527b1e2f2db8f0aece1669362f4" title="This function start a Coroutine to export data Mapped to export data button." alt="" coords="5,5,196,31"/>
+</map>

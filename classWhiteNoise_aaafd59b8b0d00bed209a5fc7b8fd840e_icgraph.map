@@ -1,0 +1,4 @@
+<map id="WhiteNoise.CalculateNoise" name="WhiteNoise.CalculateNoise">
+<area shape="rect" id="node1" title="Scale the base Random/White noise." alt="" coords="220,5,400,31"/>
+<area shape="rect" id="node2" href="$classWhiteNoise.html#ac3b56c280f3654f87116f3e4bf866420" title="Calculate the noise according to the user input. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="5,5,172,31"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="BaseNoiseClass.InitializeNoiseDataPanelObjects" name="BaseNoiseClass.InitializeNoiseDataPanelObjects">
+<area shape="rect" id="node1" title="Cache the references of NoiseDataPanel gameobjects." alt="" coords="216,5,385,45"/>
+<area shape="rect" id="node2" href="$classBaseNoiseClass.html#acca2f02d19aefedb332a15d11a6f7c0d" title="When invoke the scripts performas all the initializations including, Lists, scripts,..." alt="" coords="5,13,168,38"/>
+</map>

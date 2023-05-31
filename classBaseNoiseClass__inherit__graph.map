@@ -1,0 +1,7 @@
+<map id="BaseNoiseClass" name="BaseNoiseClass">
+<area shape="rect" id="node1" title=" " alt="" coords="245,93,474,823"/>
+<area shape="rect" id="node3" href="$classISONoise.html" title="Apply a constant speed for the whole walk cycle." alt="" coords="5,937,228,1079"/>
+<area shape="rect" id="node4" href="$classPinkNoise.html" title=" " alt="" coords="253,871,466,1145"/>
+<area shape="rect" id="node5" href="$classWhiteNoise.html" title="Handle the Random (White) Noise." alt="" coords="491,937,695,1079"/>
+<area shape="rect" id="node2" title=" " alt="" coords="301,5,417,45"/>
+</map>

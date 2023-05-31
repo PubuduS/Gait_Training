@@ -1,0 +1,4 @@
+<map id="AvatarAnimationState.RunGaitCycle" name="AvatarAnimationState.RunGaitCycle">
+<area shape="rect" id="node1" title="Expand and Shrink gait cycle animation The completion time of animation is the value of pink or white..." alt="" coords="265,5,440,45"/>
+<area shape="rect" id="node2" href="$classAvatarAnimationState.html#ad681a21373567bcd6964d9dfeee36a62" title="Lockdown the animation until it played out. Animation will unlock after it complete the current loop...." alt="" coords="5,5,217,45"/>
+</map>

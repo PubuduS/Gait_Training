@@ -1,0 +1,4 @@
+<map id="AvatarSpawner.SetVisibleCellIndex" name="AvatarSpawner.SetVisibleCellIndex">
+<area shape="rect" id="node1" title="Set the current cell index belong to the avatar." alt="" coords="209,5,383,45"/>
+<area shape="rect" id="node2" href="$classAvatarSpawner.html#ae215494b68b3c5c3db2e5f4fd2ef9dca" title="Gets called per each frame" alt="" coords="5,13,161,38"/>
+</map>

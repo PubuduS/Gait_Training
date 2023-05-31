@@ -1,0 +1,4 @@
+<map id="SetNoise.GetNoisePattern" name="SetNoise.GetNoisePattern">
+<area shape="rect" id="node1" title="Gettr to get the user&#39;s selection." alt="" coords="248,5,424,31"/>
+<area shape="rect" id="node2" href="$classAvatarAnimationState.html#a88966805e6d07533cb61babc4b486113" title="Gets called per each frame The CamMovementTracker singleton instance has speed and IsMoving Flags...." alt="" coords="5,5,200,31"/>
+</map>

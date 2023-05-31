@@ -1,0 +1,4 @@
+<map id="GaussianDistribution" name="GaussianDistribution">
+<area shape="rect" id="node1" title="Takes two uniformly distributed deviates within the unit circle, and transforms them into two indepen..." alt="" coords="5,93,169,280"/>
+<area shape="rect" id="node2" title=" " alt="" coords="25,5,149,45"/>
+</map>

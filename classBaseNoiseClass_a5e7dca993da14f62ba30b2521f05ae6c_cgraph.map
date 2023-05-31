@@ -1,0 +1,5 @@
+<map id="BaseNoiseClass.GenerateNewDistribution" name="BaseNoiseClass.GenerateNewDistribution">
+<area shape="rect" id="node1" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="5,5,208,45"/>
+<area shape="rect" id="node2" href="$classBaseNoiseClass.html#a042b465664c1058c08e4fe6b54e28eae" title="Populate data variables used to alter noise. The data are gained through UI lables which are set by t..." alt="" coords="256,5,483,45"/>
+<area shape="rect" id="node3" href="$classBaseNoiseClass.html#aa0bf38ac13a1e5edbf031cb607f9ecdb" title="Get the number part from the UI textfields." alt="" coords="531,5,740,45"/>
+</map>

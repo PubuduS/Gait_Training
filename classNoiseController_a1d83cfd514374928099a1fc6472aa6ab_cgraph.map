@@ -1,0 +1,4 @@
+<map id="NoiseController.ApplyNoise" name="NoiseController.ApplyNoise">
+<area shape="rect" id="node1" title="Calculate the noise according to the user input. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="5,5,185,31"/>
+<area shape="rect" id="node2" href="$classBaseNoiseClass.html#a77e60da8926dfa8b70f01c39edf115fb" title="Calculate the noise according to the user input. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="233,5,429,31"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="PinkNoise.CalculateNoise" name="PinkNoise.CalculateNoise">
+<area shape="rect" id="node1" title="Scale the base pink noise." alt="" coords="212,5,385,31"/>
+<area shape="rect" id="node2" href="$classPinkNoise.html#a06726d8f483aa59d730a88f833ef1d06" title="Calculate the noise according to the user input. Mapped to NoiseDataPanel ApplyPattern button." alt="" coords="5,5,164,31"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="PinkNoise.CalculateBaseNoise" name="PinkNoise.CalculateBaseNoise">
+<area shape="rect" id="node1" title="Calculate the base pink noise value." alt="" coords="284,5,487,31"/>
+<area shape="rect" id="node2" href="$classPinkNoise.html#a195f9873c6ed0dd875d8b883e2c05a1e" title="Generate a new normal(Gaussian) distribution Mapped to NoiseDataPanel NewDistribution button." alt="" coords="5,5,236,31"/>
+</map>

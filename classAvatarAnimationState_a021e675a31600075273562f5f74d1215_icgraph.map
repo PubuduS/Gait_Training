@@ -1,0 +1,6 @@
+<map id="AvatarAnimationState.OpenConfirmationDialogMedium" name="AvatarAnimationState.OpenConfirmationDialogMedium">
+<area shape="rect" id="node1" title="Opens confirmation dialog example" alt="" coords="715,5,897,45"/>
+<area shape="rect" id="node2" href="$classAvatarAnimationState.html#a93e0a2bef1eb5d299bb27964c502c661" title="When we reached to the end of the colred noise list, we looped back to the beginning." alt="" coords="480,5,667,45"/>
+<area shape="rect" id="node3" href="$classAvatarAnimationState.html#a30f60294e709a40b207994fce56ed4ed" title="Get the calculated noise pattern and apply that to animation speed. This noise will shrink or expand ..." alt="" coords="248,5,432,45"/>
+<area shape="rect" id="node4" href="$classAvatarAnimationState.html#a88966805e6d07533cb61babc4b486113" title="Gets called per each frame The CamMovementTracker singleton instance has speed and IsMoving Flags...." alt="" coords="5,13,200,38"/>
+</map>

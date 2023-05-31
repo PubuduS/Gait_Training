@@ -1,0 +1,4 @@
+<map id="AvatarSpawner" name="AvatarSpawner">
+<area shape="rect" id="node1" title="This script is responsible for spawning the avatar in the scene." alt="" coords="5,93,220,265"/>
+<area shape="rect" id="node2" title=" " alt="" coords="55,5,171,45"/>
+</map>

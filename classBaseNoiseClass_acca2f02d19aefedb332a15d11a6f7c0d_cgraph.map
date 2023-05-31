@@ -1,0 +1,5 @@
+<map id="BaseNoiseClass.Awake" name="BaseNoiseClass.Awake">
+<area shape="rect" id="node1" title="When invoke the scripts performas all the initializations including, Lists, scripts,..." alt="" coords="5,45,168,70"/>
+<area shape="rect" id="node2" href="$classBaseNoiseClass.html#aad38a498d31aaa25beb4e52b6b85c098" title="Cache the references of NoiseDataPanel gameobjects." alt="" coords="222,5,391,45"/>
+<area shape="rect" id="node3" href="$classBaseNoiseClass.html#afe5a9fd7c9582fefd293cf49f0cd9192" title="Change the visibility of the text fields according to the noise patterns." alt="" coords="216,69,397,109"/>
+</map>

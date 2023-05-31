@@ -1,0 +1,6 @@
+<map id="WhiteNoise.CalculateBaseNoise" name="WhiteNoise.CalculateBaseNoise">
+<area shape="rect" id="node1" title="Calculate the white/random noise." alt="" coords="5,37,181,77"/>
+<area shape="rect" id="node2" href="$classBaseNoiseClass.html#a042b465664c1058c08e4fe6b54e28eae" title="Populate data variables used to alter noise. The data are gained through UI lables which are set by t..." alt="" coords="229,5,456,45"/>
+<area shape="rect" id="node4" href="$classGaussianDistribution.html#a5fccfc0082b1a295567d421d719a30c7" title="Obtains normally (Gaussian) distrubuted random numbers, using the Box&#45;Muller transformation...." alt="" coords="246,69,439,109"/>
+<area shape="rect" id="node3" href="$classBaseNoiseClass.html#aa0bf38ac13a1e5edbf031cb607f9ecdb" title="Get the number part from the UI textfields." alt="" coords="504,5,713,45"/>
+</map>

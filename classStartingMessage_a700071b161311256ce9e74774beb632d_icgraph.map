@@ -1,0 +1,4 @@
+<map id="StartingMessage.ShowStartingMessage" name="StartingMessage.ShowStartingMessage">
+<area shape="rect" id="node1" title="Show the starting message and thank you message. Then destroy the entire object because we no longer ..." alt="" coords="216,5,417,45"/>
+<area shape="rect" id="node2" href="$classStartingMessage.html#a9a0c3515d590dcfad2eca62913d47ee9" title="Gets called when object is loaded Activate the start message coroutine" alt="" coords="5,13,168,38"/>
+</map>

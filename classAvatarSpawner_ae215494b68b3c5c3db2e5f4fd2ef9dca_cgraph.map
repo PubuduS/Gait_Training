@@ -1,0 +1,4 @@
+<map id="AvatarSpawner.Update" name="AvatarSpawner.Update">
+<area shape="rect" id="node1" title="Gets called per each frame" alt="" coords="5,13,161,38"/>
+<area shape="rect" id="node2" href="$classAvatarSpawner.html#a8f6f0469af9fc2f55ef4771231dbb610" title="Set the current cell index belong to the avatar." alt="" coords="209,5,383,45"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="SetNoise" name="SetNoise">
+<area shape="rect" id="node1" title="This class is used to set noise pattern levels. When user press a button, it will change the pattern." alt="" coords="5,93,224,383"/>
+<area shape="rect" id="node2" title=" " alt="" coords="57,5,173,45"/>
+</map>
