@@ -14,4 +14,4 @@ Please Click [Here](https://youtu.be/7yjcnMINi7E) to see a brief demo.
 
 Please Click [Here](https://pubudus.github.io/Gait_Training/) to go to the documentation website. Installation instruction are also avaiable in the website.
 
-Please Click [Here](https://docs.google.com/document/d/1kmKK_q5npj253K7h96zTo9rZwT6KzSsndbLsAWEf78I/edit) to access our dev journal where we documented all of our design approaches.
+Please Click [Here](https://docs.google.com/document/d/1sArsxUCgi7hbih2fWuz-6Y9xhteBZqwShzXI0Kjo5ts/edit?usp=sharing) to access our dev journal where we documented all of our design approaches.
