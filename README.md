@@ -8,7 +8,7 @@ A HoloLens 2 based mixed reality gait training application
 
 Please Click [Here](https://youtu.be/7yjcnMINi7E) to see a brief demo.
  
- \DoxygenTheme\image html Follow.png
+![Screen shot of the user view](DoxygenTheme/images/Follow.png)
  
 ## Installation and Documentation
 
